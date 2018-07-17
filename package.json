@@ -67,7 +67,7 @@
 	"scripts": {
 		"start": "node scripts/start.js",
 		"build": "node scripts/build.js",
-		"test": "babel-node --presets=env scripts/test.js --env=jsdom --watchAll",
+		"test": "babel-node --presets=env scripts/test.js --env=jsdom --watchAll ",
 		"server": "babel-node --presets=env -- src/server/Index.js",
 		"dev": "cross-env NODE_ENV=development concurrently \"yarn start\" \"nodemon\" "
 	},
