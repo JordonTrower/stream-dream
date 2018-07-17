@@ -1,13 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 
-export default class Home extends Component {
-    render() {
-        return(
-            <div>
-                <h1>HOME</h1>
-            </div>
-        )
-    }
+export default function Home () {
+	return(
+		<div>
+			<h1>HOME</h1>
+		</div>
+	)
+	
 }
 
 // import React, { Component } from "react";
@@ -50,7 +49,7 @@ export default class Home extends Component {
 //                 <PopularCarousel
 //                     title="carousel-item"
 //                 >
-                    
+					
 //                 {/* this is where this.state.carouselItems will be rendered via a map */}
 //                 </PopularCarousel>
 
