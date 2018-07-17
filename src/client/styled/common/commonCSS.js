@@ -25,6 +25,6 @@ export default {
 	},
 
 	textColor: css `
-		color: #bada55;
+		color: #ECEDE8;
 	`
 }
