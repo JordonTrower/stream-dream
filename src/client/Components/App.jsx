@@ -1,7 +1,6 @@
 import React from 'react';
 import Route from './routes';
 
-import './App.css';
 
 function App() {
 	return (
@@ -10,5 +9,3 @@ function App() {
 		</div>
 	);
 }
-
-export default App;
