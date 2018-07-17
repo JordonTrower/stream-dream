@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import knex from 'knex';
 import 'dotenv/config'
+import _ from 'lodash';
 /**
  * 
  * @param {*} string 
@@ -31,7 +32,78 @@ export default {
 	 * Will redirect to user page upon completion, 
 	 */
 	login(req, res) {
-		// write tests then do this
+		const {
+			password,
+			email,
+		} = req.body
+
+		let db = null;
+
+		if (res !== null) {
+			db = req.app.get('db');
+		} else {
+			db = knex({
+				client: 'pg',
+				connection: process.env.DB_CONNECTION_STRING
+			})
+		}
+
+		return db('users')
+			.where('email', email)
+			.select('id', 'email', 'password', 'displayName', 'avatar')
+			.first()
+			.then(dbRes => {
+				if (!_.isEmpty(dbRes)) {
+					return bcrypt.compare(password, dbRes.password).then(compareRes => {
+
+						if (compareRes) {
+
+							const toReturn = {
+								response: true,
+								reasons: [],
+								userInfo: {
+									email: dbRes.email,
+									displayName: dbRes.displayName,
+									avatar: dbRes.avatar
+								}
+							}
+
+							if (res !== null) {
+								req.session.userId = dbRes.id
+
+								return res.send(toReturn)
+							}
+
+							return toReturn;
+						}
+
+						const toReturn = {
+							response: false,
+							reasons: [
+								'Password is incorrect'
+							]
+						}
+
+						if (res !== null) {
+							return res.send(toReturn)
+						}
+
+						return toReturn;
+					})
+				}
+
+				const toReturn = {
+					response: false,
+					reasons: ['Email is not valid']
+				}
+
+				if (res !== null) {
+					return res.send(toReturn)
+				}
+
+				return toReturn;
+			})
+
 	},
 
 	/**
@@ -47,7 +119,6 @@ export default {
 
 		// Begin validating credentials
 		// Starting with Password
-
 		const {
 			password,
 			email,
@@ -56,14 +127,18 @@ export default {
 
 		if (password !== '') {
 			if (!containsNumeric(password)) {
+
 				response.reasons.push('Password should contain a number')
 				response.response = false;
 			}
+
 			if (password.length < 6) {
+
 				response.reasons.push('Password should be longer than 6 characters')
 				response.response = false;
 			}
 		} else {
+
 			response.response = false;
 			response.reasons.push('Password should be longer than 6 characters',
 				'Password should contain a number'
@@ -71,16 +146,19 @@ export default {
 		}
 
 		if (displayName === '') {
+
 			response.reasons.push('Must have a username')
 			response.response = false;
 		}
 
 		if (!validateEmail(email)) {
+
 			response.reasons.push('Must have a valid email')
 			response.response = false;
 		}
 
 		if (response.response) {
+
 			let db = null;
 
 			if (res !== null) {
@@ -114,11 +192,11 @@ export default {
 									}).then(() => {
 
 									})
-
 							}
 
 							// if it is currently a test
 							if (res === null) {
+
 								return response;
 							}
 
@@ -132,6 +210,7 @@ export default {
 
 					// if it is currently a test
 					if (res === null) {
+
 						return response;
 					}
 
@@ -141,6 +220,7 @@ export default {
 
 		// if it is currently a test
 		if (res === null) {
+
 			return response;
 		}
 

@@ -27,7 +27,7 @@ const {
  * and will purposely give memory leaks.
  * Redis is a NoSQL like database, stored in RAM for increased speed
  */
-if (app.get('env') !== 'development') {
+if (app.get('env') === 'production') {
 
 	const RedisStore = redisSession(session);
 

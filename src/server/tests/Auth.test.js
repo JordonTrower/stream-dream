@@ -1,14 +1,14 @@
 import authControl from '../routes/controllers/AuthController'
 
-describe('Test Register Security', () => {
-
-	const workingAccount = {
-		body: {
-			email: 'hejkle@test.com',
-			displayName: 'EagleEyes',
-			password: 'Th1sP4ssw0rdIsF1ne',
-		}
+const workingAccount = {
+	body: {
+		email: 'hejkle@test.com',
+		displayName: 'EagleEyes',
+		password: 'Th1sP4ssw0rdIsF1ne',
 	}
+}
+
+describe('register test', () => {
 
 	const failNoNum = {
 		body: {
@@ -105,24 +105,81 @@ describe('Test Register Security', () => {
 		})
 	})
 
-	test('Valid Account works', async () => {
-		expect(await authControl.register(workingAccount, null)).toEqual({
+	test('Register Valid Account', (done) => {
+
+		expect(authControl.register(workingAccount, null)).resolves.toEqual({
 			response: true,
 			reasons: []
 		})
+
+		done();
 	})
 
-	test('Valid account fails due to duplicate', async () => {
-		expect(await authControl.register(workingAccount, null)).toEqual({
+	test('Valid account fails due to duplicate', (done) => {
+
+
+		expect(authControl.register(workingAccount, null)).resolves.toEqual({
 			response: false,
 			reasons: ['Email or Username already is use']
 		})
+
+		done();
 	})
 
-	test('Delete Valid Account from DB', async () => {
-		expect(await authControl.deleteAccount(workingAccount, null)).toEqual({
+})
+
+describe('Login Tests', () => {
+
+	test('Test Working Login', (done) => {
+
+		expect(authControl.login(workingAccount, null)).resolves.toEqual({
 			response: true,
-			reasons: []
+			reasons: [],
+			userInfo: {
+				email: workingAccount.body.email,
+				displayName: workingAccount.body.displayName,
+				avatar: '',
+			}
 		})
+
+		done();
 	})
+
+	test('Test Wrong Password', (done) => {
+
+		const changePass = Object.assign({}, workingAccount);
+
+		changePass.body.password = 'failure'
+
+		expect(authControl.login(changePass, null)).resolves.toEqual({
+			response: false,
+			reasons: ['Password is incorrect'],
+		})
+
+		done();
+	})
+
+	test('Test Wrong Email', (done) => {
+
+		const changeEmail = Object.assign({}, workingAccount);
+
+		changeEmail.body.email = 'failure'
+
+		expect(authControl.login(changeEmail, null)).resolves.toEqual({
+			response: false,
+			reasons: ['Email is not valid'],
+		})
+
+		done();
+	})
+})
+
+test('Delete Valid Account from DB', (done) => {
+
+	expect(authControl.deleteAccount(workingAccount, null)).resolves.toEqual({
+		response: true,
+		reasons: []
+	})
+
+	done()
 })
