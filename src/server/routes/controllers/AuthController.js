@@ -1,3 +1,6 @@
+import bcrypt from 'bcrypt';
+import knex from 'knex';
+import 'dotenv/config'
 /**
  * 
  * @param {*} string 
@@ -77,11 +80,71 @@ export default {
 			response.response = false;
 		}
 
+		if (response.response) {
+			let db = null;
+
+			if (res !== null) {
+				db = req.app.get('db');
+			} else {
+				db = knex({
+					client: 'pg',
+					connection: process.env.DB_CONNECTION_STRING
+				})
+			}
+
+			return db('users')
+				.select()
+				.where('email', email)
+				.andWhere('displayName', displayName)
+				.then((dbRes) => {
+
+					// If there are no users matching the inputs, create a new one
+					if (dbRes.length === 0) {
+
+						// Begin hashing the password like a promise, enabling returns
+						return bcrypt.hash(password, 15).then((hash, err) => {
+							if (!err) {
+								db('users')
+									.insert({
+										email,
+										displayName,
+										online: true,
+										password: hash,
+										avatar: '',
+									}).then(() => {
+
+									})
+
+							}
+
+							// if it is currently a test
+							if (res === null) {
+								return response;
+							}
+
+							return res.send(response)
+						})
+					}
+
+					// if there is an existing user then give an error to the new user
+					response.reasons.push('Email or Username already is use');
+					response.response = false;
+
+					// if it is currently a test
+					if (res === null) {
+						return response;
+					}
+
+					return res.send(response)
+				})
+		}
+
 		// if it is currently a test
 		if (res === null) {
 			return response;
 		}
 
+		return res.send(response)
 	},
 
 	/**
@@ -90,5 +153,49 @@ export default {
 	 */
 	logout(req, res) {
 
+	},
+
+	/**
+	 * Deletes the logged in users account Account
+	 */
+	deleteAccount(req, res) {
+
+		// get the user off of the sessions or body (if test)
+		const {
+			displayName,
+			email
+		} = req.user || req.body;
+
+		let db = null;
+
+		if (res !== null) {
+			db = req.app.get('db');
+		} else {
+			db = knex({
+				client: 'pg',
+				connection: process.env.DB_CONNECTION_STRING
+			})
+		}
+
+		// find the user and delete it
+		return db('users')
+			.where('email', email)
+			.andWhere('displayName', displayName)
+			.del()
+			.then(() => {
+				const response = {
+					response: true,
+					reasons: []
+				}
+
+				return response;
+			}).catch((err) => {
+				const response = {
+					response: false,
+					reasons: err
+				}
+
+				return response
+			})
 	}
 }

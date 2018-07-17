@@ -86,7 +86,7 @@ describe('Test Register Security', () => {
 		})
 	})
 
-	test('Account with no email', () => {
+	test('Account with an invalid email', () => {
 		expect(authControl.register(failInvalidEmail, null)).toEqual({
 			response: false,
 			reasons: ['Must have a valid email']
@@ -105,8 +105,22 @@ describe('Test Register Security', () => {
 		})
 	})
 
-	test('Valid Account works', () => {
-		expect(authControl.register(workingAccount, null)).toEqual({
+	test('Valid Account works', async () => {
+		expect(await authControl.register(workingAccount, null)).toEqual({
+			response: true,
+			reasons: []
+		})
+	})
+
+	test('Valid account fails due to duplicate', async () => {
+		expect(await authControl.register(workingAccount, null)).toEqual({
+			response: false,
+			reasons: ['Email or Username already is use']
+		})
+	})
+
+	test('Delete Valid Account from DB', async () => {
+		expect(await authControl.deleteAccount(workingAccount, null)).toEqual({
 			response: true,
 			reasons: []
 		})
