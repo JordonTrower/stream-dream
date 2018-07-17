@@ -3,12 +3,15 @@ import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import redisSession from 'connect-redis';
 import session from 'express-session';
-import Knex from 'knex';
+// import Knex from 'knex';
+
+/**
+ * dotenv expand allows you to use
+ * variables inside the dot env file
+ * IE CLIENT_LOCATION
+ */
 
 dotenvExpand(dotenv.config());
-
-// dotenv expand allows you to use 
-// variables inside the dot env file
 
 const app = express()
 
@@ -18,9 +21,14 @@ const {
 	REDIS_PORT
 } = process.env;
 
-
-
+/**
+ * If the application is in production, then Redis
+ * due to the default session store purpose being dev only
+ * and will purposely give memory leaks.
+ * Redis is a NoSQL like database, stored in RAM for increased speed
+ */
 if (app.get('env') !== 'development') {
+
 	const RedisStore = redisSession(session);
 
 	app.use(
@@ -33,6 +41,7 @@ if (app.get('env') !== 'development') {
 			saveUninitialized: false
 		})
 	)
+
 } else {
 	app.use(
 		session({
@@ -42,8 +51,6 @@ if (app.get('env') !== 'development') {
 		})
 	)
 }
-
-
 
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`)
