@@ -62,19 +62,24 @@ export default {
 			}
 		} else {
 			response.response = false;
-			response.reasons.push(['Password should be longer than 6 characters',
+			response.reasons.push('Password should be longer than 6 characters',
 				'Password should contain a number'
-			])
+			)
 		}
 
-		if (displayName === '' && displayName.length > 6) {
+		if (displayName === '') {
 			response.reasons.push('Must have a username')
 			response.response = false;
 		}
 
 		if (!validateEmail(email)) {
-			response.reasons.push('Must have an email')
+			response.reasons.push('Must have a valid email')
 			response.response = false;
+		}
+
+		// if it is currently a test
+		if (res === null) {
+			return response;
 		}
 
 	},

@@ -1,11 +1,11 @@
-const authControl = require('../routes/controllers/AuthController')
+import authControl from '../routes/controllers/AuthController'
 
 describe('Test Register Security', () => {
 
 	const workingAccount = {
 		body: {
 			email: 'hejkle@test.com',
-			displayName: '',
+			displayName: 'EagleEyes',
 			password: 'Th1sP4ssw0rdIsF1ne',
 		}
 	}
@@ -30,13 +30,21 @@ describe('Test Register Security', () => {
 		body: {
 			email: 'hejkle@test.com',
 			displayName: 'EagleEyes',
-			password: 'ef'
+			password: 'ef6'
 		}
 	}
 
 	const failNoEmail = {
 		body: {
 			email: '',
+			displayName: 'EagleEyes',
+			password: 'Th1sP4ssw0rdIsF1ne'
+		}
+	}
+
+	const failInvalidEmail = {
+		body: {
+			email: 'NotAValidEmail',
 			displayName: 'EagleEyes',
 			password: 'Th1sP4ssw0rdIsF1ne'
 		}
@@ -71,28 +79,36 @@ describe('Test Register Security', () => {
 		})
 	})
 
-
 	test('Account with no email', () => {
 		expect(authControl.register(failNoEmail, null)).toEqual({
 			response: false,
-			reasons: ['Must have an email']
+			reasons: ['Must have a valid email']
+		})
+	})
+
+	test('Account with no email', () => {
+		expect(authControl.register(failInvalidEmail, null)).toEqual({
+			response: false,
+			reasons: ['Must have a valid email']
 		})
 	})
 
 	test('Total Fail Account', () => {
-		expect(authControl.register(failAll, null)).toMatchObject({
+		expect(authControl.register(failAll, null)).toEqual({
 			response: false,
 			reasons: [
-				'Must have an email',
-				'Must have a username',
 				'Password should be longer than 6 characters',
-				'Password should contain a number'
+				'Password should contain a number',
+				'Must have a username',
+				'Must have a valid email'
 			]
 		})
 	})
 
 	test('Valid Account works', () => {
-		authControl.register(workingAccount, null).toHaveProperty('response', true)
+		expect(authControl.register(workingAccount, null)).toEqual({
+			response: true,
+			reasons: []
+		})
 	})
-
 })
