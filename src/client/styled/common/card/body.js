@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import commonCSS from './commonCSS';
+import commonCSS from '../commonCSS';
 
 export default styled.div `
 

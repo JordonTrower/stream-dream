@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import commonCSS from './commonCSS';
+import commonCSS from '../commonCSS';
 
 export default styled.div `
 
@@ -16,4 +16,5 @@ export default styled.div `
 	> * {
 		padding: 0.75rem;
 	}
+
 `
