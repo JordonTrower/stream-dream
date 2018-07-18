@@ -1,60 +1,52 @@
-import React from 'react';
+import React, { Component } from "react";
+import axios from 'axios';
+import styled from "styled-components";
+import Carousel from "./../Carousel/Carousel";
 
-export default () => (
-	<div>
-		<h1>HOME</h1>
-	</div>
-);
+const StyledHome = styled.div`/* ... */`
 
-// import React, { Component } from "react";
-// import axios from "axios";
-// import PopularCarousel from "./popularCarousel/PopularCarousel";
-// import styled from "styled-components";
+export default class Home extends Component {
+	constructor() {
+		super();
+		this.state = {
+			carouselItems: [],
+			liveItems: [],
+		}
+	}
 
-// const StyledHome = styled.div`/* ... */`
+	componentDidMount() {
+		axios.get(``/* all the carousel things */).then(
+			res => {
+				this.setState({
+					carouselItems: res.data
+				})
+			}
+		)
+		axios.get(``/* all the live things */).then(
+			res => {
+				this.setState({
+					liveItems: res.data
+				})
+			}
+		)
+	}
 
-// export default class Home extends Component {
-//     constructor() {
-//         super();
-//         this.state = {
-//             carouselItems: [],
-//             liveItems: [],
-//         }
-//     }
+	render() {
 
-//     componentDidMount() {
-//         axios.get(``/* all the carousel things */).then(
-//             res => {
-//                 this.setState({
-//                     carouselItems: res.data
-//                 })
-//             }
-//         )
-//         axios.get(``/* all the live things */).then(
-//             res => {
-//                 this.setState({
-//                     liveItems: res.data
-//                 })
-//             }
-//         )
-//     }
+		return (
+			<StyledHome>
+				<Carousel
+					title="carousel-item"
+				>
+                    
+					{/* this is where this.state.carouselItems will be rendered via a map */}
+				</Carousel>
 
-//     render() {
-
-//         return (
-//             <StyledHome>
-//                 <PopularCarousel
-//                     title="carousel-item"
-//                 >
-
-//                 {/* this is where this.state.carouselItems will be rendered via a map */}
-//                 </PopularCarousel>
-
-//                 {/* this is where the cards by catagories will be rendered by a map */}
-//             </StyledHome>
-//         )
-//     }
-// }
+				{/* this is where the cards by catagories will be rendered by a map */}
+			</StyledHome>
+		)
+	}
+}
 
 // //carousel build instructions that I followed came from here
 // //https://medium.com/@incubation.ff/build-your-own-css-carousel-in-react-part-one-86f71f6670ca
