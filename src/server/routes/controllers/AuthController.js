@@ -50,7 +50,7 @@ export default {
 
 		return db('users')
 			.where('email', email)
-			.select('id', 'email', 'password', 'displayName', 'avatar')
+			.select('id', 'email', 'password', 'display_name', 'avatar')
 			.first()
 			.then(dbRes => {
 				if (!_.isEmpty(dbRes)) {
@@ -63,7 +63,7 @@ export default {
 								reasons: [],
 								userInfo: {
 									email: dbRes.email,
-									displayName: dbRes.displayName,
+									display_name: dbRes.display_name,
 									avatar: dbRes.avatar
 								}
 							}
@@ -132,9 +132,9 @@ export default {
 				response.response = false;
 			}
 
-			if (password.length < 6) {
+			if (password.length < 8) {
 
-				response.reasons.push('Password should be longer than 6 characters')
+				response.reasons.push('Password should 8 or more characters')
 				response.response = false;
 			}
 		} else {
@@ -173,7 +173,7 @@ export default {
 			return db('users')
 				.select()
 				.where('email', email)
-				.andWhere('displayName', displayName)
+				.andWhere('display_name', displayName)
 				.then((dbRes) => {
 
 					// If there are no users matching the inputs, create a new one
@@ -185,7 +185,7 @@ export default {
 								db('users')
 									.insert({
 										email,
-										displayName,
+										display_name: displayName,
 										online: true,
 										password: hash,
 										avatar: '',

@@ -68,7 +68,7 @@ describe('register test', () => {
 	test('Account with short password', () => {
 		expect(authControl.register(failPassShort, null)).toEqual({
 			response: false,
-			reasons: ['Password should be longer than 6 characters']
+			reasons: ['Password should 8 or more characters']
 		})
 	})
 
@@ -97,7 +97,7 @@ describe('register test', () => {
 		expect(authControl.register(failAll, null)).toEqual({
 			response: false,
 			reasons: [
-				'Password should be longer than 6 characters',
+				'Password should 8 or more characters',
 				'Password should contain a number',
 				'Must have a username',
 				'Must have a valid email'

@@ -1,50 +1,44 @@
-import React, { Component } from "react";
-import axios from 'axios';
-import styled from "styled-components";
-import Carousel from "./../Carousel/Carousel";
+import React, { Component } from 'react';
+// import axios from 'axios';
+import styled from 'styled-components';
+import Carousel from '../carousel/Carousel';
 
-const StyledHome = styled.div`/* ... */`
+const StyledHome = styled.div`
+	/* ... */
+`;
 
 export default class Home extends Component {
-	constructor() {
-		super();
-		this.state = {
-			carouselItems: [],
-			liveItems: [],
-		}
-	}
+	// constructor() {
+	// 	super();
+	// 	// this.state = {
+	// 	// 	carouselItems: [],
+	// 	// 	liveItems: [],
+	// 	// }
+	// }
 
 	componentDidMount() {
-		axios.get(``/* all the carousel things */).then(
-			res => {
-				this.setState({
-					carouselItems: res.data
-				})
-			}
-		)
-		axios.get(``/* all the live things */).then(
-			res => {
-				this.setState({
-					liveItems: res.data
-				})
-			}
-		)
+		// axios.get(`` /* all the carousel things */).then(res => {
+		// 	// this.setState({
+		// 	// 	carouselItems: res.data
+		// 	// })
+		// });
+		// axios.get(`` /* all the live things */).then(res => {
+		// 	// this.setState({
+		// 	// 	liveItems: res.data
+		// 	// })
+		// });
 	}
 
 	render() {
-
 		return (
 			<StyledHome>
-				<Carousel
-					title="carousel-item"
-				>
-                    
+				<Carousel title="carousel-item">
 					{/* this is where this.state.carouselItems will be rendered via a map */}
 				</Carousel>
 
 				{/* this is where the cards by catagories will be rendered by a map */}
 			</StyledHome>
-		)
+		);
 	}
 }
 

@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 import dotenvExpand from 'dotenv-expand';
 import redisSession from 'connect-redis';
 import session from 'express-session';
-// import Knex from 'knex';
+import knex from 'knex';
+import bodyParser from 'body-parser';
+import authRoutes from './routes/Auth';
 
 /**
  * dotenv expand allows you to use
@@ -18,8 +20,16 @@ const app = express()
 const {
 	SERVER_PORT,
 	SESSION_SECRET,
-	REDIS_PORT
+	REDIS_PORT,
+	DB_CONNECTION_STRING
 } = process.env;
+
+app.set('db', knex({
+	client: 'pg',
+	connection: DB_CONNECTION_STRING
+}))
+
+app.use(bodyParser.json())
 
 /**
  * If the application is in production, then Redis
@@ -51,6 +61,8 @@ if (app.get('env') === 'production') {
 		})
 	)
 }
+
+app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes)
 
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`)

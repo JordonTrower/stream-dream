@@ -1,11 +1,9 @@
-import React, { Component } from "react";
-import propTypes from "prop-types";
+import React, { Component } from 'react';
+import propTypes from 'prop-types';
 
-import CarouselContainer from "./CarouselContainer";
-import CarouselWrapper from "./CarouselWrapper";
-import CarouselSlot from "./CarouselSlot";
-
-
+import CarouselContainer from './CarouselContainer';
+import CarouselWrapper from './CarouselWrapper';
+import CarouselSlot from './CarouselSlot';
 
 class Carousel extends Component {
 	constructor(props) {
@@ -14,26 +12,13 @@ class Carousel extends Component {
 			position: 0,
 			direction: 'next',
 			sliding: false
-		}
+		};
 	}
 
-	doSliding = ( direction, position ) => {
-		this.setState({
-			sliding: true,
-			direction,
-			position
-		})
-
-		setTimeout(() => {
-			this.setState({
-				sliding: false
-			})
-		}, 50)
-	}
-    
 	getOrder(itemIndex) {
 		const { position } = this.state;
 		const { children } = this.props;
+
 		const numItems = children.length || 1;
 
 		if (itemIndex - position < 0) {
@@ -42,16 +27,30 @@ class Carousel extends Component {
 
 		return itemIndex - position;
 	}
-    
-    nextSlide = () => {
-    	const { position } = this.state;
-    	const { children } = this.props;
-    	const numItems = children.length || 1;
-		
-    	this.doSliding('next', position === numItems -1 ? 0 : position + 1);
-    }
-	
-	prevSlide = () => {
+
+	doSliding(direction, position) {
+		this.setState({
+			sliding: true,
+			direction,
+			position
+		});
+
+		setTimeout(() => {
+			this.setState({
+				sliding: false
+			});
+		}, 50);
+	}
+
+	nextSlide() {
+		const { position } = this.state;
+		const { children } = this.props;
+		const numItems = children.length || 1;
+
+		this.doSliding('next', position === numItems - 1 ? 0 : position + 1);
+	}
+
+	prevSlide() {
 		const { position } = this.state;
 		const { children } = this.props;
 		const numItems = children.length;
@@ -60,38 +59,55 @@ class Carousel extends Component {
 	}
 
 	render() {
-		console.log(this.state.position)
-    	const { title, children } = this.props;
-    	return (
-    		<div>
-    			<h2>{title}</h2>
-				<CarouselWrapper 
-					sliding={ this.state.sliding }
-					direction={ this.state.direction }
+		console.log(this.state.position);
+		const { title, children } = this.props;
+		return (
+			<div>
+				<h2>{title}</h2>
+				<CarouselWrapper
+					sliding={this.state.sliding}
+					direction={this.state.direction}
 				>
 					<CarouselContainer>
-						{ children.map((child, index) => (
-							<CarouselSlot 
-								key={index}
+						{children.map((child, index) => (
+							<CarouselSlot
+								key={index.id} // eslint-disable-line
 								order={this.getOrder(index)}
 							>
-								{child}
+								{child.title}
 							</CarouselSlot>
-						)) }
+						))}
 					</CarouselContainer>
 				</CarouselWrapper>
-    			<button onClick={ () => this.prevSlide('prev') }>PREV</button>
-    			<button onClick={ () => this.nextSlide('next') }>NEXT</button>
-                
-    		</div>
-    	)
+				<button onClick={() => this.prevSlide('prev')}>PREV</button>
+				<button onClick={() => this.nextSlide('next')}>NEXT</button>
+			</div>
+		);
 	}
 }
 
 Carousel.propTypes = {
 	title: propTypes.string,
 	children: propTypes.node
-}
+};
+
+Carousel.defaultProps = {
+	title: '',
+	children: [
+		{
+			id: 1,
+			title: 'eee'
+		},
+		{
+			id: 2,
+			title: 'aaa'
+		},
+		{
+			id: 3,
+			title: 'aaa'
+		}
+	]
+};
 
 export default Carousel;
 
