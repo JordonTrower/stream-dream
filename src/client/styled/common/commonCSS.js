@@ -26,5 +26,25 @@ export default {
 
 	textColor: css `
 		color: #ECEDE8;
+	`,
+
+	primaryColor: `
+		 #191B21
+	`,
+
+	infoTextColor: `
+		#A3A8A5
+	`,
+
+	primaryTextColor: `
+		#ECEDE8
+	`,
+
+	headerColor: `
+		#21385E
+	`,
+
+	sidebarColor: `
+		#09092B
 	`
 }

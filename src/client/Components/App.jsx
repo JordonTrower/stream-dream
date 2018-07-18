@@ -1,11 +1,16 @@
 import React from 'react';
-import Route from './routes';
-
+import Routes from './routes';
+import Header from './Nav/Header';
+import Sidebar from './Nav/Sidebar';
 
 function App() {
 	return (
 		<div className="App">
-			<Route />
+			<Header />
+			<Sidebar />
+			<Routes />
 		</div>
 	);
 }
+
+export default App;
