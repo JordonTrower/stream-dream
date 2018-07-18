@@ -1,13 +1,10 @@
-import React from "react";
+import React from 'react';
 
-export default function Home () {
-	return(
-		<div>
-			<h1>HOME</h1>
-		</div>
-	)
-	
-}
+export default () => (
+	<div>
+		<h1>HOME</h1>
+	</div>
+);
 
 // import React, { Component } from "react";
 // import axios from "axios";
@@ -49,7 +46,7 @@ export default function Home () {
 //                 <PopularCarousel
 //                     title="carousel-item"
 //                 >
-					
+
 //                 {/* this is where this.state.carouselItems will be rendered via a map */}
 //                 </PopularCarousel>
 

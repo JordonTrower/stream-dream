@@ -5,9 +5,11 @@ export default styled.div `
 
 	${commonCSS.textColor}
 	${commonCSS.flex()}
-    
-    width: 50rem;
-    height: 50rem;
+	
+    width: 90%;
+    height: 100%;
     border: 1px solid black;
 	flex-wrap: wrap;
+
+	justify-content: center;
 `
