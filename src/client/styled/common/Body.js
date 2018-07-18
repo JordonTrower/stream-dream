@@ -8,8 +8,8 @@ export default styled.div `
 	
 	align-items: center;
 	
-	padding-top: 15px;
-	min-height: calc(100vh - 3rem);
+	padding-top: 1rem;
+	min-height: calc(100vh - 4rem);
 
 	${commonCSS.flex('column')}
 `
