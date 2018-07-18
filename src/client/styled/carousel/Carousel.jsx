@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import propTypes from "prop-types";
 
+import Swipeable from 'react-swipeable';
 import CarouselContainer from "./CarouselContainer";
 import CarouselWrapper from "./CarouselWrapper";
 import CarouselSlot from "./CarouselSlot";
@@ -15,6 +16,7 @@ class Carousel extends Component {
 			direction: 'next',
 			sliding: false
 		}
+		this.autoScroll = this.autoScroll.bind(this);
 	}
 
 	doSliding = ( direction, position ) => {
@@ -30,7 +32,9 @@ class Carousel extends Component {
 			})
 		}, 50)
 	}
-    
+	
+	
+	
 	getOrder(itemIndex) {
 		const { position } = this.state;
 		const { children } = this.props;
@@ -59,29 +63,71 @@ class Carousel extends Component {
 		this.doSliding('prev', position === 0 ? numItems - 1 : position - 1);
 	}
 
+	handleSwipe = (isNext) => {
+		if (isNext) {
+			this.nextSlide('next')
+		} else {
+			this.prevSlide('prev')
+		}
+	}
+
+	autoScroll(){
+		this.nextSlide('next')
+	}
+
 	render() {
-		console.log(this.state.position)
-    	const { title, children } = this.props;
+
+		const carousel1Div = {
+			display: 'flex',
+			flexDirection: 'row',
+			height: 'fit-content'
+		}
+
+		const carouselButton = {
+			backgroundColor: '#000000',
+			color: 'black', 
+			opacity: 0.2,
+			height: '20rem',
+			width: '2em'
+		}
+    	const { children } = this.props;
     	return (
-    		<div>
-    			<h2>{title}</h2>
-				<CarouselWrapper 
-					sliding={ this.state.sliding }
-					direction={ this.state.direction }
+    		<div style={carousel1Div}>
+				<div 
+					style={carouselButton} 
+					onClick={ () => this.prevSlide('prev') }
+				>prev</div>
+				<Swipeable
+					className="swipeable"
+					trackMouse
+					style={{
+						touchAction: 'none',
+						width: '100%'
+					}}
+					preventDefaultTouchmoveEvent
+					onSwipedLeft={ () => this.handleSwipe(true) }
+					onSwipedRight={ () => this.handleSwipe() }
 				>
-					<CarouselContainer>
-						{ children.map((child, index) => (
-							<CarouselSlot 
-								key={index}
-								order={this.getOrder(index)}
-							>
-								{child}
-							</CarouselSlot>
-						)) }
-					</CarouselContainer>
-				</CarouselWrapper>
-    			<button onClick={ () => this.prevSlide('prev') }>PREV</button>
-    			<button onClick={ () => this.nextSlide('next') }>NEXT</button>
+					<CarouselWrapper>
+						<CarouselContainer
+							sliding={ this.state.sliding }
+							direction={ this.state.direction }
+						>
+							{ children.map((child, index) => (
+								<CarouselSlot 
+									key={index}
+									order={this.getOrder(index)}
+								>
+									{child}
+								</CarouselSlot>
+							)) }
+						</CarouselContainer>
+					</CarouselWrapper>
+				</Swipeable>
+				<div 
+					style={carouselButton} 
+					onClick={ () => this.nextSlide('next') }
+				>next</div>
                 
     		</div>
     	)
