@@ -1,147 +1,60 @@
-import React, { Component } from 'react';
-import propTypes from 'prop-types';
+import React from "react";
+import Slider from "react-slick";
+import styled from 'styled-components';
 
-import Swipeable from 'react-swipeable';
-import CarouselContainer from '../../styled/carousel/CarouselContainer';
-import CarouselWrapper from '../../styled/carousel/CarouselWrapper';
-import CarouselSlot from '../../styled/carousel/CarouselSlot';
+const CarouselContainer = styled.div`
+    background-color: #191B21;
+`;
 
-class Carousel extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			position: 0,
-			direction: 'next',
-			sliding: false
-		};
-	}
+const CarouselSlot = styled.div`
+    background-color: #09092B;
+    margin: 0 auto;
+`;
 
-	getOrder(itemIndex) {
-		const { position } = this.state;
-		const { children } = this.props;
+const CarouselSlotItem = styled.div`
+    background-color: green;
+    width: 40rem;
+    height: 20rem;
+    margin: 0 auto;
+`;
+const CarouselActual = styled(Slider)`
+    width: 70%;
+    margin: 0 auto;
+    > .slick-arrow:before {
+        color: #21385E;
+    }
+`
+// /////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
+// create an array items you want to display on the Carousel component        //
+// pass that array into the Carousel component as props named 'carouselItems' //
+// /////////////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////////////
 
-		const numItems = children.length || 1;
-
-		if (itemIndex - position < 0) {
-			return numItems - Math.abs(itemIndex - position);
-		}
-		return itemIndex - position;
-	}
-	/*eslint-disable*/
-	doSliding(direction, position) {
-		this.setState({
-			sliding: true,
-			direction,
-			position
-		});
-
-		setTimeout(() => {
-			this.setState({
-				sliding: false
-			});
-		}, 50);
-	}
-	/* eslint-enable */
-
-	nextSlide() {
-		const { position } = this.state;
-		const { children } = this.props;
-		const numItems = children.length || 1;
-
-		this.doSliding('next', position === numItems - 1 ? 0 : position + 1);
-	}
-
-	prevSlide() {
-		const { position } = this.state;
-		const { children } = this.props;
-		const numItems = children.length;
-
-		this.doSliding('prev', position === 0 ? numItems - 1 : position - 1);
-	}
-
-	handleSwipe(isNext) {
-		if (isNext) {
-			this.nextSlide('next');
-		} else {
-			this.prevSlide('prev');
-		}
-	}
-
-	autoScroll() {
-		this.nextSlide('next');
-	}
-
-	render() {
-		const carousel1Div = {
-			display: 'flex',
-
-			height: 'fit-content',
-			width: '90%'
-		};
-
-		const carouselButton = {
-			backgroundColor: '#000000',
-			color: 'black',
-			opacity: 0.2,
-			height: '20rem',
-			width: '2rem'
-		};
-		const { children } = this.props;
-		return (
-			<div style={carousel1Div}>
-				<div //eslint-disable-line
-					style={carouselButton}
-					onClick={() => this.prevSlide('prev')}
-				>
-					prev
-				</div>
-				<Swipeable
-					className="swipeable"
-					trackMouse
-					style={{
-						touchAction: 'none',
-						width: '100%'
-					}}
-					preventDefaultTouchmoveEvent
-					onSwipedLeft={() => this.handleSwipe(true)}
-					onSwipedRight={() => this.handleSwipe()}
-				>
-					<CarouselWrapper>
-						<CarouselContainer
-							sliding={this.state.sliding}
-							direction={this.state.direction}
+export default function Carousel(props){
+	const settings = {
+		dots: true,
+		infinite: true,
+		slidesToShow: 1,
+		centerMode: true,
+		slidesToScroll: 1,
+		autoplay: true,
+		autoplaySpeed: 3000,
+		pauseOnHover: true
+	};
+	return (
+		<CarouselContainer>
+			<CarouselActual {...settings}>
+				{
+					props.carouselItems.map((item) => ( // eslint-disable-line
+						<CarouselSlot
 						>
-							{children.map((child, index) => (
-								<CarouselSlot
-									key={index} //eslint-disable-line
-									order={this.getOrder(index)}
-								>
-									{child}
-								</CarouselSlot>
-							))}
-						</CarouselContainer>
-					</CarouselWrapper>
-				</Swipeable>
-				<div //eslint-disable-line
-					style={carouselButton}
-					onClick={() => this.nextSlide('next')}
-				>
-					next
-				</div>
-			</div>
-		);
-	}
+							<CarouselSlotItem>{item}</CarouselSlotItem>
+						</CarouselSlot>
+					))
+				}
+			</CarouselActual>
+		</CarouselContainer>
+	);
 }
 
-Carousel.propTypes = {
-	children: propTypes.node
-};
-
-Carousel.defaultProps = {
-	children: ['toList']
-};
-
-export default Carousel;
-
-// carousel build instructions that I followed came from here
-// https://medium.com/@incubation.ff/build-your-own-css-carousel-in-react-part-one-86f71f6670ca
