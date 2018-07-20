@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import propTypes from 'prop-types';
 import GoX from 'react-icons/lib/go/x';
 import GoCheck from 'react-icons/lib/go/check';
 import Modal from '../Modal/Modal';
@@ -27,7 +28,7 @@ const LogoText = styled.h2`
 	margin-bottom: 15px;
 `;
 
-const FormBody = styled.div`
+const FormBody = styled.form`
 	width: 100%;
 	height: 100%;
 
@@ -95,7 +96,7 @@ class RegisterForm extends Component {
 
 	render() {
 		return (
-			<FormBody>
+			<FormBody onSubmit={this.submit}>
 				<LogoText>Register</LogoText>
 
 				<InputGroupBody>
@@ -105,6 +106,7 @@ class RegisterForm extends Component {
 
 					<InputGroupInput>
 						<input
+							autoComplete="email"
 							type="text"
 							name="email"
 							placeholder="Email"
@@ -122,6 +124,7 @@ class RegisterForm extends Component {
 					<InputGroupInput>
 						<input
 							type="text"
+							autoComplete=""
 							name="displayName"
 							placeholder="Display Name"
 							onChange={this.handleChange}
@@ -138,6 +141,7 @@ class RegisterForm extends Component {
 					<InputGroupInput>
 						<input
 							type="password"
+							autoComplete=""
 							name="password"
 							onChange={this.handleChange}
 							value={this.state.password}
@@ -160,6 +164,7 @@ class RegisterForm extends Component {
 					<InputGroupInput>
 						<input
 							type="password"
+							autoComplete=""
 							name="confirmPassword"
 							onChange={this.handleChange}
 							value={this.state.confirmPassword}
@@ -167,10 +172,21 @@ class RegisterForm extends Component {
 					</InputGroupInput>
 				</InputGroupBody>
 
-				<SubmitButton onClick={this.submit}>Submit</SubmitButton>
+				<SubmitButton type="submit">Submit</SubmitButton>
+
+				<button
+					onClick={this.props.switchModal}
+					style={{ background: 'transparent', border: '0' }}
+				>
+					Click here if you want to login
+				</button>
 			</FormBody>
 		);
 	}
 }
+
+RegisterForm.propTypes = {
+	switchModal: propTypes.func.isRequired
+};
 
 export default Modal(RegisterForm);
