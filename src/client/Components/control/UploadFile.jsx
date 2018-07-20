@@ -70,15 +70,6 @@ export default class UploadFile extends Component {
 				>
 					<p>Drop a file or click on this box to upload a video</p>
 				</Dropzone>
-				<Dropzone
-					accept="image/png, image/jpeg"
-					maxSize={10 * 1000 * 1000}
-					onDrop={this.onDrop}
-				>
-					<p>
-						Drop a file or click on this box to upload a thumbnail
-					</p>
-				</Dropzone>
 				<input
 					type="text"
 					value={this.state.title}
