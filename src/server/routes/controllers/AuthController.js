@@ -20,7 +20,7 @@ function containsNumeric(string) {
  * Passing a email as a string to be validated as an actual email
  */
 function validateEmail(email) {
-	const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+	const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 	return re.test(String(email).toLowerCase());
 
 }
@@ -70,6 +70,8 @@ export default {
 
 							if (res !== null) {
 								req.session.userId = dbRes.id
+								
+								console.log(req.session, dbRes)
 
 								return res.send(toReturn)
 							}
@@ -231,9 +233,9 @@ export default {
 	 * Deletes the session and tells the clients redux to 
 	 * delete their info, redirect to home.
 	 */
-	logout(req, res) {
+	// logout(req, res) {
 
-	},
+	// },
 
 	/**
 	 * Deletes the logged in users account Account

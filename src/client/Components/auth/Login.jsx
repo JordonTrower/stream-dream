@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import propTypes from 'prop-types';
 import Modal from '../Modal/Modal';
 import InputGroupBody, {
 	InputGroupAppend,
@@ -25,7 +26,7 @@ const LogoText = styled.h2`
 	margin-bottom: 15px;
 `;
 
-const FormBody = styled.div`
+const FormBody = styled.form`
 	width: 100%;
 	height: 100%;
 
@@ -79,7 +80,7 @@ class LoginForm extends Component {
 
 	render() {
 		return (
-			<FormBody>
+			<FormBody onSubmit={this.submit}>
 				<LogoText>Login</LogoText>
 
 				<InputGroupBody>
@@ -90,6 +91,7 @@ class LoginForm extends Component {
 					<InputGroupInput>
 						<input
 							type="text"
+							autoComplete="email"
 							name="email"
 							placeholder="Email"
 							onChange={this.handleChange}
@@ -106,6 +108,7 @@ class LoginForm extends Component {
 					<InputGroupInput>
 						<input
 							type="password"
+							autoComplete="current-password"
 							name="password"
 							onChange={this.handleChange}
 							value={this.state.password}
@@ -113,10 +116,21 @@ class LoginForm extends Component {
 					</InputGroupInput>
 				</InputGroupBody>
 
-				<SubmitButton onClick={this.submit}>Submit</SubmitButton>
+				<SubmitButton type="submit">Submit</SubmitButton>
+
+				<button
+					onClick={this.props.switchModal}
+					style={{ background: 'transparent', border: '0' }}
+				>
+					Click here if you need to register
+				</button>
 			</FormBody>
 		);
 	}
 }
+
+LoginForm.propTypes = {
+	switchModal: propTypes.func.isRequired
+};
 
 export default Modal(LoginForm);

@@ -39,7 +39,7 @@ export default () => (
 			<StlyedInfo to="/">
 				Fix This Link when Channel Page is done
 			</StlyedInfo>
-			<StlyedInfo to="/Control">Control</StlyedInfo>
+			<StlyedInfo to="/Video">Video</StlyedInfo>
 		</StyledLinkGroup>
 	</Sidebar>
 );

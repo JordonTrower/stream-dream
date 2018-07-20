@@ -31,7 +31,7 @@ function Modal(WrappedComponent) {
 				<ModalHeader>
 					<GoX color="white" size="30px" onClick={props.closeModal} />
 				</ModalHeader>
-				<WrappedComponent />
+				<WrappedComponent {...props} />
 			</ModalBody>
 		</ModalBackDrop>
 	);

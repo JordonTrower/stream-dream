@@ -6,10 +6,18 @@ export default styled.div `
 	${commonCSS.textColor}
 	${commonCSS.flex()}
 	
-    width: 90%;
+    width: 100%;
     height: 100%;
-    border: 1px solid black;
 	flex-wrap: wrap;
+	margin: 0;
+	border: 0;
+	padding: 0;
 
 	justify-content: center;
+	align-content: center;
+	align-items: center;
+
+	> div {
+		justify-content: space-around;
+	}
 `
