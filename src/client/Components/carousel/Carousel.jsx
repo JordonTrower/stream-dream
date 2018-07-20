@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const CarouselContainer = styled.div`
     background-color: #191B21;
+	width: 92%;
 `;
 
 const CarouselSlot = styled.div`
@@ -12,24 +13,32 @@ const CarouselSlot = styled.div`
 `;
 
 const CarouselSlotItem = styled.div`
-    background-color: green;
-    width: 40rem;
-    height: 20rem;
+    /* background-color: green; */
+	background-size: cover;
+    width: 35rem;
+    height: 20em;
     margin: 0 auto;
 `;
 const CarouselActual = styled(Slider)`
-    width: 70%;
+    width: 92.5%;
     margin: 0 auto;
     > .slick-arrow:before {
-        color: #21385E;
+        color: white;
     }
-`
-// /////////////////////////////////////////////////////////////////////////////
-// /////////////////////////////////////////////////////////////////////////////
+> .slick-dots li button:before {
+	color: #FFF;
+	background-color: #21385E;
+	border-radius: 1rem;
+}
+
+
+`;
+// ////////////////////////////////////////////////////////////////////////// //
+// ////////////////////////////////////////////////////////////////////////// //
 // create an array items you want to display on the Carousel component        //
 // pass that array into the Carousel component as props named 'carouselItems' //
-// /////////////////////////////////////////////////////////////////////////////
-// /////////////////////////////////////////////////////////////////////////////
+// ////////////////////////////////////////////////////////////////////////// //
+// ////////////////////////////////////////////////////////////////////////// //
 
 export default function Carousel(props){
 	const settings = {
@@ -47,9 +56,8 @@ export default function Carousel(props){
 			<CarouselActual {...settings}>
 				{
 					props.carouselItems.map((item) => ( // eslint-disable-line
-						<CarouselSlot
-						>
-							<CarouselSlotItem>{item}</CarouselSlotItem>
+						<CarouselSlot>
+							<CarouselSlotItem style={{backgroundImage: `url(${item.picture})`}}/>
 						</CarouselSlot>
 					))
 				}
