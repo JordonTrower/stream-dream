@@ -13,6 +13,6 @@ router.post('/login', authControl.login)
 
 router.post('/register', authControl.register)
 
-router.post('/logout', authControl.logout)
+// router.post('/logout', authControl.logout)
 
 export default router;

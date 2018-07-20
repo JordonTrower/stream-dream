@@ -1,7 +1,7 @@
-import React from 'react';
-import Routes from './routes';
-import Header from './nav/Header';
-import Sidebar from './nav/Sidebar';
+import React from "react";
+import Routes from "./routes";
+import Header from "./Nav/Header";
+import Sidebar from "./Nav/Sidebar";
 
 function App() {
 	return (

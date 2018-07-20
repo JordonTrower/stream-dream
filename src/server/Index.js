@@ -7,6 +7,8 @@ import knex from 'knex';
 import bodyParser from 'body-parser';
 import _ from 'lodash';
 import authRoutes from './routes/Auth';
+import dbRoutes from './routes/DB'
+
 /**
  * dotenv expand allows you to use
  * variables inside the dot env file
@@ -63,6 +65,7 @@ if (app.get('env') === 'production') {
 }
 
 app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes)
+app.use(`${process.env.NGINX_LOCATION}/api`, dbRoutes)
 
 app.post(`${process.env.NGINX_LOCATION}/api/search`, (req, res) => {
 	const db = req.app.get('db');
