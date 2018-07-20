@@ -40,7 +40,8 @@ const inputGroupItem = css `
 	margin: 0;
 
 	height: 35px;
-		
+	width: 100%;
+
 	align-items: center;
 	text-align: center;
 	justify-content: center;
@@ -56,7 +57,7 @@ const inputGroupItem = css `
 const InputGroupAppend = styled.div `
 	order: 1;
 
-	width: 100%;
+	width: 40%;
 
 	> * {
 		${inputGroupItem}

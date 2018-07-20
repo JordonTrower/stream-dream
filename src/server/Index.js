@@ -5,8 +5,8 @@ import redisSession from 'connect-redis';
 import session from 'express-session';
 import knex from 'knex';
 import bodyParser from 'body-parser';
+import _ from 'lodash';
 import authRoutes from './routes/Auth';
-
 /**
  * dotenv expand allows you to use
  * variables inside the dot env file
@@ -63,6 +63,35 @@ if (app.get('env') === 'production') {
 }
 
 app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes)
+
+app.post(`${process.env.NGINX_LOCATION}/api/search`, (req, res) => {
+	const db = req.app.get('db');
+
+	const response = {
+		data: {},
+		response: true,
+	};
+
+	db('users')
+		.whereRaw('LOWER(display_name) LIKE ?', `%${req.body.search.toLowerCase()}%`)
+		.select('display_name', 'avatar', 'id')
+		.then(userSearch => {
+			if (!_.isEmpty(userSearch)) {
+				response.data.users = userSearch
+			}
+
+			db('games').whereRaw('LOWER(title) LIKE ?', `%${req.body.search.toLowerCase()}%`)
+				.select('id', 'title')
+				.then(gameSearch => {
+
+					if (!_.isEmpty(gameSearch)) {
+						response.data.games = gameSearch
+					}
+
+					return res.send(response)
+				})
+		})
+})
 
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`)
