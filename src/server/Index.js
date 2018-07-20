@@ -6,6 +6,7 @@ import session from 'express-session';
 import knex from 'knex';
 import bodyParser from 'body-parser';
 import authRoutes from './routes/Auth';
+import dbRoutes from './routes/DB'
 
 /**
  * dotenv expand allows you to use
@@ -63,6 +64,7 @@ if (app.get('env') === 'production') {
 }
 
 app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes)
+app.use(`${process.env.NGINX_LOCATION}/api`, dbRoutes)
 
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`)
