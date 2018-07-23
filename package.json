@@ -4,6 +4,7 @@
 	"private": true,
 	"dependencies": {
 		"autoprefixer": "7.1.6",
+		"aws-sdk": "^2.279.1",
 		"axios": "^0.18.0",
 		"babel-cli": "^6.26.0",
 		"babel-core": "^6.26.3",
@@ -44,6 +45,7 @@
 		"jest": "^23.4.1",
 		"knex": "^0.14.6",
 		"lodash": "^4.17.10",
+		"multer": "^1.3.1",
 		"nodemon": "^1.18.2",
 		"object-assign": "4.1.1",
 		"pg": "^7.4.3",

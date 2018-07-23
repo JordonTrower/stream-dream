@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import Home from './home/Home';
-import Video from './video/Video';
+import Video from './Video/Video';
 import Body from '../styled/common/Body';
 
 export default withRouter(props => (
