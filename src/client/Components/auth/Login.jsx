@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import propTypes from 'prop-types';
+import { connect } from "react-redux";
+import { setUserProps } from "../../middlwares/redux/reducers/sessionReducer";
 import Modal from '../Modal/Modal';
 import InputGroupBody, {
 	InputGroupAppend,
@@ -54,7 +56,8 @@ class LoginForm extends Component {
 
 		this.state = {
 			email: '',
-			password: ''
+			password: '',
+			user: {}
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -72,11 +75,13 @@ class LoginForm extends Component {
 		axios
 			.post(`${process.env.REACT_APP_API_LOCATION}auth/login`, this.state)
 			.then(res => {
-				if (res.response) {
-					this.props.closeModal();
+				if (res.data.response) {
+					this.setState({
+						user: res.data.userInfo
+					});
+					this.props.setUserProps(res.data.userInfo); // eslint-disable-line
 				}
 			});
-
 		e.preventDefault();
 	}
 
@@ -140,5 +145,11 @@ LoginForm.propTypes = {
 	closeModal: propTypes.func.isRequired
 };
 
-export default Modal(LoginForm);
+function mapStateToProps(duckState) {
+	const { user } = duckState;
+	return {
+		user
+	}
+}
 
+export default connect(mapStateToProps, {setUserProps})(Modal(LoginForm));

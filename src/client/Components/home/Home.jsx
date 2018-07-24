@@ -21,18 +21,18 @@ const HomeLiveContainer = styled.div`
 
 export default class Home extends Component {
 	// constructor() {
-	// 	super();
-	// 	// this.state = {
-	// 	// 	carouselItems: [],
-	// 	// 	liveItems: [],
-	// 	// }
+	// super();
+	// this.state = {
+	// 	carouselItems: []
+	// 	// liveItems: [],
+	// }
 	// }
 
 	componentDidMount() {
-		// axios.get(`` /* all the carousel things */).then(res => {
-		// this.setState({
-		// 	carouselItems: res.data
-		// })
+		// axios.get(`${process.env.REACT_APP_API_LOCATION}/the_carousel_things`).then(res => {
+		// 	this.setState({
+		// 		carouselItems: res.data
+		// 	});
 		// });
 		// axios.get(`` /* all the live things */).then(res => {
 		// 	// this.setState({
@@ -42,7 +42,7 @@ export default class Home extends Component {
 	}
 	
 	render() {
-		// const carouselItems = ['1','2','3','4']
+
 		const carouselItems2 = [{
 			link: 'http://www.animalspot.net/wp-content/uploads/2012/05/Greater-White-Fronted-Goose-Images.jpg',
 			title: 'goose1'
@@ -59,6 +59,7 @@ export default class Home extends Component {
 			link : 'http://4.bp.blogspot.com/-SM7-1JmoFWM/UgFNona2Z4I/AAAAAAAAAYg/1MRseI-VEHM/s1600/goose.jpg',
 			title: 'goose4'
 		}]
+
 		return (
 			<HomeOneDiv>
 				<Carousel carouselItems={carouselItems2}/>
