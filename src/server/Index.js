@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';
 import authRoutes from './routes/Auth';
 import dbRoutes from './routes/DB';
 
-/**
+/*
  * dotenv expand allows you to use
  * variables inside the dot env file
  * IE CLIENT_LOCATION
@@ -66,6 +66,8 @@ if (app.get('env') === 'production') {
 
 app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes);
 app.use(`${process.env.NGINX_LOCATION}/api`, dbRoutes);
+
+console.log(process.env.SERVER_PORT);
 
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`);

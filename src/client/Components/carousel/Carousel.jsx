@@ -2,6 +2,7 @@ import React from 'react';
 import Slider from 'react-slick';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
+// import { Link } from 'react-router-dom';
 
 const CarouselContainer = styled.div`
 	background-color: #191b21;

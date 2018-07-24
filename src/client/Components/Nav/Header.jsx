@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import propTypes from 'prop-types';
+import { setUserProps } from "../../middlwares/redux/reducers/sessionReducer";
 import SearchBar from './Search';
 import LoginForm from '../auth/Login';
 import RegisterForm from '../auth/Register';
@@ -10,28 +13,33 @@ import SmallHeader from '../../styled/nav/SmallHeader';
 
 const LogoText = styled(Link)`
 	padding-left: 15px;
-
 	font-size: 32px;
 	font-weight: 700;
 	color: white;
-
 	text-decoration: none;
 `;
 
 class Header extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 
 		this.state = {
 			login: false,
 			register: false,
 			searchData: [],
-			searchQuery: ''
+			searchQuery: '',
+			userLogout: {
+				email: '',
+				display_name: '',
+				avatar: '',
+				id: -1
+			 }
 		};
 
 		this.closeModal = this.closeModal.bind(this);
 		this.getSearch = this.getSearch.bind(this);
 		this.switchModals = this.switchModals.bind(this);
+		this.logout = this.logout.bind(this);
 	}
 
 	getSearch(e) {
@@ -70,6 +78,11 @@ class Header extends Component {
 		});
 	}
 
+	logout() {
+		this.props.setUserProps(this.state.userLogout);
+		axios.delete(`${process.env.REACT_APP_API_LOCATION}auth/logout`)
+	}
+	
 	render() {
 		return (
 			<div>
@@ -83,6 +96,25 @@ class Header extends Component {
 					/>
 
 					<div style={{ paddingRight: '15px' }}>
+
+						{
+							this.props.user.id !== -1 
+				
+								? 
+
+								<Link 
+									style={{
+										color: 'white',
+										textDecoration: 'none'
+									}}
+									to={{pathname: '/'}}
+									onClick={this.logout} >logout</Link> 
+									
+								: 
+
+								() => {} /* eslint-disable-line */ 
+						}
+
 						<button
 							style={{
 								height: '40px',
@@ -105,8 +137,26 @@ class Header extends Component {
 
 				<SmallHeader>
 					<LogoText to="/">Stream Dream</LogoText>
-
 					<div style={{ paddingRight: '15px' }}>
+
+						{
+							this.props.user.id !== -1 
+				
+								? 
+
+								<Link 
+									style={{
+										color: 'white',
+										textDecoration: 'none'
+									}}
+									to={{pathname: '/'}}
+									onClick={this.logout} >logout</Link> 
+									
+								: 
+
+								() => {} /* eslint-disable-line */ 
+						}
+
 						<button
 							style={{
 								height: '40px',
@@ -144,4 +194,22 @@ class Header extends Component {
 		);
 	}
 }
-export default Header;
+
+Header.propTypes = {
+	user: propTypes.shape({
+		email: propTypes.string,
+		display_name: propTypes.string,
+		avatar: propTypes.string,
+		id: propTypes.number
+	}).isRequired,
+	setUserProps: propTypes.func.isRequired
+};
+
+function mapStateToProps(duckState) {
+	const { user } = duckState;
+	return {
+		user
+	}
+}
+
+export default connect(mapStateToProps, {setUserProps})(Header);

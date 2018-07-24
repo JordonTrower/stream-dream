@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import propTypes from 'prop-types';
+import { connect } from "react-redux";
 import GoX from 'react-icons/lib/go/x';
 import GoCheck from 'react-icons/lib/go/check';
+import { setUserProps } from "../../middlwares/redux/reducers/sessionReducer";
 import Modal from '../Modal/Modal';
 import InputGroupBody, {
 	InputGroupAppend,
@@ -58,7 +60,8 @@ class RegisterForm extends Component {
 			email: '',
 			displayName: '',
 			password: '',
-			confirmPassword: ''
+			confirmPassword: '',
+			user: {}
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -81,13 +84,15 @@ class RegisterForm extends Component {
 					this.state
 				)
 				.then(res => {
+					this.setState({
+						user: res.data
+					})
 					if (res.response) {
 						console.log(res);
 						this.props.closeModal();
 					}
 				});
 		}
-
 		e.preventDefault();
 	}
 
@@ -197,4 +202,11 @@ RegisterForm.propTypes = {
 	closeModal: propTypes.func.isRequired
 };
 
-export default Modal(RegisterForm);
+function mapStateToProps(duckState) {
+	const { user } = duckState;
+	return {
+		user
+	}
+}
+
+export default connect(mapStateToProps, {setUserProps})(Modal(RegisterForm));

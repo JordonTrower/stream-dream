@@ -1,31 +1,39 @@
-// import React from 'react';
-// import styled, { keyframes } from 'styled-components';
+import React from 'react';
+import styled, { keyframes } from 'styled-components';
 
-// const loadingViewOneDiv = styled.div`
-//     background-color: #191B21;
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     align-items: center;
-// `;
+const LoadingViewOneDiv = styled.div`
+    /* background-color: #191B21; */
+    display: flex;
+    background-image: linear-gradient(1deg, #191B21, #191B21);
+    background-repeat: repeat;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
 
-// const floatLoadingText = keyframes`
-//     0% {transform: translateY(0);}
-//     25% {transform: translateY(2rem);}
-//     50% {transform: translateY(0);}
-//     75% {transform: translateY(-2rem);}
-//     100% {transform: translateY(0);}
-// `;
+const floatLoadingText = keyframes`
+    0% {transform: translateY(0);}
+    25% {transform: translateY(1rem);}
+    50% {transform: translateY(0);}
+    75% {transform: translateY(-1rem);}
+    100% {transform: translateY(0);}
+`;
 
-// const loadingText = styled.div`
-//     color: #ECEDE8;
-//     animation: ${floatLoadingText}, 2s linear infinite;
-// `;
+const LoadingText = styled.div`
+    display: flex; 
+    justify-content: center;
+    flex-direction: column;
+    height: 10rem;
+    font-size: 3rem;
+    color: #ECEDE8;
+    animation: ${floatLoadingText} 3s linear infinite;
+`;
 
-// export default function LoadingView(){
-// 	return (
-// 		<loadingViewOneDiv >
-// 			<loadingText>LOADING...</loadingText>
-// 		</loadingViewOneDiv>
-// 	)
-// }
+export default function LoadingView(){
+	return (
+		<LoadingViewOneDiv >
+			<LoadingText >LOADING...</LoadingText>
+		</LoadingViewOneDiv>
+	)
+}
