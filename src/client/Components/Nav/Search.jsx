@@ -30,41 +30,59 @@ const SearchInputInput = styled(InputGroupInput)`
 	}
 `;
 
+const ContentContainer = styled.div`
+	height: 50%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+`;
+
 const SearchBar = props => (
-	<SearchInputGroup>
-		<InputGroupAppend>
-			<p>Search</p>
-		</InputGroupAppend>
+	<div>
+		<SearchInputGroup>
+			<InputGroupAppend>
+				<p>Search</p>
+			</InputGroupAppend>
 
-		<SearchInputInput>
-			{!_.isEmpty(props.searchData.data) &&
-				props.searchQuery !== '' && (
-					<Dropdown className="dropDown">
-						{Object.entries(props.searchData.data).map(entry => (
-							<div key={`search-header-${entry[0]}`}>
-								<DropdownHeader>
-									<p>{entry[0]}</p>
-									<p>{entry[1].length}</p>
-								</DropdownHeader>
-
-								{entry[1].map(data => (
-									<DropdownContent
-										key={`search-data-${
-											entry[0]
-										}-${data.display_name || data.title}`}
+			<SearchInputInput>
+				{!_.isEmpty(props.searchData.data) &&
+					props.searchQuery !== '' && (
+						<Dropdown className="dropDown">
+							{Object.entries(props.searchData.data).map(
+								entry => (
+									<ContentContainer
+										key={`search-header-${entry[0]}`}
 									>
-										<Link to={`/${entry[0]}/${data.id}`}>
-											{data.display_name || data.title}
-										</Link>
-									</DropdownContent>
-								))}
-							</div>
-						))}
-					</Dropdown>
-				)}
-			<input onChange={props.getSearch} type="text" />
-		</SearchInputInput>
-	</SearchInputGroup>
+										<DropdownHeader>
+											<p>{entry[0]}</p>
+											<p>{entry[1].length}</p>
+										</DropdownHeader>
+
+										{entry[1].map(data => (
+											<DropdownContent
+												key={`search-data-${
+													entry[0]
+												}-${data.display_name ||
+													data.title}`}
+											>
+												<Link
+													to={`/${entry[0]}/${
+														data.id
+													}`}
+												>
+													{data.display_name ||
+														data.title}
+												</Link>
+											</DropdownContent>
+										))}
+									</ContentContainer>
+								)
+							)}
+						</Dropdown>
+					)}
+				<input onChange={props.getSearch} type="text" />
+			</SearchInputInput>
+		</SearchInputGroup>
+	</div>
 );
 
 SearchBar.propTypes = {

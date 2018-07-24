@@ -64,18 +64,20 @@ class LoginForm extends Component {
 	handleChange(e) {
 		const newState = {};
 		newState[e.target.name] = e.target.value;
-
+		
 		this.setState(newState);
 	}
 
-	submit() {
+	submit(e) {
 		axios
 			.post(`${process.env.REACT_APP_API_LOCATION}auth/login`, this.state)
 			.then(res => {
 				if (res.response) {
-					console.log(res);
+					this.props.closeModal();
 				}
 			});
+
+		e.preventDefault();
 	}
 
 	render() {
@@ -130,7 +132,8 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-	switchModal: propTypes.func.isRequired
+	switchModal: propTypes.func.isRequired,
+	closeModal: propTypes.func.isRequired
 };
 
 export default Modal(LoginForm);

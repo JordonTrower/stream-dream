@@ -1,37 +1,43 @@
-import React from "react";
-import Slider from "react-slick";
+import React from 'react';
+import Slider from 'react-slick';
+import propTypes from 'prop-types';
 import styled from 'styled-components';
 
 const CarouselContainer = styled.div`
-    background-color: #191B21;
-	width: 92%;
+	background-color: #191b21;
+	width: 100%;
 `;
 
 const CarouselSlot = styled.div`
-    background-color: #09092B;
-    margin: 0 auto;
+	background-color: #09092b;
+	margin: 0 auto;
 `;
 
 const CarouselSlotItem = styled.div`
-    /* background-color: green; */
+	/* background-color: green; */
 	background-size: cover;
-    width: 35rem;
-    height: 20em;
-    margin: 0 auto;
+	width: 35rem;
+	height: 20em;
+	margin: 0 auto;
 `;
 const CarouselActual = styled(Slider)`
-    width: 92.5%;
-    margin: 0 auto;
-    > .slick-arrow:before {
-        color: white;
-    }
-> .slick-dots li button:before {
-	color: #FFF;
-	background-color: #21385E;
-	border-radius: 1rem;
-}
+	width: 92.5%;
+	margin: 0 auto;
 
+	> .slick-arrow:before {
+		color: white;
+	}
 
+	> .slick-dots li button {
+		position: relative;
+		z-index: 5;
+	}
+
+	> .slick-dots li button:before {
+		color: #fff;
+		background-color: #21385e;
+		border-radius: 1rem;
+	}
 `;
 // ////////////////////////////////////////////////////////////////////////// //
 // ////////////////////////////////////////////////////////////////////////// //
@@ -40,7 +46,7 @@ const CarouselActual = styled(Slider)`
 // ////////////////////////////////////////////////////////////////////////// //
 // ////////////////////////////////////////////////////////////////////////// //
 
-export default function Carousel(props){
+export default function Carousel(props) {
 	const settings = {
 		dots: true,
 		infinite: true,
@@ -54,15 +60,20 @@ export default function Carousel(props){
 	return (
 		<CarouselContainer>
 			<CarouselActual {...settings}>
-				{
-					props.carouselItems.map((item) => ( // eslint-disable-line
-						<CarouselSlot>
-							<CarouselSlotItem style={{backgroundImage: `url(${item.picture})`}}/>
-						</CarouselSlot>
-					))
-				}
+				{props.carouselItems.map((
+					item // eslint-disable-line
+				) => (
+					<CarouselSlot key={item.title}>
+						<CarouselSlotItem
+							style={{ backgroundImage: `url(${item.picture})` }}
+						/>
+					</CarouselSlot>
+				))}
 			</CarouselActual>
 		</CarouselContainer>
 	);
 }
 
+Carousel.propTypes = {
+	carouselItems: propTypes.arrayOf(propTypes.shape()).isRequired
+};

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import commonCSS from '../common/commonCSS';
 
-export default styled.div `
+export default styled.div`
 	@media(max-width: 930px) {
 		display: none;	
 	}
@@ -11,9 +11,11 @@ export default styled.div `
 	width: 100vw;
 	height: 3rem;
 	
+	z-index: 55;
+
 	justify-content: space-between;
 	align-items: center;
 
 	${commonCSS.flex()}
 	background: ${commonCSS.headerColor};
-`
+`;

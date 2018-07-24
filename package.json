@@ -83,7 +83,10 @@
 		"dev": "cross-env NODE_ENV=development concurrently \"yarn start\" \"nodemon\" "
 	},
 	"nodemonConfig": {
-		"exec": " yarn server"
+		"exec": " yarn server",
+		"watch": [
+			"src/server"
+		]
 	},
 	"proxy": "http://localhost:3010",
 	"jest": {
