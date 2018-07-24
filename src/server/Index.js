@@ -5,9 +5,8 @@ import redisSession from 'connect-redis';
 import session from 'express-session';
 import knex from 'knex';
 import bodyParser from 'body-parser';
-import _ from 'lodash';
 import authRoutes from './routes/Auth';
-import dbRoutes from './routes/DB'
+import dbRoutes from './routes/DB';
 
 /**
  * dotenv expand allows you to use
@@ -17,7 +16,7 @@ import dbRoutes from './routes/DB'
 
 dotenvExpand(dotenv.config());
 
-const app = express()
+const app = express();
 
 const {
 	SERVER_PORT,
@@ -26,12 +25,15 @@ const {
 	DB_CONNECTION_STRING
 } = process.env;
 
-app.set('db', knex({
-	client: 'pg',
-	connection: DB_CONNECTION_STRING
-}))
+app.set(
+	'db',
+	knex({
+		client: 'pg',
+		connection: DB_CONNECTION_STRING
+	})
+);
 
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 
 /**
  * If the application is in production, then Redis
@@ -40,7 +42,6 @@ app.use(bodyParser.json())
  * Redis is a NoSQL like database, stored in RAM for increased speed
  */
 if (app.get('env') === 'production') {
-
 	const RedisStore = redisSession(session);
 
 	app.use(
@@ -52,8 +53,7 @@ if (app.get('env') === 'production') {
 			resave: false,
 			saveUninitialized: false
 		})
-	)
-
+	);
 } else {
 	app.use(
 		session({
@@ -61,41 +61,12 @@ if (app.get('env') === 'production') {
 			resave: false,
 			saveUninitialized: false
 		})
-	)
+	);
 }
 
-app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes)
-app.use(`${process.env.NGINX_LOCATION}/api`, dbRoutes)
-
-app.post(`${process.env.NGINX_LOCATION}/api/search`, (req, res) => {
-	const db = req.app.get('db');
-
-	const response = {
-		data: {},
-		response: true,
-	};
-
-	db('users')
-		.whereRaw('LOWER(display_name) LIKE ?', `%${req.body.search.toLowerCase()}%`)
-		.select('display_name', 'avatar', 'id')
-		.then(userSearch => {
-			if (!_.isEmpty(userSearch)) {
-				response.data.users = userSearch
-			}
-
-			db('games').whereRaw('LOWER(title) LIKE ?', `%${req.body.search.toLowerCase()}%`)
-				.select('id', 'title')
-				.then(gameSearch => {
-
-					if (!_.isEmpty(gameSearch)) {
-						response.data.games = gameSearch
-					}
-
-					return res.send(response)
-				})
-		})
-})
+app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes);
+app.use(`${process.env.NGINX_LOCATION}/api`, dbRoutes);
 
 app.listen(process.env.SERVER_PORT, () => {
-	console.log(`listening on port ${SERVER_PORT}`)
-})
+	console.log(`listening on port ${SERVER_PORT}`);
+});

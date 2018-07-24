@@ -73,7 +73,7 @@ class RegisterForm extends Component {
 		this.setState(newState);
 	}
 
-	submit() {
+	submit(e) {
 		if (this.state.password === this.state.confirmPassword) {
 			axios
 				.post(
@@ -83,9 +83,12 @@ class RegisterForm extends Component {
 				.then(res => {
 					if (res.response) {
 						console.log(res);
+						this.props.closeModal();
 					}
 				});
 		}
+
+		e.preventDefault();
 	}
 
 	checkPassword() {
@@ -186,7 +189,8 @@ class RegisterForm extends Component {
 }
 
 RegisterForm.propTypes = {
-	switchModal: propTypes.func.isRequired
+	switchModal: propTypes.func.isRequired,
+	closeModal: propTypes.func.isRequired
 };
 
 export default Modal(RegisterForm);

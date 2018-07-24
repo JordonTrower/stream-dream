@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Dropdown = styled.div `
+const Dropdown = styled.div`
 	position: fixed;
 	top: 3rem;
 	transform: translateX(-5.6rem);
@@ -8,10 +8,11 @@ const Dropdown = styled.div `
 	z-index: 55;
 
 	border-radius: 4px;
-	
-	height: 90%;
+
+	height: 70%;
 	width: 20rem;
 
+	float: left;
 	border: 1px solid rgb(25, 23, 28);
 
 	background: #ecede8;
@@ -27,7 +28,7 @@ const Dropdown = styled.div `
 	}
 `;
 
-const DropdownHeader = styled.div `
+const DropdownHeader = styled.div`
 	background: #191b21;
 	color: #ecede8;
 	height: 25px;
@@ -40,12 +41,10 @@ const DropdownHeader = styled.div `
 
 	align-items: center;
 
-	
-
 	text-transform: uppercase;
 `;
 
-const DropdownContent = styled.div `
+const DropdownContent = styled.div`
 	width: 100%;
 	padding: 5px;
 
@@ -59,7 +58,4 @@ const DropdownContent = styled.div `
 
 export default Dropdown;
 
-export {
-	DropdownContent,
-	DropdownHeader
-}
+export { DropdownContent, DropdownHeader };

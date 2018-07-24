@@ -12,8 +12,8 @@ import Sidebar from './Nav/Sidebar';
 function App() {
 	return (
 		// <Provider store={store} >
-		// 	<PersistGate 
-		// 		/* loading={LoadingView} */ 
+		// 	<PersistGate
+		// 		/* loading={LoadingView} */
 		// 		persistor={persistor}
 		// 	>
 		<div className="App">
@@ -21,7 +21,7 @@ function App() {
 			<Sidebar />
 			<Routes />
 		</div>
-		// 	 </PersistGate> 
+		// 	 </PersistGate>
 		// </Provider>
 	);
 }
