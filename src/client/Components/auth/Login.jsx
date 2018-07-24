@@ -40,7 +40,7 @@ const SubmitButton = styled.button`
 	border: 1px #1a4fa5 solid;
 	color: #ecede8;
 
-	margin-top: 15px;
+	margin-top: 114px;
 
 	border-radius: 15px;
 
@@ -64,7 +64,7 @@ class LoginForm extends Component {
 	handleChange(e) {
 		const newState = {};
 		newState[e.target.name] = e.target.value;
-		
+
 		this.setState(newState);
 	}
 
@@ -122,7 +122,11 @@ class LoginForm extends Component {
 
 				<button
 					onClick={this.props.switchModal}
-					style={{ background: 'transparent', border: '0' }}
+					style={{
+						background: 'transparent',
+						border: '0',
+						marginTop: '30px'
+					}}
 				>
 					Click here if you need to register
 				</button>

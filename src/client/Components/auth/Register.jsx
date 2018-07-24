@@ -30,7 +30,7 @@ const LogoText = styled.h2`
 
 const FormBody = styled.form`
 	width: 100%;
-	height: 100%;
+	height: 415px;
 
 	display: flex;
 	flex-direction: column;
@@ -42,7 +42,7 @@ const SubmitButton = styled.button`
 	border: 1px #1a4fa5 solid;
 	color: #ecede8;
 
-	margin-top: 15px;
+	margin-top: 10px;
 
 	border-radius: 15px;
 
@@ -179,7 +179,11 @@ class RegisterForm extends Component {
 
 				<button
 					onClick={this.props.switchModal}
-					style={{ background: 'transparent', border: '0' }}
+					style={{
+						background: 'transparent',
+						border: '0',
+						margin: '30px'
+					}}
 				>
 					Click here if you want to login
 				</button>
