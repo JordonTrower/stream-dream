@@ -4,8 +4,8 @@ import GoX from 'react-icons/lib/go/x';
 import styled from 'styled-components';
 import ButtonGroup from '../../styled/common/ButtonGroup';
 import Carousel from '../carousel/Carousel';
-import Card from '../../styled/common/Card/Card';
-import CardBody from '../../styled/common/Card/Body';
+import Card from '../../styled/common/card/card';
+import CardBody from '../../styled/common/card/body';
 import CancelButton from '../../styled/common/CancelButton';
 import DeleteButton from '../../styled/common/DeleteButton';
 import InputGroupBody, {
