@@ -9,7 +9,7 @@ import _ from 'lodash';
 import authRoutes from './routes/Auth';
 import dbRoutes from './routes/DB'
 
-/**
+/*
  * dotenv expand allows you to use
  * variables inside the dot env file
  * IE CLIENT_LOCATION
@@ -95,6 +95,8 @@ app.post(`${process.env.NGINX_LOCATION}/api/search`, (req, res) => {
 				})
 		})
 })
+
+console.log(process.env.SERVER_PORT);
 
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`)

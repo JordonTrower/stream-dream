@@ -64,7 +64,8 @@ export default {
 								userInfo: {
 									email: dbRes.email,
 									display_name: dbRes.display_name,
-									avatar: dbRes.avatar
+									avatar: dbRes.avatar,
+									id: dbRes.id
 								}
 							}
 
@@ -185,6 +186,7 @@ export default {
 						return bcrypt.hash(password, 15).then((hash, err) => {
 							if (!err) {
 								db('users')
+									.select()
 									.insert({
 										email,
 										display_name: displayName,
@@ -233,9 +235,10 @@ export default {
 	 * Deletes the session and tells the clients redux to 
 	 * delete their info, redirect to home.
 	 */
-	// logout(req, res) {
-
-	// },
+	logout(req, res) {
+		req.session.destroy();
+		res.status(200).send(req.session);
+	},
 
 	/**
 	 * Deletes the logged in users account Account

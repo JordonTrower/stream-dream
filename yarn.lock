@@ -1800,7 +1800,7 @@ commander@2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
-commander@2.16.x, commander@^2.11.0, commander@^2.15.1, commander@~2.16.0:
+commander@2.16.x, commander@^2.11.0, commander@^2.16.0, commander@~2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.16.0.tgz#f16390593996ceb4f3eeb020b31d78528f7f8a50"
 
@@ -2502,7 +2502,7 @@ dot-prop@^4.1.0:
   dependencies:
     is-obj "^1.0.0"
 
-dotenv-expand@4.2.0:
+dotenv-expand@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/dotenv-expand/-/dotenv-expand-4.2.0.tgz#def1f1ca5d6059d24a766e587942c21106ce1275"
 
@@ -4858,28 +4858,26 @@ kleur@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-1.0.2.tgz#637f126d3cda40a423b1297da88cf753bd04ebdd"
 
-knex@^0.14.6:
-  version "0.14.6"
-  resolved "https://registry.yarnpkg.com/knex/-/knex-0.14.6.tgz#ad57c4ef8fa1b51ebc8c37c2c9b483f6fb34e41e"
+knex@^0.15.2:
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/knex/-/knex-0.15.2.tgz#6059b87489605f4cc87599a6d2a9d265709e9340"
   dependencies:
     babel-runtime "^6.26.0"
     bluebird "^3.5.1"
     chalk "2.3.2"
-    commander "^2.15.1"
+    commander "^2.16.0"
     debug "3.1.0"
     inherits "~2.0.3"
     interpret "^1.1.0"
     liftoff "2.5.0"
-    lodash "^4.17.5"
+    lodash "^4.17.10"
     minimist "1.2.0"
     mkdirp "^0.5.1"
     pg-connection-string "2.0.0"
-    readable-stream "2.3.6"
-    safe-buffer "^5.1.1"
     tarn "^1.1.4"
     tildify "1.2.0"
-    uuid "^3.2.1"
-    v8flags "^3.0.2"
+    uuid "^3.3.2"
+    v8flags "^3.1.1"
 
 latest-version@^3.0.0:
   version "3.1.0"
@@ -6750,13 +6748,6 @@ react-slick@^0.23.1:
     lodash.debounce "^4.0.8"
     resize-observer-polyfill "^1.5.0"
 
-react-swipeable@^4.3.0:
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/react-swipeable/-/react-swipeable-4.3.0.tgz#818c0818ac565f5b169348f442153f343abff8bc"
-  dependencies:
-    detect-passive-events "^1.0.4"
-    prop-types "^15.5.8"
-
 react@^16.4.1:
   version "16.4.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.4.1.tgz#de51ba5764b5dbcd1f9079037b862bd26b82fe32"
@@ -6813,7 +6804,7 @@ readable-stream@1.0:
     isarray "0.0.1"
     string_decoder "~0.10.x"
 
-readable-stream@2.3.6, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.6, readable-stream@^2.2.2, readable-stream@^2.2.9, readable-stream@^2.3.3, readable-stream@^2.3.6:
+readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.6, readable-stream@^2.2.2, readable-stream@^2.2.9, readable-stream@^2.3.3, readable-stream@^2.3.6:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.3.6.tgz#b11c27d88b8ff1fbe070643cf94b0c79ae1b0aaf"
   dependencies:
@@ -8215,7 +8206,7 @@ uuid@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-2.0.3.tgz#67e2e863797215530dff318e5bf9dcebfd47b21a"
 
-uuid@^3.1.0, uuid@^3.2.1:
+uuid@^3.1.0, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
 
@@ -8225,7 +8216,7 @@ v8flags@^2.1.1:
   dependencies:
     user-home "^1.1.1"
 
-v8flags@^3.0.2:
+v8flags@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/v8flags/-/v8flags-3.1.1.tgz#42259a1461c08397e37fe1d4f1cfb59cad85a053"
   dependencies:

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Card from '../../styled/common/Card/Card'
+import Card from '../../styled/common/card/card'
 
 export default function Videos (props) {
   

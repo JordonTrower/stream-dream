@@ -9,7 +9,7 @@ router.get('/channels', GameController.getGames);
 router.post('/channel', GameController.addGame);
 
 // VIDEOS
-router.delete('/video/:id', VideoController.deleteVideo)
+router.delete('/video/:id', VideoController.deleteVideo);
 router.get('/videos', VideoController.getVideos);
 router.post('/video', VideoController.addVideo);
 

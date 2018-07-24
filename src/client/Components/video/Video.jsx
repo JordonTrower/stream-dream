@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 // import S3 from 'react-s3';
 import Videos from './Videos';
-import CardBody from '../../styled/common/Card/Body';
-import UploadFile from './UploadFile';
+import CardBody from '../../styled/common/card/body';
+import UploadFile from '../../styled/common/UploadFile';
 
 // needed for S3 processing
 const { 
