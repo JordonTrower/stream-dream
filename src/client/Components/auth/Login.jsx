@@ -141,3 +141,4 @@ LoginForm.propTypes = {
 };
 
 export default Modal(LoginForm);
+

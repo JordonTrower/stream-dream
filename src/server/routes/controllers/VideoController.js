@@ -32,6 +32,20 @@ export default {
 			.then(() => res.send('ok'))
 	},	
 
+	getCarouselVideos(req, res) {
+		const db = DB.connect(res, req);
+		return db.select('link')
+			.from('videos')
+			.where({
+				created_by: req.session.userId,
+			})
+			.orderBy('created_at', 'desc')
+			.limit(5)
+			.catch( error => console.log(error) )
+			.then(dbresults => {
+				res.send(dbresults)})
+	},
+	
 	getVideos(req, res) {
 		const db = DB.connect(res, req);
 		return db('videos')
@@ -40,6 +54,19 @@ export default {
 			})
 			.catch( error => console.log(error) )
 			.then(dbresults => res.send(dbresults))
-	}
+	},
+
+	updateVideoTitle(req, res) {
+		const db = DB.connect(res, req);
+		return db('videos')
+			.where({
+				id: req.body.id,
+			})
+			.update({
+				title: req.body.title
+			})
+			.catch( error => console.log(error) )
+			.then(() => res.send('ok'))
+	},
 
 }

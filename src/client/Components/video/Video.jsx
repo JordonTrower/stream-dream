@@ -1,16 +1,38 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-// import Videos from './Videos';
-import Card from '../../styled/common/card/card';
-import CardBody from '../../styled/common/card/body';
-import UploadFile from '../control/UploadFile';
+import GoX from 'react-icons/lib/go/x';
+import styled from 'styled-components';
+import ButtonGroup from '../../styled/common/ButtonGroup';
+import Carousel from '../carousel/Carousel';
+import Card from '../../styled/common/Card/Card';
+import CardBody from '../../styled/common/Card/Body';
+import CancelButton from '../../styled/common/CancelButton';
+import DeleteButton from '../../styled/common/DeleteButton';
+import InputGroupBody, {
+	InputGroupAppend,
+	InputGroupInput
+} from '../../styled/Input/InputGroup';
+import SubmitButton from '../../styled/common/SubmitButton'
+import UploadFile from './UploadFile';
+
+const MainDiv = styled.div`
+	background-color: #191B21;
+	width: 100%;
+	height: 100%;
+	> ::-webkit-scrollbar {
+		display: none;
+	}
+`;
 
 export default class Game extends Component {
 	constructor() {
 		super();
 
 		this.state = {
-			videos: []
+			videos: [],
+			carouselItems: [],
+			editingCardId: 0,
+			title: '',
 		};
 
 		this.loadVideos = this.loadVideos.bind(this);
@@ -20,36 +42,71 @@ export default class Game extends Component {
 		this.loadVideos();
 	}
 
-	loadVideos() {
-		axios
-			.get('/api/videos')
-			.then(results => {
-				this.setState({
-					videos: results.data
-				});
-			})
-			.catch(err => console.log(err));
-	}
-
 	deleteVideo(id, link) {
-		const s3name = link.replace(
-			'https://stream-dream.s3.us-west-1.amazonaws.com/',
-			''
-		);
-		axios
-			.delete(`/api/s3video`, {
+		const s3name = link.replace('https://stream-dream.s3.us-west-1.amazonaws.com/', '')
+		axios.delete(`/api/s3video`,
+			{
 				params: { s3name }
 			})
-			.then(() =>
-				axios.delete(`/api/video/${id}`).then(() => this.loadVideos())
-			);
+			.then(() => axios.delete(`/api/video/${id}`)
+				.then(() => this.loadVideos()))
+	}
+
+	loadVideos(){
+		axios.get('/api/videos')
+			.then( results => {
+				this.setState({ 
+					videos: results.data,
+				})
+			}).then(axios.get('/api/carouselVideos')
+				.then( carResults => {
+					this.setState({
+						carouselItems: carResults.data
+					})
+				}))
+			.catch(err => console.log(err))
+	}
+
+	cancelEdit(){
+		this.setState({ 
+			editingCardId: 0,
+			title: ''
+		})
+	}
+
+	editTitle(id, title){
+		this.setState({ 
+			editingCardId: id,
+			title 
+		})
+	}
+
+	saveEdit(){
+		axios.put(`/api/video/`,{
+			id: this.state.editingCardId,
+			title: this.state.title,
+		})
+			.then(() => this.loadVideos())
+			.then(() => this.cancelEdit())
+	}
+
+	updateTitle(val){
+		this.setState({
+			title: val,
+		})
 	}
 
 	render() {
+
 		return (
-			<div>
-				<CardBody>
-					{this.state.videos.map(video => (
+			
+			<MainDiv>
+				<Carousel 
+					carouselItems = {this.state.carouselItems}
+				/>
+
+				<CardBody>	
+					{this.state.videos.map( video => (
 						<div key={video.id}>
 							<Card>
 								{/* <div><img height='100%' width='100%' src={props.link} alt="Game Preview"/></div> */}
@@ -61,21 +118,48 @@ export default class Game extends Component {
 										/>
 									</video>
 								</div>
-								<div>{video.title}</div>
-								<button>Edit</button>
-								<button
-									onClick={() =>
-										this.deleteVideo(video.id, video.link)
-									}
-								>
-									Delete
-								</button>
+								{
+									this.state.editingCardId === video.id ? (
+										<div>
+											<InputGroupBody>
+												<InputGroupAppend>
+													<p>Video Title</p>
+												</InputGroupAppend>
+
+												<InputGroupInput>
+													<input type="text" 
+														value={this.state.title}
+														onChange={ ( e ) => this.updateTitle( e.target.value ) }/>
+												</InputGroupInput>
+
+											</InputGroupBody>
+											<ButtonGroup>
+												<SubmitButton type="button" onClick={() => this.saveEdit()}>Save</SubmitButton>
+												<CancelButton>
+													<GoX color="red" size="35" type="button" onClick={() => { this.cancelEdit() }}/>
+												</CancelButton>
+											</ButtonGroup>
+										</div>
+									)
+										:
+										(
+											<ButtonGroup>
+												<SubmitButton type="button" onClick={() => this.editTitle(video.id, video.title)}>Edit</SubmitButton>
+												<DeleteButton onClick={() => this.deleteVideo(video.id, video.link)}>Delete</DeleteButton>
+											</ButtonGroup>
+										)
+								}
+								
+								
+								
 							</Card>
 						</div>
 					))}
 				</CardBody>
-				<UploadFile loadVideos={this.loadVideos} />
-			</div>
-		);
+				<UploadFile 
+					loadVideos={this.loadVideos}
+				/>
+			</MainDiv>
+		)
 	}
 }

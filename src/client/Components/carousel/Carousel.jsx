@@ -60,15 +60,18 @@ export default function Carousel(props) {
 	return (
 		<CarouselContainer>
 			<CarouselActual {...settings}>
-				{props.carouselItems.map((
-					item // eslint-disable-line
-				) => (
-					<CarouselSlot key={item.title}>
-						<CarouselSlotItem
-							style={{ backgroundImage: `url(${item.picture})` }}
-						/>
-					</CarouselSlot>
-				))}
+				{
+					props.carouselItems.map((item) => ( // eslint-disable-line
+						<CarouselSlot>
+							{/* <CarouselSlotItem style={{backgroundImage: `url(${item.link})`}}/> */}
+							<CarouselSlotItem>
+								<video height='100%' width='100%' muted>
+									<source  src={item.link} alt="Game Preview"/>
+								</video>
+							</CarouselSlotItem>
+						</CarouselSlot>
+					))
+				}
 			</CarouselActual>
 		</CarouselContainer>
 	);
