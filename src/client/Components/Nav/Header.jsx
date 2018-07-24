@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import { setUserProps } from "../../middlwares/redux/reducers/sessionReducer";
+import { setUserProps } from '../../middlwares/redux/reducers/sessionReducer';
 import SearchBar from './Search';
 import LoginForm from '../auth/Login';
 import RegisterForm from '../auth/Register';
@@ -33,7 +34,7 @@ class Header extends Component {
 				display_name: '',
 				avatar: '',
 				id: -1
-			 }
+			}
 		};
 
 		this.closeModal = this.closeModal.bind(this);
@@ -80,9 +81,9 @@ class Header extends Component {
 
 	logout() {
 		this.props.setUserProps(this.state.userLogout);
-		axios.delete(`${process.env.REACT_APP_API_LOCATION}auth/logout`)
+		axios.delete(`${process.env.REACT_APP_API_LOCATION}auth/logout`);
 	}
-	
+
 	render() {
 		return (
 			<div>
@@ -96,24 +97,19 @@ class Header extends Component {
 					/>
 
 					<div style={{ paddingRight: '15px' }}>
-
-						{
-							this.props.user.id !== -1 
-				
-								? 
-
-								<Link 
+						{!_.isNil(this.props.user) &&
+							this.props.user.id !== -1 && (
+								<Link
 									style={{
 										color: 'white',
 										textDecoration: 'none'
 									}}
-									to={{pathname: '/'}}
-									onClick={this.logout} >logout</Link> 
-									
-								: 
-
-								() => {} /* eslint-disable-line */ 
-						}
+									to={{ pathname: '/' }}
+									onClick={this.logout}
+								>
+									logout
+								</Link>
+							)}
 
 						<button
 							style={{
@@ -138,24 +134,19 @@ class Header extends Component {
 				<SmallHeader>
 					<LogoText to="/">Stream Dream</LogoText>
 					<div style={{ paddingRight: '15px' }}>
-
-						{
-							this.props.user.id !== -1 
-				
-								? 
-
-								<Link 
+						{!_.isNil(this.props.user) &&
+							this.props.user.id !== -1 && (
+								<Link
 									style={{
 										color: 'white',
 										textDecoration: 'none'
 									}}
-									to={{pathname: '/'}}
-									onClick={this.logout} >logout</Link> 
-									
-								: 
-
-								() => {} /* eslint-disable-line */ 
-						}
+									to={{ pathname: '/' }}
+									onClick={this.logout}
+								>
+									logout
+								</Link>
+							)}
 
 						<button
 							style={{
@@ -209,7 +200,10 @@ function mapStateToProps(duckState) {
 	const { user } = duckState;
 	return {
 		user
-	}
+	};
 }
 
-export default connect(mapStateToProps, {setUserProps})(Header);
+export default connect(
+	mapStateToProps,
+	{ setUserProps }
+)(Header);

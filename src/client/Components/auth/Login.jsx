@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import propTypes from 'prop-types';
-import { connect } from "react-redux";
-import { setUserProps } from "../../middlwares/redux/reducers/sessionReducer";
+import { connect } from 'react-redux';
+import { setUserProps } from '../../middlwares/redux/reducers/sessionReducer';
 import Modal from '../Modal/Modal';
 import InputGroupBody, {
 	InputGroupAppend,
@@ -80,6 +80,8 @@ class LoginForm extends Component {
 						user: res.data.userInfo
 					});
 					this.props.setUserProps(res.data.userInfo); // eslint-disable-line
+
+					this.props.closeModal();
 				}
 			});
 		e.preventDefault();
@@ -149,7 +151,10 @@ function mapStateToProps(duckState) {
 	const { user } = duckState;
 	return {
 		user
-	}
+	};
 }
 
-export default connect(mapStateToProps, {setUserProps})(Modal(LoginForm));
+export default connect(
+	mapStateToProps,
+	{ setUserProps }
+)(Modal(LoginForm));
