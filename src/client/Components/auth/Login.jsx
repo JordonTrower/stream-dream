@@ -68,7 +68,7 @@ class LoginForm extends Component {
 		this.setState(newState);
 	}
 
-	submit() {
+	submit(e) {
 		axios
 			.post(`${process.env.REACT_APP_API_LOCATION}auth/login`, this.state)
 			.then(res => {
@@ -76,6 +76,7 @@ class LoginForm extends Component {
 					console.log(res);
 				}
 			});
+		e.preventDefault()
 	}
 
 	render() {
@@ -134,3 +135,4 @@ LoginForm.propTypes = {
 };
 
 export default Modal(LoginForm);
+

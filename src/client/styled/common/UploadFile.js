@@ -14,7 +14,7 @@ export default styled.div `
 
 	z-index: 1
 
-	justify-content: space-around;
+	justify-content: flex-start;
     align-items: center;
 
     background-color: #09092B;

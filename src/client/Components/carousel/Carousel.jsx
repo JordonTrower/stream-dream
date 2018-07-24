@@ -57,7 +57,12 @@ export default function Carousel(props){
 				{
 					props.carouselItems.map((item) => ( // eslint-disable-line
 						<CarouselSlot>
-							<CarouselSlotItem style={{backgroundImage: `url(${item.picture})`}}/>
+							{/* <CarouselSlotItem style={{backgroundImage: `url(${item.link})`}}/> */}
+							<CarouselSlotItem>
+								<video height='100%' width='100%' muted>
+									<source  src={item.link} alt="Game Preview"/>
+								</video>
+							</CarouselSlotItem>
 						</CarouselSlot>
 					))
 				}

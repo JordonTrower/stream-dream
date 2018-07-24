@@ -11,13 +11,15 @@ const upload = multer({ dest: 'uploads/' })
 router.get('/channels', GameController.getGames);
 router.post('/channel', GameController.addGame);
 
-//S3
+// S3
 router.delete('/s3video', S3Controller.deleteMedia)
 router.post('/upload', upload.single('media'), S3Controller.uploadMedia)
 
 // VIDEOS
 router.delete('/video/:id', VideoController.deleteVideo)
+router.get('/carouselVideos', VideoController.getCarouselVideos)
 router.get('/videos', VideoController.getVideos);
 router.post('/video', VideoController.addVideo);
+router.put('/video', VideoController.updateVideoTitle)
 
 export default router;
