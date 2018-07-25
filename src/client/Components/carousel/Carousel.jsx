@@ -2,7 +2,6 @@ import React from 'react';
 import Slider from 'react-slick';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
-// import { Link } from 'react-router-dom';
 
 const CarouselContainer = styled.div`
 	background-color: #191b21;
@@ -63,11 +62,11 @@ export default function Carousel(props) {
 			<CarouselActual {...settings}>
 				{
 					props.carouselItems.map((item) => ( // eslint-disable-line
-						<CarouselSlot>
+						<CarouselSlot key={item.link}>
 							{/* <CarouselSlotItem style={{backgroundImage: `url(${item.link})`}}/> */}
-							<CarouselSlotItem>
+							<CarouselSlotItem style={{backgroundImage: `url(${item.link})`}}>
 								<video height='100%' width='100%' muted>
-									<source  src={item.link} alt="Game Preview"/>
+									<source src={item.link} alt="Game Preview"/>
 								</video>
 							</CarouselSlotItem>
 						</CarouselSlot>

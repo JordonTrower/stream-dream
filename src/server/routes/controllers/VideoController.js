@@ -91,5 +91,17 @@ export default {
 			})
 			.catch(error => console.log(error))
 			.then(() => res.send('ok'));
+	},
+	getVideosByGameTitle(req, res){
+		console.log(req.params.game_title);
+		const db = DB.connect(
+			req, 
+			res
+		);
+		return db('videos')
+			.join('games', 'videos.game_id', '=', 'games.id')
+			.select('videos.id', 'videos.title', 'videos.game_id', 'videos.link')
+			.where( 'games.title', req.params.game_title )
+			.then((dbResults) => res.send(dbResults));
 	}
 };

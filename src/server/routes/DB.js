@@ -11,6 +11,7 @@ const upload = multer({ dest: 'uploads/' });
 // GAMES
 router.get('/channels', GameController.getGames);
 router.post('/channel', GameController.addGame);
+router.get('/games', GameController.getGames)
 
 // S3
 router.delete('/s3video', S3Controller.deleteMedia)
@@ -22,6 +23,7 @@ router.get('/carouselVideos', VideoController.getCarouselVideos)
 router.get('/videos', VideoController.getVideos);
 router.post('/video', VideoController.addVideo);
 router.put('/video', VideoController.updateVideoTitle)
+router.get('/game_videos/:game_title', VideoController.getVideosByGameTitle)
 
 // SEARCHINGs
 router.post(`/search`, SearchController.searchBar);
