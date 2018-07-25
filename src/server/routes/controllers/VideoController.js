@@ -41,22 +41,24 @@ export default {
 			req
 		);
 
-		if (!_.isNil(req.session.userId)) {
-			return db
+		// if (!_.isNil(req.session.userId)) {
+		return (
+			db
 				.select('link')
 				.from('videos')
-				.where({
-					created_by: req.session.userId
-				})
+				// .where({
+				// 	created_by: req.session.userId
+				// })
 				.orderBy('created_at', 'desc')
 				.limit(5)
 				.catch(error => console.log(error))
 				.then(dbresults => {
 					res.send(dbresults);
-				});
-		}
+				})
+		);
+		// }
 
-		return res.send([]);
+		// return res.send([]);
 	},
 
 	getVideos(req, res) {

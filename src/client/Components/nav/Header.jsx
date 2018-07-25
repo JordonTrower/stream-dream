@@ -1,23 +1,43 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { connect } from 'react-redux';
 import propTypes from 'prop-types';
-import { setUserProps } from '../../middlwares/redux/reducers/sessionReducer';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 import SearchBar from './Search';
-import LoginForm from '../auth/Login';
-import RegisterForm from '../auth/Register';
+import LoginForm from './modals/Login';
+import UserInfoForm from './modals/UserInfo';
+import RegisterForm from './modals/Register';
 import LargeHeader from '../../styled/nav/LargeHeader';
 import SmallHeader from '../../styled/nav/SmallHeader';
+import { setUserProps } from '../../middlwares/redux/reducers/sessionReducer';
 
 const LogoText = styled(Link)`
+	@media (min-width: 400px) {
+		font-size: 32px;
+	}
+
 	padding-left: 15px;
-	font-size: 32px;
+	font-size: 28px;
 	font-weight: 700;
 	color: white;
 	text-decoration: none;
+`;
+
+const LoginButton = styled.button`
+	@media (min-width: 400px) {
+		width: 100px;
+	}
+
+	background: #1a4fa5;
+	border: 1px #1a4fa5 solid;
+	color: #ecede8;
+
+	border-radius: 15px;
+
+	width: 80px;
+	height: 35px;
 `;
 
 class Header extends Component {
@@ -27,20 +47,15 @@ class Header extends Component {
 		this.state = {
 			login: false,
 			register: false,
+			userInfo: false,
 			searchData: [],
-			searchQuery: '',
-			userLogout: {
-				email: '',
-				display_name: '',
-				avatar: '',
-				id: -1
-			}
+			searchQuery: ''
 		};
 
 		this.closeModal = this.closeModal.bind(this);
 		this.getSearch = this.getSearch.bind(this);
 		this.switchModals = this.switchModals.bind(this);
-		this.logout = this.logout.bind(this);
+		this.logOut = this.logOut.bind(this);
 	}
 
 	getSearch(e) {
@@ -68,7 +83,8 @@ class Header extends Component {
 	closeModal() {
 		this.setState({
 			login: false,
-			register: false
+			register: false,
+			userInfo: false
 		});
 	}
 
@@ -79,9 +95,18 @@ class Header extends Component {
 		});
 	}
 
-	logout() {
-		this.props.setUserProps(this.state.userLogout);
+	logOut() {
+		const logout = {
+			email: '',
+			display_name: '',
+			avatar: '',
+			id: -1
+		};
+		this.props.setUserProps(logout);
+
 		axios.delete(`${process.env.REACT_APP_API_LOCATION}auth/logout`);
+
+		this.closeModal();
 	}
 
 	render() {
@@ -96,38 +121,40 @@ class Header extends Component {
 						getSearch={this.getSearch}
 					/>
 
-					<div style={{ paddingRight: '15px' }}>
+					<div>
 						{!_.isNil(this.props.user) &&
 							this.props.user.id !== -1 && (
-								<Link
+								<button
 									style={{
-										color: 'white',
-										textDecoration: 'none'
+										width: '80px',
+										paddingRight: '5px',
+										border: 0,
+										background: 'transparent'
 									}}
-									to={{ pathname: '/' }}
-									onClick={this.logout}
+									onClick={() =>
+										this.setState({ userInfo: true })
+									}
 								>
-									logout
-								</Link>
+									<img
+										style={{ borderRadius: '20px' }}
+										height="40"
+										width="40"
+										src="/Images/NoUser.jpg"
+										alt="Default Profile"
+									/>
+								</button>
 							)}
 
-						<button
-							style={{
-								height: '40px',
-								width: '40px',
-								border: '0',
-								background: 'transparent'
-							}}
-							onClick={() => this.setState({ login: true })}
-						>
-							<img
-								style={{ borderRadius: '20px' }}
-								height="40"
-								width="40"
-								src="/images/NoUser.jpg"
-								alt="Default Profile"
-							/>
-						</button>
+						{_.isNil(this.props.user) ||
+							(this.props.user.id === -1 && (
+								<LoginButton
+									onClick={() =>
+										this.setState({ login: true })
+									}
+								>
+									Login
+								</LoginButton>
+							))}
 					</div>
 				</LargeHeader>
 
@@ -136,35 +163,37 @@ class Header extends Component {
 					<div style={{ paddingRight: '15px' }}>
 						{!_.isNil(this.props.user) &&
 							this.props.user.id !== -1 && (
-								<Link
+								<button
 									style={{
-										color: 'white',
-										textDecoration: 'none'
+										width: '40px',
+										paddingRight: '15px',
+										border: 0,
+										background: 'transparent'
 									}}
-									to={{ pathname: '/' }}
-									onClick={this.logout}
+									onClick={() =>
+										this.setState({ userInfo: true })
+									}
 								>
-									logout
-								</Link>
+									<img
+										style={{ borderRadius: '20px' }}
+										height="40"
+										width="40"
+										src="/Images/NoUser.jpg"
+										alt="Default Profile"
+									/>
+								</button>
 							)}
 
-						<button
-							style={{
-								height: '40px',
-								width: '40px',
-								border: '0',
-								background: 'transparent'
-							}}
-							onClick={() => this.setState({ login: true })}
-						>
-							<img
-								style={{ borderRadius: '20px' }}
-								height="40"
-								width="40"
-								src="/images/NoUser.jpg"
-								alt="Default Profile"
-							/>
-						</button>
+						{_.isNil(this.props.user) ||
+							(this.props.user.id === -1 && (
+								<LoginButton
+									onClick={() =>
+										this.setState({ login: true })
+									}
+								>
+									Login
+								</LoginButton>
+							))}
 					</div>
 				</SmallHeader>
 
@@ -179,6 +208,13 @@ class Header extends Component {
 					<RegisterForm
 						switchModal={this.switchModals}
 						closeModal={this.closeModal}
+					/>
+				)}
+
+				{this.state.userInfo && (
+					<UserInfoForm
+						closeModal={this.closeModal}
+						logOut={this.logOut}
 					/>
 				)}
 			</div>
