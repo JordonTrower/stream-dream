@@ -1,14 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
-// import propTypes from "prop-types";
-import { withRouter } from 'react-router-dom'
+import PropTypes from "prop-types";
 
 export default withRouter(class VideoInfoBar extends Component {
 	// Under every video will be a a info style section bar. it will display the information on state as well a button for following.
 	constructor(props) {
 		super(props);
 		this.state = {
-			// videoId: props.match.params,
+			videoId: this.props.video_id,
 			videoTitle: "",
 			channelId: "",
 			channelName: "",
@@ -19,39 +18,42 @@ export default withRouter(class VideoInfoBar extends Component {
 		};
 		this.handleFollowButtonClick = this.handleFollowButtonClick.bind(this);
 		this.handleUnFollow = this.handleUnFollow.bind(this);
+		this.followButtonDisplay = this.followButtonDisplay.bind(this);
 	}
 
 	componentDidMount() {
 		// will make a call to the backend to get the info need for state. State is Displaid bellow the video in an info bar.
-		console.log(this.statte);
+		console.log("we got here 2", this.props.video_id);
 		axios
-			.get("/video/", {
+			.post("/api/get-info/", {
 				video_id: this.state.videoId
 			})
 			.then(res => {
+				console.log("then", res.data.title);
 				this.setState({
-					videoId: res.data.video.id,
-					videoTitle: res.data.video.title,
-					channelId: res.data.video.created_by
-				}).then(() => {
-					axios
-						.get("/getchannelinfo/", {
-							channel_id: this.state.channelId
-						})
-						.then(res2 => {
-							this.setState({
-								channelName: res2.data.fullRes.display_name,
-								channelAvatar: res2.data.fullRes.avatar,
-								channelVideosTotal:
-									res2.data.fullRes.channelVideosTotal,
-								channelFollowersTotal:
-									res2.data.fullRes.channelFollowersTotal
-							});
-						});
+					videoTitle: res.data.title,
+					channelId: res.data.created_by
 				});
+			})
+			.then(() => {
+				axios
+					.post("/api/get-channel-info/", {
+						channel_id: this.state.channelId
+					})
+					.then(res2 => {
+						console.log("agaiiiiiiiiiiiin", res2.data);
+						this.setState({
+							channelName: res2.data.display_name,
+							channelAvatar: res2.data.avatar,
+							channelVideosTotal: res2.data.channelVideosTotal,
+							channelFollowersTotal:
+								res2.data.channelFollowersTotal
+						});
+					});
 			});
+
 		axios
-			.get("/iffollowed", { following: this.state.channelId })
+			.post("/api/if-followed/", { channel_id: this.state.channelId })
 			.then(res => {
 				this.setState({
 					followed: res.data
@@ -61,7 +63,7 @@ export default withRouter(class VideoInfoBar extends Component {
 
 	followButtonDisplay() {
 		// if false, the follow button will appear. if true, an Un-Follow button appears. if an error code recieved from the server, a p tag apears with the message form the server. the default value is false.
-		if (this.state.followed) {
+		if (this.state.followed === true) {
 			return (
 				<button onClick={() => this.handleUnFollow()}>Un-Follow</button>
 			);
@@ -92,6 +94,7 @@ export default withRouter(class VideoInfoBar extends Component {
 	}
 
 	render() {
+		console.log(this.state);
 		return (
 			<div className="InfoBar">
 				<h3>{this.state.videoTitle}</h3>
@@ -108,8 +111,6 @@ export default withRouter(class VideoInfoBar extends Component {
 	}
 })
 
-// VideoInfoBar.propTypes = {
-// 	match: propTypes.shape({
-// 		params: propTypes.shape()
-// 	}).isRequired
-// };
+VideoInfoBar.propTypes = {
+	video_id: PropTypes.string.isRequired
+};
