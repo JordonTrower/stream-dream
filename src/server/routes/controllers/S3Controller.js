@@ -22,7 +22,6 @@ export default {
 	
 	uploadMedia(req, res) {
 		fs.readFile(req.file.path, (err, data) => {
-			console.log(req.file.path)
 			if(err){
 				console.log(err)
 			}
