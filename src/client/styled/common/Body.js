@@ -7,13 +7,15 @@ export default styled.div`
 		${props => props.rightSidebar && 'padding-right: 15rem'};
 	}
 
+	background-color: ${commonCSS.primaryColor};
+
 	align-items: center;
 	position: relative;
 
 	top: 3rem;
 	z-index: 0;
 
-	min-height: calc(100vh - 4rem);
+	min-height: calc(100vh - 3rem);
 
 	${commonCSS.flex('column')};
 `;

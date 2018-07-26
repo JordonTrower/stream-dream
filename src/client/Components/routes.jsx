@@ -6,11 +6,10 @@ import Body from "../styled/common/Body";
 import VideoViewMain from "../Components/PlayingView/VideoViewMain";
 
 export default withRouter(props => (
-	<Body rightSidebar={props.location.pathname === "/Control"}>
+	<Body rightSidebar={props.location.pathname === '/Video'}>
 		{console.log(props)}
 		<Switch>
 			<Route path="/" component={Home} exact />
-			<Route path="/video" component={Video} />
 			<Route path="/video/:video_id" component={VideoViewMain} />
 		</Switch>
 	</Body>

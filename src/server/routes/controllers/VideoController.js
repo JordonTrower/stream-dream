@@ -3,19 +3,23 @@ import DB from './DBConnect';
 
 export default {
 	addVideo(req, res) {
-		console.log('addVideo', req.body);
+		// added to support end point testing
+		let userid = "2";
+		if (!_.isNil(req.session.userId)) {
+			userid = req.session.userId
+		}
 
-		const { title, link } = req.body;
+		const { title, link, game_id } = req.body;
 
 		const db = DB.connect(
 			res,
 			req
 		);
-		// TODO add gameid
 
 		db('videos')
 			.insert({
-				created_by: req.session.userId,
+				created_by: userid,
+				game_id,
 				title,
 				link
 			})
@@ -36,6 +40,13 @@ export default {
 	},
 
 	getCarouselVideos(req, res) {
+
+		// added to support end point testing
+		let userid = "2";
+		if (!_.isNil(req.session.userId)) {
+			userid = req.session.userId
+		}
+
 		const db = DB.connect(
 			res,
 			req
@@ -62,21 +73,26 @@ export default {
 	},
 
 	getVideos(req, res) {
+				
+		// added to support end point testing
+		let userid = "2";
+		if (!_.isNil(req.session.userId)) {
+			userid = req.session.userId
+		}
+
 		const db = DB.connect(
 			res,
 			req
 		);
 
-		if (!_.isNil(req.session.userId)) {
-			return db('videos')
-				.where({
-					created_by: req.session.userId
-				})
-				.catch(error => console.log(error))
-				.then(dbresults => res.send(dbresults));
-		}
 
-		return res.send([]);
+		return db('videos')
+			.where({
+				created_by: userid
+			})
+			.catch(error => console.log(error))
+			.then(dbresults => res.send(dbresults));
+	
 	},
 
 	updateVideoTitle(req, res) {

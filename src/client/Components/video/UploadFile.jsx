@@ -1,6 +1,7 @@
 import React, { Component }from 'react';
 import axios from 'axios';
 import Dropzone from 'react-dropzone';
+import Select from 'react-select'
 import styled from 'styled-components';
 import GoX from 'react-icons/lib/go/x';
 import PropTypes from 'prop-types';
@@ -32,6 +33,14 @@ const dropzoneStyle = {
 	height: '6rem',
 }
 
+const StyleSelect = styled(Select)`
+	 width: 100%; 
+	 color: #000;
+	 margin: 2rem;
+	 padding: .5rem;
+`;
+
+
 export default class UploadFile extends Component {
 	constructor() {
 		super()
@@ -42,7 +51,22 @@ export default class UploadFile extends Component {
 			medianame: '',
 			filename: '',
 			errorMsg: '',
+			selectOptions: [],
+			selectedOption: '',
+			gameid: '',
 		}
+	}
+
+	componentDidMount(){
+		axios.get('/api/channels')
+			.then((response) => {
+				const tempOptions = []
+				response.data.forEach((option) => {
+					tempOptions.push({value: option.id, label: option.title})
+				})
+				this.setState({selectOptions: tempOptions})
+			}
+			)
 	}
 
 	onDrop(media){
@@ -60,6 +84,13 @@ export default class UploadFile extends Component {
 
 	}
 
+	updateGameID(option){
+		this.setState({
+			selectedOption: option,
+			gameid: option.value
+		})
+	}
+
 	updateTitle(val){
 		this.setState({
 			title: val,
@@ -67,7 +98,7 @@ export default class UploadFile extends Component {
 	}
 
 	uploadFile() {
-		if (this.state.title !== '' && this.state.medianame !== '') {
+		if (this.state.title !== '' && this.state.medianame !== '' && this.state.gameid !== '') {
 			const data = new FormData();
 			data.append('media', this.state.media)
 			data.append('name', this.state.medianame)
@@ -75,6 +106,7 @@ export default class UploadFile extends Component {
 				.then((res) => 
 					axios.post('/api/video', {
 						title: this.state.title,
+						game_id: this.state.gameid,
 						link: res.data.Location
 					})
 						.then(() => this.props.loadVideos())
@@ -94,6 +126,8 @@ export default class UploadFile extends Component {
 				medianame: '',
 				filename: '',
 				errorMsg: '',
+				selectOptions: [],
+				gameid: '',
 			}
 		)
 	}
@@ -120,10 +154,20 @@ export default class UploadFile extends Component {
 				
 				<MsgDiv>{this.state.filename}</MsgDiv>
 
+
+				<StyleSelect 
+					value={this.state.selectedOption}
+					onChange={(e) => this.updateGameID(e)}
+					options={this.state.selectOptions}
+				/>
+
+
+
 				<InputGroupBody>
 					<InputGroupAppend>
 						<p>Video Title</p>
 					</InputGroupAppend>
+
 
 					<InputGroupInput>
 						<input type="text" 
@@ -134,8 +178,8 @@ export default class UploadFile extends Component {
 				
 
 				<ButtonGroup>
+					<CancelButton><GoX color="#C40F62" size="35" type="button" onClick={() => { this.clearState() }}/></CancelButton>
 					<SubmitButton type="button" onClick={() => { this.uploadFile() }}>Upload File</SubmitButton>
-					<CancelButton><GoX color="red" size="35" type="button" onClick={() => { this.clearState() }}/></CancelButton>
 				</ButtonGroup>
 
 				<ErrDiv>{this.state.errorMsg}</ErrDiv>
