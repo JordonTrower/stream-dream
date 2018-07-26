@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 
-export default class VideoInfoBar extends Component {
+export default withRouter(class VideoInfoBar extends Component {
 	// Under every video will be a a info style section bar. it will display the information on state as well a button for following.
 	constructor(props) {
 		super(props);
@@ -109,7 +109,7 @@ export default class VideoInfoBar extends Component {
 			</div>
 		);
 	}
-}
+})
 
 VideoInfoBar.propTypes = {
 	video_id: PropTypes.string.isRequired

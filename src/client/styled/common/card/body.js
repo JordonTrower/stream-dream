@@ -10,6 +10,7 @@ export default styled.div `
     height: 100%;
 	flex-wrap: wrap;
 	margin: 0;
+	margin-top: 2rem;
 	border: 0;
 	padding: 0;
 

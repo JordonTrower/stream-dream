@@ -39,9 +39,14 @@ export default {
 					res.status(500).send(s3err);
 				}else{
 					res.send(s3data)
+					// delete the temporary file
+					fs.unlink(req.file.path, (fserr) => {
+						if (fserr) throw err;
+					})
 				}
 			})
 		})
+		
 	},
 
 	deleteMedia(req, res) {

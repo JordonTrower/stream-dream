@@ -1,0 +1,67 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render 1`] = `
+<styled.div>
+  <t
+    disableClick={false}
+    disablePreview={false}
+    disabled={false}
+    inputProps={Object {}}
+    maxSize={100000000}
+    minSize={0}
+    multiple={true}
+    onDrop={[Function]}
+    preventDropOnDocument={true}
+    style={
+      Object {
+        "border": "2px dashed grey",
+        "borderRadius": "25px",
+        "height": "6rem",
+        "padding": "4rem",
+        "textAlign": "center",
+      }
+    }
+  >
+    <p>
+      Drop your file to upload here or click to select a file to upload.
+    </p>
+  </t>
+  <styled.div />
+  <Styled(StateManager)
+    onChange={[Function]}
+    options={Array []}
+    value=""
+  />
+  <styled.div>
+    <styled.div>
+      <p>
+        Video Title
+      </p>
+    </styled.div>
+    <styled.div>
+      <input
+        onChange={[Function]}
+        type="text"
+        value=""
+      />
+    </styled.div>
+  </styled.div>
+  <styled.div>
+    <styled.button>
+      <GoX
+        color="#C40F62"
+        onClick={[Function]}
+        size="35"
+        type="button"
+      />
+    </styled.button>
+    <styled.button
+      onClick={[Function]}
+      type="button"
+    >
+      Upload File
+    </styled.button>
+  </styled.div>
+  <styled.div />
+</styled.div>
+`;
