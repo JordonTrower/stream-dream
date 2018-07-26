@@ -55,6 +55,8 @@ const SubmitButton = styled.button`
 
 	width: 100px;
 	height: 35px;
+
+	cursor: pointer;
 `;
 
 const DangerButton = styled(SubmitButton)`

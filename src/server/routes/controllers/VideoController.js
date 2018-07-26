@@ -55,7 +55,7 @@ export default {
 		// if (!_.isNil(req.session.userId)) {
 		return (
 			db
-				.select('link')
+				.select('link', 'id')
 				.from('videos')
 				// .where({
 				// 	created_by: req.session.userId
@@ -110,8 +110,9 @@ export default {
 			.catch(error => console.log(error))
 			.then(() => res.send('ok'));
 	},
-	getVideosByGameTitle(req, res){
-		console.log(req.params.game_title);
+
+	getVideosByGameId(req, res) {
+
 		const db = DB.connect(
 			req, 
 			res
@@ -119,7 +120,7 @@ export default {
 		return db('videos')
 			.join('games', 'videos.game_id', '=', 'games.id')
 			.select('videos.id', 'videos.title', 'videos.game_id', 'videos.link')
-			.where( 'games.title', req.params.game_title )
+			.where( 'games.id', req.params.game_id )
 			.then((dbResults) => res.send(dbResults));
 	}
 };

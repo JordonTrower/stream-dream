@@ -5,6 +5,7 @@ import S3Controller from './controllers/S3Controller';
 import VideoController from './controllers/VideoController';
 import SearchController from './controllers/SearchController';
 import UserController from './controllers/UserController';
+import PlayingController from "./controllers/PlayingController";
 
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
@@ -24,7 +25,7 @@ router.get('/carouselVideos', VideoController.getCarouselVideos);
 router.get('/videos', VideoController.getVideos);
 router.post('/video', VideoController.addVideo);
 router.put('/video', VideoController.updateVideoTitle)
-router.get('/game_videos/:game_title', VideoController.getVideosByGameTitle)
+router.get('/game_videos/:game_id', VideoController.getVideosByGameId)
 
 // SEARCHING
 router.post(`/search`, SearchController.searchBar);

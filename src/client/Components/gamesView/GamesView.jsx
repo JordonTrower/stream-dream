@@ -8,9 +8,7 @@ import Card from "../../styled/common/card/card";
 import CardBody from "../../styled/common/card/body";
 
 const GamesViewOneDiv = styled.div`
-	background-color: #191B21;
-	width: 100%;
-	height: 100%;
+
 `;
 
 // gameTitle = gameTitle.length - 2;
@@ -31,8 +29,8 @@ export default class GamesView extends Component {
 	}
 	
 	getVideosByGameTitle(){
-		const propsGameTitle = this.props.match.params.game_title; 
-		axios.get(`${process.env.REACT_APP_API_LOCATION}game_videos/${propsGameTitle}`)
+		const propsGameId = this.props.match.params.game_id; 
+		axios.get(`${process.env.REACT_APP_API_LOCATION}game_videos/${propsGameId}`)
 			.then(res => {
 				this.setState({
 					gameVideos: res.data
@@ -50,7 +48,6 @@ export default class GamesView extends Component {
 
 					{this.state.gameVideos.map((game) => (
 						<Card  key={game.id}>
-							<p>{game.title}</p>
 							<Link to={{pathname: `/video/${game.id}`}}>
 								<video height='100%' width='100%' muted>
 									<source src={game.link} alt={game.title}/>
@@ -67,7 +64,7 @@ export default class GamesView extends Component {
 GamesView.propTypes = {
 	match: propTypes.shape({
 		params: propTypes.shape({
-			game_title: propTypes.string
+			game_id: propTypes.string
 		})
 	}).isRequired
 }

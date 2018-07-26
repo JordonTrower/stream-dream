@@ -50,6 +50,8 @@ const SubmitButton = styled.button`
 
 	width: 100px;
 	height: 35px;
+
+	cursor: pointer;
 `;
 
 class RegisterForm extends Component {
@@ -187,7 +189,8 @@ class RegisterForm extends Component {
 					style={{
 						background: 'transparent',
 						border: '0',
-						margin: '30px'
+						margin: '30px',
+						cursor: 'pointer'
 					}}
 				>
 					Click here if you want to login
