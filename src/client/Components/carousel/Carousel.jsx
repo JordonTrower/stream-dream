@@ -62,7 +62,7 @@ export default function Carousel(props) {
 		<CarouselContainer>
 			<CarouselActual {...settings}>
 				{
-					props.carouselItems.map((item) => ( // eslint-disable-line
+					props.carouselItems.map((item) => ( 
 						<CarouselSlot key={item.id}>
 							{/* <CarouselSlotItem style={{backgroundImage: `url(${item.link})`}}/> */}
 							<CarouselSlotItem>
