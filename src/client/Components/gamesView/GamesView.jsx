@@ -8,7 +8,9 @@ import Card from "../../styled/common/card/card";
 import CardBody from "../../styled/common/card/body";
 
 const GamesViewOneDiv = styled.div`
-
+	background-color: #191B21;
+	width: 100%;
+	height: 100%;
 `;
 
 // gameTitle = gameTitle.length - 2;
@@ -39,6 +41,7 @@ export default class GamesView extends Component {
 	}
 	
 	render() {
+		console.log(this.state)
 		return (
 			<GamesViewOneDiv>
 				<p>{text}</p>
@@ -47,6 +50,7 @@ export default class GamesView extends Component {
 
 					{this.state.gameVideos.map((game) => (
 						<Card  key={game.id}>
+							<p>{game.title}</p>
 							<Link to={{pathname: `/video/${game.id}`}}>
 								<video height='100%' width='100%' muted>
 									<source src={game.link} alt={game.title}/>

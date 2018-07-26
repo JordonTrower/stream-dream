@@ -4,6 +4,10 @@ import Home from './home/Home';
 import Video from './video/Video';
 import Body from '../styled/common/Body';
 import GamesView from './gamesView/GamesView';
+// import VideoViewMain from "../Components/PlayingView/VideoViewMain";
+
+/* <Route path="/video/:video_id" component={VideoViewMain} /> */
+
 
 export default withRouter(props => (
 	<Body rightSidebar={props.location.pathname === '/Control'}>
