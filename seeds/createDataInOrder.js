@@ -44,19 +44,44 @@ for (let i = 0; i < 12; i += 1) {
 	})
 }
 
-let games = [{
-	title: 'destiny',
-	picture: faker.image.people(),
-}]
-
-for (let i = 0; i < 15; i += 1) {
-
-	games.push({
-		title: faker.internet.userName(),
-		picture: faker.image.people()
-	})
-
-}
+let games = [
+	{
+		picture: 'https://cdn.shopify.com/s/files/1/0417/0233/products/destiny2.jpg?v=1495132332',
+		title: 'Destiny 2'
+	},
+	{
+		picture: 'http://assets1.ignimgs.com/2015/05/27/rocket-league-posterjpg-ef2765.jpg',
+		title: 'Rocket League'
+	},
+	{
+		picture : 'http://www.newgamesbox.net/wp-content/uploads/2017/08/FORTNITE-Free-Download.jpg',
+		title: 'Fortnite'
+	},
+	{
+		picture : 'http://hdphonewallpapers.com/content/K64vyRLY97LZgKQK25ih55na5OMkI9R8bV3uo432bzYWGjl3S4Te54rORc1kEkQA.png',
+		title: 'League of Legends'
+	},
+	{
+		picture: 'http://orig00.deviantart.net/cd70/f/2014/184/0/8/super_smash_bros__lockscreen_by_ciezure-d7p24ys.png',
+		title: 'Super Smash Bros'
+	},
+	{
+		picture: 'http://imgc.allpostersimages.com/images/P-473-488-90/96/9683/3PTC500Z/posters/overwatch-game-cover.jpg',
+		title: 'Overwatch'
+	},
+	{
+		picture: 'https://d1x7zurbps6occ.cloudfront.net/product/xlarge/635177-176831.jpg',
+		title: 'Breath of The Wild'
+	},
+	{
+		picture: 'http://news.toyark.com/wp-content/uploads/sites/4/2014/09/NECA-18-Inch-Master-Chief-01.jpg',
+		title: 'Halo'
+	},
+	{
+		picture: 'https://cdn.wallpapersafari.com/9/31/kQMIvN.jpg',
+		title: 'Other'
+	}
+]
 
 comments = [];
 
