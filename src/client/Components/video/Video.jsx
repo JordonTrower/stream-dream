@@ -4,8 +4,8 @@ import GoX from 'react-icons/lib/go/x';
 import styled from 'styled-components';
 import ButtonGroup from '../../styled/common/ButtonGroup';
 import Carousel from '../carousel/Carousel';
-import Card from '../../styled/common/Card/Card';
-import CardBody from '../../styled/common/Card/Body';
+import Card from '../../styled/common/card/card';
+import CardBody from '../../styled/common/card/body';
 import CancelButton from '../../styled/common/CancelButton';
 import DeleteButton from '../../styled/common/DeleteButton';
 import InputGroupBody, {
@@ -13,7 +13,7 @@ import InputGroupBody, {
 	InputGroupInput
 } from '../../styled/Input/InputGroup';
 import SubmitButton from '../../styled/common/SubmitButton'
-import UploadFile from '../video/UploadFile';
+import UploadFile from './UploadFile';
 
 const MainDiv = styled.div`
 	background-color: #191B21;
@@ -23,15 +23,6 @@ const MainDiv = styled.div`
 		display: none;
 	}
 `;
-
-const TitleDiv = styled.div`
-	width: 100%;
-	height: 100%;
-	> ::-webkit-scrollbar {
-		display: none;
-	}
-`;
-
 
 export default class Game extends Component {
 	constructor() {
@@ -116,53 +107,53 @@ export default class Game extends Component {
 
 				<CardBody>	
 					{this.state.videos.map( video => (
-					
-						<Card key={video.id}>
-							<div>
-								<video height="100%" width="100%" muted>
-									<source
-										src={video.link}
-										alt="Game Preview"
-									/>
-								</video>
-							</div>
-							{
-								
-								this.state.editingCardId === video.id ? (
-									<TitleDiv>
-										<InputGroupBody>
-											<InputGroupAppend>
-												<p>Video Title</p>
-											</InputGroupAppend>
+						<div key={video.id}>
+							<Card>
+								{/* <div><img height='100%' width='100%' src={props.link} alt="Game Preview"/></div> */}
+								<div>
+									<video height="100%" width="100%" muted>
+										<source
+											src={video.link}
+											alt="Game Preview"
+										/>
+									</video>
+								</div>
+								{
+									this.state.editingCardId === video.id ? (
+										<div>
+											<InputGroupBody>
+												<InputGroupAppend>
+													<p>Video Title</p>
+												</InputGroupAppend>
 
-											<InputGroupInput>
-												<input type="text" 
-													value={this.state.title}
-													onChange={ ( e ) => this.updateTitle( e.target.value ) }/>
-											</InputGroupInput>
-										</InputGroupBody>
+												<InputGroupInput>
+													<input type="text" 
+														value={this.state.title}
+														onChange={ ( e ) => this.updateTitle( e.target.value ) }/>
+												</InputGroupInput>
 
-										<ButtonGroup>
-											<CancelButton>
-												<GoX color="#C40F62" size="35" type="button" onClick={() => { this.cancelEdit() }}/>
-											</CancelButton>
-											<SubmitButton type="button" onClick={() => this.saveEdit()}>Save</SubmitButton>
-										</ButtonGroup>
-									</TitleDiv>
-								)
-									:
-									(
-										<TitleDiv>
-											<p>{video.title}</p>
+											</InputGroupBody>
 											<ButtonGroup>
-												<DeleteButton onClick={() => this.deleteVideo(video.id, video.link)}>Delete</DeleteButton>
-												<SubmitButton type="button" onClick={() => this.editTitle(video.id, video.title)}>Edit</SubmitButton>
+												<SubmitButton type="button" onClick={() => this.saveEdit()}>Save</SubmitButton>
+												<CancelButton>
+													<GoX color="red" size="35" type="button" onClick={() => { this.cancelEdit() }}/>
+												</CancelButton>
 											</ButtonGroup>
-										</TitleDiv>
+										</div>
 									)
-							}
-						</Card>
-						
+										:
+										(
+											<ButtonGroup>
+												<SubmitButton type="button" onClick={() => this.editTitle(video.id, video.title)}>Edit</SubmitButton>
+												<DeleteButton onClick={() => this.deleteVideo(video.id, video.link)}>Delete</DeleteButton>
+											</ButtonGroup>
+										)
+								}
+								
+								
+								
+							</Card>
+						</div>
 					))}
 				</CardBody>
 				<UploadFile 

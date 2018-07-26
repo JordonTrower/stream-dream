@@ -38,6 +38,8 @@ const LoginButton = styled.button`
 
 	width: 80px;
 	height: 35px;
+
+	cursor: pointer;
 `;
 
 class Header extends Component {
