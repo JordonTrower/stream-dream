@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import axios from "axios";
-import propTypes from "prop-types";
+// import propTypes from "prop-types";
+import { withRouter } from 'react-router-dom'
 
-export default class VideoInfoBar extends Component {
+export default withRouter(class VideoInfoBar extends Component {
 	// Under every video will be a a info style section bar. it will display the information on state as well a button for following.
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
-			videoId: +this.props.match.params,
+			// videoId: props.match.params,
 			videoTitle: "",
 			channelId: "",
 			channelName: "",
@@ -105,10 +106,10 @@ export default class VideoInfoBar extends Component {
 			</div>
 		);
 	}
-}
+})
 
-VideoInfoBar.propTypes = {
-	match: propTypes.shape({
-		params: propTypes.shape()
-	}).isRequired
-};
+// VideoInfoBar.propTypes = {
+// 	match: propTypes.shape({
+// 		params: propTypes.shape()
+// 	}).isRequired
+// };

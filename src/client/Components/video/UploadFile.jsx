@@ -70,7 +70,6 @@ export default class UploadFile extends Component {
 	}
 
 	onDrop(media){
-		console.log(media[0])
 		if (media.length === 0) {
 			console.log("File too large. 100mb limit.")
 		} else {

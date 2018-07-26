@@ -10,7 +10,8 @@ export default withRouter(props => (
 		{console.log(props)}
 		<Switch>
 			<Route path="/" component={Home} exact />
-			<Route path="/video/:video_id" component={VideoViewMain} />
+			<Route path="/video/" component={Video} />
+			<Route path="/playing/:video_id" component={VideoViewMain} />
 		</Switch>
 	</Body>
 ));
