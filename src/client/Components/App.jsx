@@ -3,25 +3,22 @@ import { Provider } from 'react-redux';
 
 import React from 'react';
 import Routes from './routes';
-import Header from './Nav/Header';
-import Sidebar from './Nav/Sidebar';
+import Header from './nav/Header';
+import Sidebar from './nav/Sidebar';
 
-import { persistor, store } from "../reduxStore";
-import LoadingView from "./loadingView/LoadingView";
+import { persistor, store } from '../reduxStore';
+import LoadingView from './loadingView/LoadingView';
 
 function App() {
 	return (
-		<Provider store={store} >
-			<PersistGate 
-				loading={LoadingView} 
-				persistor={persistor}
-			>
+		<Provider store={store}>
+			<PersistGate loading={LoadingView} persistor={persistor}>
 				<div className="App">
 					<Header />
 					<Sidebar />
 					<Routes />
 				</div>
-			</PersistGate> 
+			</PersistGate>
 		</Provider>
 	);
 }

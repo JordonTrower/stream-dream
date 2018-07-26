@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
 import GoX from 'react-icons/lib/go/x';
@@ -25,16 +25,40 @@ const ModalHeader = styled.div`
 `;
 
 function Modal(WrappedComponent) {
-	const Internal = props => (
-		<ModalBackDrop onClick={props.closeModal}>
-			<ModalBody onClick={e => e.stopPropagation()}>
-				<ModalHeader>
-					<GoX color="white" size="30px" onClick={props.closeModal} />
-				</ModalHeader>
-				<WrappedComponent {...props} />
-			</ModalBody>
-		</ModalBackDrop>
-	);
+	class Internal extends Component {
+		constructor() {
+			super();
+
+			this.closeOnEscape = this.closeOnEscape.bind(this);
+		}
+
+		componentDidMount() {
+			document.addEventListener('keydown', this.closeOnEscape);
+		}
+
+		closeOnEscape(e) {
+			if (e.keyCode === 27) {
+				this.props.closeModal();
+			}
+		}
+
+		render() {
+			return (
+				<ModalBackDrop onClick={this.props.closeModal}>
+					<ModalBody onClick={e => e.stopPropagation()}>
+						<ModalHeader>
+							<GoX
+								color="white"
+								size="30px"
+								onClick={this.props.closeModal}
+							/>
+						</ModalHeader>
+						<WrappedComponent {...this.props} />
+					</ModalBody>
+				</ModalBackDrop>
+			);
+		}
+	}
 
 	Internal.propTypes = {
 		closeModal: propTypes.func.isRequired

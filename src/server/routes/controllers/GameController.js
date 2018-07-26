@@ -21,7 +21,9 @@ export default {
 	getGames(req, res) {
 		console.log('getGames hit!')
 		const db = DB.connect(res, req);
-		return db.select().table('games');
+		return db.select()
+			.table('games')
+			.then(dbresults => res.send(dbresults));
 	}
 
 }

@@ -3,14 +3,12 @@ import styled from 'styled-components';
 import axios from 'axios';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import GoX from 'react-icons/lib/go/x';
-import GoCheck from 'react-icons/lib/go/check';
-import { setUserProps } from '../../middlwares/redux/reducers/sessionReducer';
-import Modal from '../Modal/Modal';
+import { setUserProps } from '../../../middlwares/redux/reducers/sessionReducer';
+import Modal from '../../Modal/Modal';
 import InputGroupBody, {
 	InputGroupAppend,
 	InputGroupInput
-} from '../../styled/Input/InputGroup';
+} from '../../../styled/Input/InputGroup';
 
 const LogoText = styled.h2`
 	padding-top: 35px;
@@ -32,7 +30,7 @@ const LogoText = styled.h2`
 
 const FormBody = styled.form`
 	width: 100%;
-	height: 415px;
+	height: 100%;
 
 	display: flex;
 	flex-direction: column;
@@ -44,7 +42,7 @@ const SubmitButton = styled.button`
 	border: 1px #1a4fa5 solid;
 	color: #ecede8;
 
-	margin-top: 10px;
+	margin-top: 114px;
 
 	border-radius: 15px;
 
@@ -52,21 +50,18 @@ const SubmitButton = styled.button`
 	height: 35px;
 `;
 
-class RegisterForm extends Component {
+class LoginForm extends Component {
 	constructor() {
 		super();
 
 		this.state = {
 			email: '',
-			displayName: '',
 			password: '',
-			confirmPassword: '',
 			user: {}
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.submit = this.submit.bind(this);
-		this.checkPassword = this.checkPassword.bind(this);
 	}
 
 	handleChange(e) {
@@ -77,36 +72,25 @@ class RegisterForm extends Component {
 	}
 
 	submit(e) {
-		if (this.state.password === this.state.confirmPassword) {
-			axios
-				.post(
-					`${process.env.REACT_APP_API_LOCATION}auth/register`,
-					this.state
-				)
-				.then(res => {
+		axios
+			.post(`${process.env.REACT_APP_API_LOCATION}auth/login`, this.state)
+			.then(res => {
+				if (res.data.response) {
 					this.setState({
-						user: res.data
+						user: res.data.userInfo
 					});
-					if (res.response) {
-						console.log(res);
-						this.props.closeModal();
-						this.props.closeModal();
-					}
-				});
-		}
+					this.props.setUserProps(res.data.userInfo);
+
+					this.props.closeModal();
+				}
+			});
 		e.preventDefault();
-	}
-
-	checkPassword() {
-		const { password, confirmPassword } = this.state;
-
-		return password !== '' && password === confirmPassword;
 	}
 
 	render() {
 		return (
 			<FormBody onSubmit={this.submit}>
-				<LogoText>Register</LogoText>
+				<LogoText>Login</LogoText>
 
 				<InputGroupBody>
 					<InputGroupAppend>
@@ -115,29 +99,12 @@ class RegisterForm extends Component {
 
 					<InputGroupInput>
 						<input
-							autoComplete="email"
 							type="text"
+							autoComplete="email"
 							name="email"
 							placeholder="Email"
 							onChange={this.handleChange}
 							value={this.state.email}
-						/>
-					</InputGroupInput>
-				</InputGroupBody>
-
-				<InputGroupBody>
-					<InputGroupAppend>
-						<p>Display Name</p>
-					</InputGroupAppend>
-
-					<InputGroupInput>
-						<input
-							type="text"
-							autoComplete=""
-							name="displayName"
-							placeholder="Display Name"
-							onChange={this.handleChange}
-							value={this.state.displayName}
 						/>
 					</InputGroupInput>
 				</InputGroupBody>
@@ -150,33 +117,10 @@ class RegisterForm extends Component {
 					<InputGroupInput>
 						<input
 							type="password"
-							autoComplete=""
+							autoComplete="current-password"
 							name="password"
 							onChange={this.handleChange}
 							value={this.state.password}
-						/>
-					</InputGroupInput>
-				</InputGroupBody>
-
-				<InputGroupBody>
-					<InputGroupAppend>
-						<div>
-							Confirm Password
-							{this.checkPassword() ? (
-								<GoCheck color="green" size="35" />
-							) : (
-								<GoX color="red" size="35" />
-							)}
-						</div>
-					</InputGroupAppend>
-
-					<InputGroupInput>
-						<input
-							type="password"
-							autoComplete=""
-							name="confirmPassword"
-							onChange={this.handleChange}
-							value={this.state.confirmPassword}
 						/>
 					</InputGroupInput>
 				</InputGroupBody>
@@ -188,19 +132,20 @@ class RegisterForm extends Component {
 					style={{
 						background: 'transparent',
 						border: '0',
-						margin: '30px'
+						marginTop: '30px'
 					}}
 				>
-					Click here if you want to login
+					Click here if you need to register
 				</button>
 			</FormBody>
 		);
 	}
 }
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
 	switchModal: propTypes.func.isRequired,
-	closeModal: propTypes.func.isRequired
+	closeModal: propTypes.func.isRequired,
+	setUserProps: propTypes.func.isRequired
 };
 
 function mapStateToProps(duckState) {
@@ -213,4 +158,4 @@ function mapStateToProps(duckState) {
 export default connect(
 	mapStateToProps,
 	{ setUserProps }
-)(Modal(RegisterForm));
+)(Modal(LoginForm));

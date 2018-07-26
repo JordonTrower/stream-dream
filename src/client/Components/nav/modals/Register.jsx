@@ -3,12 +3,14 @@ import styled from 'styled-components';
 import axios from 'axios';
 import propTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setUserProps } from '../../middlwares/redux/reducers/sessionReducer';
-import Modal from '../Modal/Modal';
+import GoX from 'react-icons/lib/go/x';
+import GoCheck from 'react-icons/lib/go/check';
+import { setUserProps } from '../../../middlwares/redux/reducers/sessionReducer';
+import Modal from '../../Modal/Modal';
 import InputGroupBody, {
 	InputGroupAppend,
 	InputGroupInput
-} from '../../styled/Input/InputGroup';
+} from '../../../styled/Input/InputGroup';
 
 const LogoText = styled.h2`
 	padding-top: 35px;
@@ -30,7 +32,7 @@ const LogoText = styled.h2`
 
 const FormBody = styled.form`
 	width: 100%;
-	height: 100%;
+	height: 415px;
 
 	display: flex;
 	flex-direction: column;
@@ -42,7 +44,7 @@ const SubmitButton = styled.button`
 	border: 1px #1a4fa5 solid;
 	color: #ecede8;
 
-	margin-top: 114px;
+	margin-top: 10px;
 
 	border-radius: 15px;
 
@@ -50,18 +52,21 @@ const SubmitButton = styled.button`
 	height: 35px;
 `;
 
-class LoginForm extends Component {
+class RegisterForm extends Component {
 	constructor() {
 		super();
 
 		this.state = {
 			email: '',
+			displayName: '',
 			password: '',
+			confirmPassword: '',
 			user: {}
 		};
 
 		this.handleChange = this.handleChange.bind(this);
 		this.submit = this.submit.bind(this);
+		this.checkPassword = this.checkPassword.bind(this);
 	}
 
 	handleChange(e) {
@@ -72,25 +77,35 @@ class LoginForm extends Component {
 	}
 
 	submit(e) {
-		axios
-			.post(`${process.env.REACT_APP_API_LOCATION}auth/login`, this.state)
-			.then(res => {
-				if (res.data.response) {
+		if (this.state.password === this.state.confirmPassword) {
+			axios
+				.post(
+					`${process.env.REACT_APP_API_LOCATION}auth/register`,
+					this.state
+				)
+				.then(res => {
 					this.setState({
-						user: res.data.userInfo
+						user: res.data
 					});
-					this.props.setUserProps(res.data.userInfo); // eslint-disable-line
-
-					this.props.closeModal();
-				}
-			});
+					if (res.response) {
+						console.log(res);
+						this.props.closeModal();
+					}
+				});
+		}
 		e.preventDefault();
+	}
+
+	checkPassword() {
+		const { password, confirmPassword } = this.state;
+
+		return password !== '' && password === confirmPassword;
 	}
 
 	render() {
 		return (
 			<FormBody onSubmit={this.submit}>
-				<LogoText>Login</LogoText>
+				<LogoText>Register</LogoText>
 
 				<InputGroupBody>
 					<InputGroupAppend>
@@ -99,12 +114,29 @@ class LoginForm extends Component {
 
 					<InputGroupInput>
 						<input
-							type="text"
 							autoComplete="email"
+							type="text"
 							name="email"
 							placeholder="Email"
 							onChange={this.handleChange}
 							value={this.state.email}
+						/>
+					</InputGroupInput>
+				</InputGroupBody>
+
+				<InputGroupBody>
+					<InputGroupAppend>
+						<p>Display Name</p>
+					</InputGroupAppend>
+
+					<InputGroupInput>
+						<input
+							type="text"
+							autoComplete=""
+							name="displayName"
+							placeholder="Display Name"
+							onChange={this.handleChange}
+							value={this.state.displayName}
 						/>
 					</InputGroupInput>
 				</InputGroupBody>
@@ -117,10 +149,33 @@ class LoginForm extends Component {
 					<InputGroupInput>
 						<input
 							type="password"
-							autoComplete="current-password"
+							autoComplete=""
 							name="password"
 							onChange={this.handleChange}
 							value={this.state.password}
+						/>
+					</InputGroupInput>
+				</InputGroupBody>
+
+				<InputGroupBody>
+					<InputGroupAppend>
+						<div>
+							Confirm Password
+							{this.checkPassword() ? (
+								<GoCheck color="green" size="35" />
+							) : (
+								<GoX color="red" size="35" />
+							)}
+						</div>
+					</InputGroupAppend>
+
+					<InputGroupInput>
+						<input
+							type="password"
+							autoComplete=""
+							name="confirmPassword"
+							onChange={this.handleChange}
+							value={this.state.confirmPassword}
 						/>
 					</InputGroupInput>
 				</InputGroupBody>
@@ -132,17 +187,17 @@ class LoginForm extends Component {
 					style={{
 						background: 'transparent',
 						border: '0',
-						marginTop: '30px'
+						margin: '30px'
 					}}
 				>
-					Click here if you need to register
+					Click here if you want to login
 				</button>
 			</FormBody>
 		);
 	}
 }
 
-LoginForm.propTypes = {
+RegisterForm.propTypes = {
 	switchModal: propTypes.func.isRequired,
 	closeModal: propTypes.func.isRequired
 };
@@ -157,4 +212,4 @@ function mapStateToProps(duckState) {
 export default connect(
 	mapStateToProps,
 	{ setUserProps }
-)(Modal(LoginForm));
+)(Modal(RegisterForm));

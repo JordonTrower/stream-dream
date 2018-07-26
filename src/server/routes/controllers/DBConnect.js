@@ -1,19 +1,18 @@
-import knex from 'knex';
-import 'dotenv/config';
-
+import knex from "knex";
+import "dotenv/config";
 
 export default {
-	connect(res,req){
+	connect(res, req) {
 		let db = null;
 
 		if (res !== null) {
-			db = req.app.get('db');
+			db = req.app.get("db");
 		} else {
 			db = knex({
-				client: 'pg',
+				client: "pg",
 				connection: process.env.DB_CONNECTION_STRING
-			})
+			});
 		}
-		return db
+		return db;
 	}
-}
+};
