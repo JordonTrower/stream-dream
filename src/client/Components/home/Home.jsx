@@ -3,12 +3,12 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Card from "../../styled/common/card/card";
-import CardBody from "../../styled/common/card/body";
+import Card from '../../styled/common/card/card';
+import CardBody from '../../styled/common/card/body';
 import Carousel from '../carousel/Carousel';
 
 const HomeOneDiv = styled.div`
-	background-color: #191B21;
+	background-color: #191b21;
 	width: 100%;
 	height: 100%;
 	> ::-webkit-scrollbar {
@@ -25,10 +25,10 @@ const HomeGamesContainer = styled.div`
 `;
 
 const GameImageContainer = styled.div`
-	background-color: #191B21;
+	background-color: #191b21;
 	height: 17rem;
 	width: 13rem;
-	img{
+	img {
 		max-height: 100%;
 		max-width: 100%;
 		cursor: pointer;
@@ -45,56 +45,54 @@ export default class Home extends Component {
 		this.state = {
 			games: [],
 			carouselVideos: []
-		}
+		};
 		this.getGames = this.getGames.bind(this);
 		this.getCarouselVideos = this.getCarouselVideos.bind(this);
 	}
 
 	componentDidMount() {
-		this.getGames()
-		this.getCarouselVideos()
-
+		this.getGames();
+		this.getCarouselVideos();
 	}
 
 	getCarouselVideos() {
-		axios.get('/api/carouselVideos')
-			.then(res => {
-				console.log(res);
-				this.setState({
-					carouselVideos: res.data
-				})
-			})
+		axios.get('/api/carouselVideos').then(res => {
+			console.log(res);
+			this.setState({
+				carouselVideos: res.data
+			});
+		});
 	}
 
-	getGames(){
-		axios.get(`${process.env.REACT_APP_API_LOCATION}games`)
-			.then(res => {
-				this.setState({
-					games: res.data
-				})
-			})
+	getGames() {
+		axios.get(`${process.env.REACT_APP_API_LOCATION}games`).then(res => {
+			this.setState({
+				games: res.data
+			});
+		});
 	}
-	
+
 	render() {
 		return (
 			<HomeOneDiv>
-				<Carousel carouselItems={this.state.carouselVideos}/>
-				<br/>
-				<br/>
+				<Carousel carouselItems={this.state.carouselVideos} />
+				<br />
+				<br />
 				<HomeGamesContainer>
 					<CardBody>
-						{ this.state.games.map((game) => (
-							<Card key={game.title} >
-								<GameTitle>{game.title}</GameTitle>
-								<GameImageContainer>
-									<Link 
-										to={{pathname: `/games/${game.id}`}}
-									>
-										<img alt={game.title} src={game.picture}/>
-									</Link>
-								</GameImageContainer>
-							</Card>
-						)) }
+						{this.state.games.map(game => (
+							<Link to={{ pathname: `/games/${game.id}` }}>
+								<Card key={game.title}>
+									<GameTitle>{game.title}</GameTitle>
+									<GameImageContainer>
+										<img
+											alt={game.title}
+											src={game.picture}
+										/>
+									</GameImageContainer>
+								</Card>
+							</Link>
+						))}
 					</CardBody>
 				</HomeGamesContainer>
 			</HomeOneDiv>

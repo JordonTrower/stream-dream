@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 
-export default withRouter(class VideoInfoBar extends Component {
+export default class VideoInfoBar extends Component {
 	// Under every video will be a a info style section bar. it will display the information on state as well a button for following.
 	constructor(props) {
 		super(props);
 		this.state = {
 			videoId: this.props.video_id,
-			videoTitle: "",
-			channelId: "",
-			channelName: "",
-			channelAvatar: "",
-			channelVideosTotal: "",
-			channelFollowersTotal: "",
+			videoTitle: '',
+			channelId: '',
+			channelName: '',
+			channelAvatar: '',
+			channelVideosTotal: '',
+			channelFollowersTotal: '',
 			followed: false
 		};
 		this.handleFollowButtonClick = this.handleFollowButtonClick.bind(this);
@@ -23,13 +23,13 @@ export default withRouter(class VideoInfoBar extends Component {
 
 	componentDidMount() {
 		// will make a call to the backend to get the info need for state. State is Displaid bellow the video in an info bar.
-		console.log("we got here 2", this.props.video_id);
+		console.log('we got here 2', this.props.video_id);
 		axios
-			.post("/api/get-info/", {
+			.post('/api/get-info/', {
 				video_id: this.state.videoId
 			})
 			.then(res => {
-				console.log("then", res.data.title);
+				console.log('then', res.data.title);
 				this.setState({
 					videoTitle: res.data.title,
 					channelId: res.data.created_by
@@ -37,11 +37,11 @@ export default withRouter(class VideoInfoBar extends Component {
 			})
 			.then(() => {
 				axios
-					.post("/api/get-channel-info/", {
+					.post('/api/get-channel-info/', {
 						channel_id: this.state.channelId
 					})
 					.then(res2 => {
-						console.log("agaiiiiiiiiiiiin", res2.data);
+						console.log('agaiiiiiiiiiiiin', res2.data);
 						this.setState({
 							channelName: res2.data.display_name,
 							channelAvatar: res2.data.avatar,
@@ -53,7 +53,7 @@ export default withRouter(class VideoInfoBar extends Component {
 			});
 
 		axios
-			.post("/api/if-followed/", { channel_id: this.state.channelId })
+			.post('/api/if-followed/', { channel_id: this.state.channelId })
 			.then(res => {
 				this.setState({
 					followed: res.data
@@ -73,14 +73,14 @@ export default withRouter(class VideoInfoBar extends Component {
 					Follow
 				</button>
 			);
-		} else if (this.state.followed === "Please Log In") {
+		} else if (this.state.followed === 'Please Log In') {
 			return <p>Please Log In</p>;
 		}
 		return <p>{this.state.followed}</p>;
 	}
 
 	handleFollowButtonClick() {
-		axios.post("/follow/", { following: this.state.channelId });
+		axios.post('/follow/', { following: this.state.channelId });
 		this.setState({
 			followed: true
 		});
@@ -109,7 +109,7 @@ export default withRouter(class VideoInfoBar extends Component {
 			</div>
 		);
 	}
-})
+}
 
 VideoInfoBar.propTypes = {
 	video_id: PropTypes.string.isRequired
