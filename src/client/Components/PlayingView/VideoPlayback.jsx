@@ -1,23 +1,27 @@
 import React, { Component } from "react";
 import axios from "axios";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
+// import ReactPlayer from 'react-player';
 
 export default class VideoPlayBack extends Component {
 	// this component is for getting and playing the video. Nothing more, nothing less.
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			videoScource: ""
 		};
 	}
 
 	componentDidMount() {
-		console.log(this.state); // need to mke an axios call to get video info we are using +this.props.match.params
+		console.log("we got here", this.state); // need to mke an axios call to get video info we are using +this.props.match.params
 		axios
-			.get("/video/", { video_id: +this.props.match.params })
+			.post("/api/get-video", {
+				video_id: this.props.video_id
+			})
 			.then(res => {
+				console.log("video playback res", res.data.link);
 				this.setState({
-					videoScource: res.data.video.link
+					videoScource: res.data.link
 				});
 			});
 	}
@@ -26,17 +30,18 @@ export default class VideoPlayBack extends Component {
 		return (
 			<div className="TitleVideo">
 				{/* height and width are the correct values. the display method may change. ie video instead of ifram or something like that. */}
-				<iframe
+				<video //eslint-disable-line
 					width="1280px"
 					height="714px"
 					src={this.state.videoScource}
 					frameBorder="0"
-					allow="autoplay; encrypted-media"
+					// allow="autoplay; encrypted-media"
 					title="videoPlaying"
 					allowFullScreen
+					controls
 				>
 					Doesnt support iframe
-				</iframe>
+				</video>
 				<hr />
 			</div>
 		);
@@ -44,7 +49,5 @@ export default class VideoPlayBack extends Component {
 }
 
 VideoPlayBack.propTypes = {
-	match: propTypes.shape({
-		params: propTypes.shape()
-	}).isRequired
+	video_id: PropTypes.string.isRequired
 };
