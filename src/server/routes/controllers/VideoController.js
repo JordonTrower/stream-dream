@@ -46,7 +46,7 @@ export default {
 		if (!_.isNil(req.session.userId)) {
 			userid = req.session.userId
 		}
-
+		console.log(req.session);
 		const db = DB.connect(
 			res,
 			req
