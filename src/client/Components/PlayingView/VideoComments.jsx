@@ -1,39 +1,57 @@
 import React, { Component } from "react";
 import axios from "axios";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 
 export default class VideoComments extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			commentsList: [],
 			userDisplayName: "",
 			userAvatar: "",
 			userInput: ""
 		};
+		this.commentsMapped = this.commentsMapped.bind(this);
 	}
 
 	componentDidMount() {
 		console.log(this.state);
 		axios
-			.get("/getcomments/", { video_id: +this.props.match.params }) // eslint-dissable-line
+			.post("/api/get-comments/", {
+				video_id: this.props.video_id
+			})
 			.then(res => {
 				// making a call to the backend for the comments and setting state with res
+				console.log("got the list ", res.data);
 				this.setState({
-					commentsList: res.data.comments
+					commentsList: res.data
 				});
 			});
 	}
 
-	render() {
-		const commentsMapped = this.state.commentsList.map(comment => (
-			<div key="Comment">
-				<p>
+	commentsMapped() {
+		if (this.state.commentsList === []) {
+			return (
+				<p>There are no comments for this video yet! Be the First!</p>
+			);
+		} else if (this.state.commentsList === undefined) {
+			return (
+				<p>There seems to be an issue retrieve the comments! Sorry!</p>
+			);
+		}
+
+		return this.state.commentsList.map((comment, i) => {
+			const desI = i;
+			return (
+				<div key={`Comment${desI}`}>
 					<img src={comment.avatar} alt="" />
 					{comment.created_by} said: <p>{comment.comment}</p>
-				</p>
-			</div>
-		));
+				</div>
+			);
+		});
+	}
+
+	render() {
 		return (
 			<div className="Comments">
 				<div className="NewComment">
@@ -45,16 +63,12 @@ export default class VideoComments extends Component {
 						<p>{this.state.userDisplayName} Says:</p> <input />
 					</div>
 				</div>
-				<div className="CommentsSection">
-					<commentsMapped />
-				</div>
+				<div className="CommentsSection">{this.commentsMapped()}</div>
 			</div>
 		);
 	}
 }
 
 VideoComments.propTypes = {
-	match: propTypes.shape({
-		params: propTypes.shape()
-	}).isRequired
+	video_id: PropTypes.string.isRequired
 };
