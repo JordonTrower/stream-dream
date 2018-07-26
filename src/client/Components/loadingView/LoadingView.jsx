@@ -2,14 +2,14 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const LoadingViewOneDiv = styled.div`
-    /* background-color: #191B21; */
-    display: flex;
-    background-image: linear-gradient(1deg, #191B21, #191B21);
-    background-repeat: repeat;
-    height: 100vh;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+	/* background-color: #191B21; */
+	display: flex;
+	background-image: linear-gradient(1deg, #191b21, #191b21);
+	background-repeat: repeat;
+	height: 100vh;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 `;
 
 const floatLoadingText = keyframes`
@@ -21,19 +21,19 @@ const floatLoadingText = keyframes`
 `;
 
 const LoadingText = styled.div`
-    display: flex; 
-    justify-content: center;
-    flex-direction: column;
-    height: 10rem;
-    font-size: 3rem;
-    color: #ECEDE8;
-    animation: ${floatLoadingText} 3s linear infinite;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	height: 10rem;
+	font-size: 3rem;
+	color: #ecede8;
+	animation: ${floatLoadingText} 3s linear infinite;
 `;
 
-export default function LoadingView(){
-	return (
-		<LoadingViewOneDiv >
-			<LoadingText >LOADING...</LoadingText>
-		</LoadingViewOneDiv>
-	)
-}
+const LoadingView = () => (
+	<LoadingViewOneDiv>
+		<LoadingText>LOADING...</LoadingText>
+	</LoadingViewOneDiv>
+);
+
+export default LoadingView;

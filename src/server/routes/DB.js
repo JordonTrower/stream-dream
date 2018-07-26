@@ -1,18 +1,18 @@
-import express from "express";
-import multer from "multer";
-import GameController from "./controllers/GameController";
-import S3Controller from "./controllers/S3Controller";
-import VideoController from "./controllers/VideoController";
-import SearchController from "./controllers/SearchController";
-import UserController from "./controllers/UserController";
-import PlayingController from "./controllers/PlayingController";
+import express from 'express';
+import multer from 'multer';
+import GameController from './controllers/GameController';
+import S3Controller from './controllers/S3Controller';
+import VideoController from './controllers/VideoController';
+import SearchController from './controllers/SearchController';
+import UserController from './controllers/UserController';
+import PlayingController from './controllers/PlayingController';
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
 // GAMES
-router.get("/channels", GameController.getGames);
-router.post("/channel", GameController.addGame);
+router.get('/channels', GameController.getGames);
+router.post('/channel', GameController.addGame);
 
 // S3
 router.delete("/s3video", S3Controller.deleteMedia);
@@ -29,7 +29,9 @@ router.put("/video", VideoController.updateVideoTitle);
 router.post(`/search`, SearchController.searchBar);
 
 // USERS
-router.post("/change-profile-picture", UserController.updateProfilePicture);
+router.post('/change-profile-picture', UserController.updateProfilePicture);
+router.get('/user/videos/:user_id', UserController.getVideos);
+router.get('/user/:user_id/follows', UserController.getFollows);
 
 // PLAYINNG VIEW
 router.post("/get-video", PlayingController.getVideoLink); // for the video itself

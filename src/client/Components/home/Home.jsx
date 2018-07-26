@@ -67,7 +67,7 @@ export default class Home extends Component {
 				<br/>
 				<HomeLiveContainer>
 					{carouselItems2.map((goose) => (
-						<img style={{height: '10rem', width: '15rem', margin: '2rem'}} alt={goose.title} src={goose.link}/>
+						<img key={`goose-${goose.title}`}style={{height: '10rem', width: '15rem', margin: '2rem'}} alt={goose.title} src={goose.link}/>
 					)) }
 				</HomeLiveContainer>
 			</HomeOneDiv>
