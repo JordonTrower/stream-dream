@@ -1,21 +1,19 @@
 import DB from "./DBConnect";
 
 export default {
-	getVideo(req, res) {
+	getVideoLink(req, res) {
 		const db = DB.connect(
 			res,
 			req
 		);
-		console.log(req.params.id);
+
 		return db
 			.select("link")
 			.from("videos")
-			.where({
-				id: req.params.id
-			})
+			.where("id", req.body.video_id)
 			.catch(error => console.log(error))
 			.then(video => {
-				res.send(video);
+				res.send(video[0]);
 			});
 	},
 
@@ -24,15 +22,15 @@ export default {
 			res,
 			req
 		);
+
 		return db
 			.select("title", "created_by")
 			.from("videos")
 			.where({
-				id: req.params.id
+				id: req.body.video_id
 			})
 			.catch(error => console.log(error))
 			.then(video => {
-				console.log(video[0]);
 				res.send(video[0]);
 			});
 	},
@@ -47,7 +45,7 @@ export default {
 
 		db.select("display_name", "avatar")
 			.from("users")
-			.where({ id: req.params.channel_id })
+			.where({ id: req.body.channel_id })
 			.catch(error => console.log(error))
 			.then(userInfo => {
 				fullRes = userInfo;
@@ -55,7 +53,7 @@ export default {
 				db("videos")
 					.count("*")
 					.where({
-						created_by: req.params.channel_id
+						created_by: req.body.channel_id
 					})
 					.catch(error => console.log(error))
 					.then(totalVideos => {
@@ -63,7 +61,7 @@ export default {
 						db("followings")
 							.count("*")
 							.where({
-								following: req.params.channel_id
+								following: req.body.channel_id
 							})
 							.catch(error => console.log(error))
 							.then(totalFollowerws => {
@@ -81,8 +79,6 @@ export default {
 			req
 		);
 
-		console.log(req.params);
-
 		if (req.session.userId) {
 			db("followings")
 				.select("*")
@@ -90,14 +86,13 @@ export default {
 					user: req.session.userId
 				})
 				.andWhere({
-					following: req.params.channel_id
+					following: req.body.channel_id
 				})
 				.catch(error => {
 					console.log(error);
 					res.send("there was an error");
 				})
 				.then(arr => {
-					console.log(arr[0]);
 					if (arr[0]) {
 						res.send(true);
 					} else {
@@ -108,13 +103,11 @@ export default {
 		res.send("Please Log In");
 	},
 
-	NewFollow(req, res) {
+	newFollow(req, res) {
 		const db = DB.connect(
 			res,
 			req
 		);
-
-		console.log("we got here");
 
 		return db("followings")
 			.insert({
@@ -130,13 +123,11 @@ export default {
 			});
 	},
 
-	UnFollow(req, res) {
+	unFollow(req, res) {
 		const db = DB.connect(
 			res,
 			req
 		);
-
-		console.log("we got here", req.query.channel_id);
 
 		return db("followings")
 			.where("user", 1)
@@ -156,6 +147,7 @@ export default {
 			res,
 			req
 		);
+
 		return db("comments")
 			.join("users", "users.id", "=", "comments.created_by")
 			.select(
@@ -166,12 +158,11 @@ export default {
 				"comments.updated_at"
 			)
 			.where({
-				video_id: req.params.id
+				video_id: req.body.video_id
 			})
 			.orderBy("updated_at", "desc")
 			.catch(error => console.log(error))
 			.then(comments => {
-				console.log(comments);
 				res.send(comments);
 			});
 	}

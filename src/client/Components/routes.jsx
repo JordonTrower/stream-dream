@@ -3,18 +3,19 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import Home from './home/Home';
 import Video from './video/Video';
 import Body from '../styled/common/Body';
-import GamesView from './gamesView/GamesView';
-import VideoViewMain from "../Components/PlayingView/VideoViewMain";
+import VideoViewMain from '../Components/PlayingView/VideoViewMain';
+import UserVideoDisplay from './user/VideoDisplay';
 
 
 export default withRouter(props => (
-	<Body rightSidebar={props.location.pathname === '/Control'}>
+	<Body
+		rightSidebar={props.location.pathname.toLowerCase() === '/upload-video'}
+	>
 		<Switch>
 			<Route path="/" component={Home} exact />
 			<Route path="/video/:video_id" component={VideoViewMain} />
-			<Route path="/video/" component={Video} />
-			{/* <Route path="/video/:video_id" component={Video} /> /video/, {id: +this.props.match.params} */}
-			<Route path="/games/:game_id" component={GamesView} />
+			<Route path="/upload-video" component={Video} />
+			<Route path="/users/:user_id" component={UserVideoDisplay} />
 		</Switch>
 	</Body>
 ));

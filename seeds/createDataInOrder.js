@@ -33,8 +33,8 @@ for (let i = 0; i < 30; i += 1) {
 
 const followings = [
 	{
-		user: 1,
-		following: 2
+		user: 2,
+		following: 1
 	}
 ];
 
