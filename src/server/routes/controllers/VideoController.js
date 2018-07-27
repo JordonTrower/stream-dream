@@ -4,10 +4,15 @@ import DB from './DBConnect';
 export default {
 	addVideo(req, res) {
 		// added to support end point testing
-		let userid = "2";
-		if (!_.isNil(req.session.userId)) {
+		let userid = null;
+		if (_.isNil(res)) {
+			userid = "2";
+		} else if (!_.isNil(req.session.userId)) {
 			userid = req.session.userId
+		}else{
+			return res.send([])
 		}
+
 
 		const { title, link, game_id } = req.body;
 
@@ -42,9 +47,14 @@ export default {
 	getCarouselVideos(req, res) {
 
 		// added to support end point testing
-		let userid = "2";
-		if (!_.isNil(req.session.userId)) {
+
+		let userid = null;
+		if (_.isNil(res)) {
+			userid = "2";
+		} else if (!_.isNil(req.session.userId)) {
 			userid = req.session.userId
+		}else{
+			return res.send([])
 		}
 		console.log(req.session);
 		const db = DB.connect(
@@ -73,11 +83,14 @@ export default {
 	},
 
 	getVideos(req, res) {
-				
-		// added to support end point testing
-		let userid = "2";
-		if (!_.isNil(req.session.userId)) {
+
+		let userid = null;
+		if (_.isNil(res)) {
+			userid = "2";
+		} else if (!_.isNil(req.session.userId)) {
 			userid = req.session.userId
+		}else{
+			return res.send([])
 		}
 
 		const db = DB.connect(
