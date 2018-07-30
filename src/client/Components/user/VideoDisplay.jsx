@@ -106,7 +106,10 @@ class VideoDisplay extends Component {
 				<CardBody>
 					{console.log(this.state.userInfo)}
 					{this.state.userVideos.map(video => (
-						<Link to={`/video/${video.id}`}>
+						<Link
+							key={`video-${video.id}`}
+							to={`/video/${video.id}`}
+						>
 							<PolaroidContainer key={video.id}>
 								<video height="173.5px" width="95%" muted>
 									<source

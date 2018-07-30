@@ -81,8 +81,11 @@ export default class Home extends Component {
 				<HomeGamesContainer>
 					<CardBody>
 						{this.state.games.map(game => (
-							<Link to={{ pathname: `/games/${game.id}` }}>
-								<Card key={game.title}>
+							<Link
+								key={game.title}
+								to={{ pathname: `/games/${game.id}` }}
+							>
+								<Card>
 									<GameTitle>{game.title}</GameTitle>
 									<GameImageContainer>
 										<img

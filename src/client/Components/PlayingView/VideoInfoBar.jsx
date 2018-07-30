@@ -25,29 +25,24 @@ export default class VideoInfoBar extends Component {
 		// will make a call to the backend to get the info need for state. State is Displaid bellow the video in an info bar.
 		console.log('we got here 2', this.props.video_id);
 		axios
-			.post('/api/get-info/', {
-				video_id: this.state.videoId
-			})
-			.then(res => {
-				console.log('then', res.data.title);
+			.get(`/api/get-info/${this.state.videoId}`)
+			.then(videoRes => {
 				this.setState({
-					videoTitle: res.data.title,
-					channelId: res.data.created_by
+					videoTitle: videoRes.data.title,
+					channelId: videoRes.data.created_by
 				});
 			})
 			.then(() => {
 				axios
-					.post('/api/get-channel-info/', {
-						channel_id: this.state.channelId
-					})
-					.then(res2 => {
-						console.log('agaiiiiiiiiiiiin', res2.data);
+					.get(`/api/get-channel-info/${this.state.channelId}`)
+					.then(channelRes => {
 						this.setState({
-							channelName: res2.data.display_name,
-							channelAvatar: res2.data.avatar,
-							channelVideosTotal: res2.data.channelVideosTotal,
+							channelName: channelRes.data.display_name,
+							channelAvatar: channelRes.data.avatar,
+							channelVideosTotal:
+								channelRes.data.channelVideosTotal,
 							channelFollowersTotal:
-								res2.data.channelFollowersTotal
+								channelRes.data.channelFollowersTotal
 						});
 					});
 			});

@@ -66,12 +66,11 @@ export default {
 			return db('followings')
 				.where('user', userId)
 				.join('users', 'users.id', '=', 'followings.following')
-				.leftJoin('videos', 'videos.created_by', '=', 'users.id')
-				.orderBy('videos.created_at')
+				.orderBy('users.display_name')
 				.select('users.id', 'users.display_name')
 				.then(dbRes => res.send(dbRes));
 		}
 
-		return [];
+		return res.send([]);
 	}
 };

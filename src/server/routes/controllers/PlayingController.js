@@ -1,4 +1,5 @@
-import DB from "./DBConnect";
+import _ from 'lodash';
+import DB from './DBConnect';
 
 export default {
 	getVideoLink(req, res) {
@@ -7,13 +8,13 @@ export default {
 			req
 		);
 
-		return db
-			.select("link")
-			.from("videos")
-			.where("id", req.body.video_id)
+		return db('videos')
+			.where('id', req.params.video_id)
+			.select('link')
+			.first()
 			.catch(error => console.log(error))
 			.then(video => {
-				res.send(video[0]);
+				res.send(video);
 			});
 	},
 
@@ -23,15 +24,15 @@ export default {
 			req
 		);
 
-		return db
-			.select("title", "created_by")
-			.from("videos")
+		return db('videos')
+			.select('title', 'created_by')
 			.where({
-				id: req.body.video_id
+				id: req.params.video_id
 			})
+			.first()
 			.catch(error => console.log(error))
-			.then(video => {
-				res.send(video[0]);
+			.then(videoInfo => {
+				res.send(videoInfo);
 			});
 	},
 
@@ -43,25 +44,26 @@ export default {
 
 		let fullRes = [];
 
-		db.select("display_name", "avatar")
-			.from("users")
-			.where({ id: req.body.channel_id })
+		db('users')
+			.select('display_name', 'avatar')
+			.where({ id: req.params.channel_id })
 			.catch(error => console.log(error))
 			.then(userInfo => {
 				fullRes = userInfo;
 
-				db("videos")
-					.count("*")
+				db('videos')
+					.count('*')
 					.where({
-						created_by: req.body.channel_id
+						created_by: req.params.channel_id
 					})
 					.catch(error => console.log(error))
 					.then(totalVideos => {
 						fullRes[0].channelVideosTotal = +totalVideos[0].count;
-						db("followings")
-							.count("*")
+
+						db('followings')
+							.count('*')
 							.where({
-								following: req.body.channel_id
+								following: req.params.channel_id
 							})
 							.catch(error => console.log(error))
 							.then(totalFollowerws => {
@@ -80,27 +82,22 @@ export default {
 		);
 
 		if (req.session.userId) {
-			db("followings")
-				.select("*")
+			return db('followings')
+				.select('*')
 				.where({
 					user: req.session.userId
 				})
 				.andWhere({
 					following: req.body.channel_id
 				})
+				.first()
 				.catch(error => {
 					console.log(error);
-					res.send("there was an error");
+					res.send('there was an error');
 				})
-				.then(arr => {
-					if (arr[0]) {
-						res.send(true);
-					} else {
-						res.send(false);
-					}
-				});
+				.then(userFollowed => res.send(!_.isEmpty(userFollowed)));
 		}
-		res.send("Please Log In");
+		return res.send('Please Log In');
 	},
 
 	newFollow(req, res) {
@@ -109,17 +106,17 @@ export default {
 			req
 		);
 
-		return db("followings")
+		return db('followings')
 			.insert({
 				user: req.session.userId, // req.body.user,
 				following: req.body.following
 			})
 			.catch(error => {
 				console.log(error);
-				res.send("there was an error");
+				res.send('there was an error');
 			})
 			.then(() => {
-				res.send("we did it");
+				res.send('we did it');
 			});
 	},
 
@@ -129,16 +126,16 @@ export default {
 			req
 		);
 
-		return db("followings")
-			.where("user", 1)
-			.andWhere("following", req.query.channel_id)
+		return db('followings')
+			.where('user', 1)
+			.andWhere('following', req.body.channel_id)
 			.delete()
 			.catch(error => {
 				console.log(error);
-				res.send("there was an error");
+				res.send('there was an error');
 			})
 			.then(() => {
-				res.send("deleted");
+				res.send('deleted');
 			});
 	},
 
@@ -148,19 +145,19 @@ export default {
 			req
 		);
 
-		return db("comments")
-			.join("users", "users.id", "=", "comments.created_by")
+		return db('comments')
+			.join('users', 'users.id', '=', 'comments.created_by')
 			.select(
-				"users.display_name",
-				"users.avatar",
-				"comments.comment",
-				"comments.created_at",
-				"comments.updated_at"
+				'users.display_name',
+				'users.avatar',
+				'comments.comment',
+				'comments.created_at',
+				'comments.updated_at'
 			)
 			.where({
-				video_id: req.body.video_id
+				video_id: req.params.video_id
 			})
-			.orderBy("updated_at", "desc")
+			.orderBy('updated_at', 'desc')
 			.catch(error => console.log(error))
 			.then(comments => {
 				res.send(comments);
