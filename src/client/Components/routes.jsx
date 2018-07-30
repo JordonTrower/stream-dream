@@ -5,7 +5,7 @@ import Video from './video/Video';
 import Body from '../styled/common/Body';
 import VideoViewMain from '../Components/PlayingView/VideoViewMain';
 import UserVideoDisplay from './user/VideoDisplay';
-
+import GameDisplay from './gamesView/GamesView';
 
 export default withRouter(props => (
 	<Body
@@ -16,6 +16,7 @@ export default withRouter(props => (
 			<Route path="/video/:video_id" component={VideoViewMain} />
 			<Route path="/upload-video" component={Video} />
 			<Route path="/users/:user_id" component={UserVideoDisplay} />
+			<Route path="/games/:game_id" component={GameDisplay} />
 		</Switch>
 	</Body>
 ));

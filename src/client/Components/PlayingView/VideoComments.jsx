@@ -1,32 +1,27 @@
-import React, { Component } from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 
 export default class VideoComments extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			commentsList: [],
-			userDisplayName: "",
-			userAvatar: "",
-			userInput: ""
+			userDisplayName: '',
+			userAvatar: ''
+			// userInput: ''
 		};
 		this.commentsMapped = this.commentsMapped.bind(this);
 	}
 
 	componentDidMount() {
-		console.log(this.state);
-		axios
-			.post("/api/get-comments/", {
-				video_id: this.props.video_id
-			})
-			.then(res => {
-				// making a call to the backend for the comments and setting state with res
-				console.log("got the list ", res.data);
-				this.setState({
-					commentsList: res.data
-				});
+		axios.get(`/api/get-comments/${this.props.video_id}`).then(res => {
+			// making a call to the backend for the comments and setting state with res
+
+			this.setState({
+				commentsList: res.data
 			});
+		});
 	}
 
 	commentsMapped() {

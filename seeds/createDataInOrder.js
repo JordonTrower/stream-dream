@@ -35,7 +35,9 @@ const followings = [
 	{
 		user: 2,
 		following: 1
-	}
+	},
+	{user: 2,
+	following: 2}
 ];
 
 for (let i = 0; i < 12; i += 1) {

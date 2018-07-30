@@ -64,7 +64,10 @@ class Sidebar extends Component {
 
 				<StyledLinkGroup>
 					{this.state.follows.map(user => (
-						<StlyedInfo to={`/users/${user.id}`}>
+						<StlyedInfo
+							key={`user-${user.id}`}
+							to={`/users/${user.id}`}
+						>
 							{user.display_name}
 						</StlyedInfo>
 					))}

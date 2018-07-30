@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
 // import ReactPlayer from 'react-player';
 
 export default class VideoPlayBack extends Component {
@@ -8,22 +8,16 @@ export default class VideoPlayBack extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			videoScource: ""
+			videoScource: ''
 		};
 	}
 
 	componentDidMount() {
-		console.log("we got here", this.state); // need to mke an axios call to get video info we are using +this.props.match.params
-		axios
-			.post("/api/get-video", {
-				video_id: this.props.video_id
-			})
-			.then(res => {
-				console.log("video playback res", res.data.link);
-				this.setState({
-					videoScource: res.data.link
-				});
+		axios.get(`/api/get-video/${this.props.video_id}`).then(res => {
+			this.setState({
+				videoScource: res.data.link
 			});
+		});
 	}
 
 	render() {

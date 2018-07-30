@@ -4,15 +4,16 @@ import DB from './DBConnect';
 export default {
 	addVideo(req, res) {
 		// added to support end point testing
-		let userid = null;
-		if (_.isNil(res)) {
-			userid = "2";
-		} else if (!_.isNil(req.session.userId)) {
-			userid = req.session.userId
-		}else{
-			return res.send([])
-		}
 
+		let userid = null;
+
+		if (_.isNil(res)) {
+			userid = '2';
+		} else if (!_.isNil(req.session.userId)) {
+			userid = req.session.userId;
+		} else {
+			return res.send([]);
+		}
 
 		const { title, link, game_id } = req.body;
 
@@ -21,7 +22,7 @@ export default {
 			req
 		);
 
-		db('videos')
+		return db('videos')
 			.insert({
 				created_by: userid,
 				game_id,
@@ -37,6 +38,7 @@ export default {
 			res,
 			req
 		);
+
 		return db('videos')
 			.where('id', req.params.id)
 			.del()
@@ -45,16 +47,16 @@ export default {
 	},
 
 	getCarouselVideos(req, res) {
-
 		// added to support end point testing
 
 		let userid = null;
+
 		if (_.isNil(res)) {
-			userid = "2";
+			userid = '2';
 		} else if (!_.isNil(req.session.userId)) {
-			userid = req.session.userId
-		}else{
-			return res.send([])
+			userid = req.session.userId;
+		} else {
+			return res.send([]);
 		}
 
 		const db = DB.connect(
@@ -62,42 +64,35 @@ export default {
 			req
 		);
 
-		// if (!_.isNil(req.session.userId)) {
-		return (
-			db
-				.select('link', 'id')
-				.from('videos')
-				// .where({
-				// 	created_by: req.session.userId
-				// })
-				.orderBy('created_at', 'desc')
-				.limit(5)
-				.catch(error => console.log(error))
-				.then(dbresults => {
-					res.send(dbresults);
-				})
-		);
-		// }
-
-		// return res.send([]);
+		return db
+			.select('link', 'id')
+			.from('videos')
+			.where({
+				created_by: userid
+			})
+			.orderBy('created_at', 'desc')
+			.limit(5)
+			.catch(error => console.log(error))
+			.then(dbresults => {
+				res.send(dbresults);
+			});
 	},
 
 	getVideos(req, res) {
-
 		let userid = null;
+
 		if (_.isNil(res)) {
-			userid = "2";
+			userid = '2';
 		} else if (!_.isNil(req.session.userId)) {
-			userid = req.session.userId
-		}else{
-			return res.send([])
+			userid = req.session.userId;
+		} else {
+			return res.send([]);
 		}
 
 		const db = DB.connect(
 			res,
 			req
 		);
-
 
 		return db('videos')
 			.where({
@@ -105,7 +100,6 @@ export default {
 			})
 			.catch(error => console.log(error))
 			.then(dbresults => res.send(dbresults));
-	
 	},
 
 	updateVideoTitle(req, res) {
@@ -113,6 +107,7 @@ export default {
 			res,
 			req
 		);
+
 		return db('videos')
 			.where({
 				id: req.body.id
@@ -125,15 +120,20 @@ export default {
 	},
 
 	getVideosByGameId(req, res) {
-
 		const db = DB.connect(
-			req, 
+			req,
 			res
 		);
+
 		return db('videos')
 			.join('games', 'videos.game_id', '=', 'games.id')
-			.select('videos.id', 'videos.title', 'videos.game_id', 'videos.link')
-			.where( 'games.id', req.params.game_id )
-			.then((dbResults) => res.send(dbResults));
+			.select(
+				'videos.id',
+				'videos.title',
+				'videos.game_id',
+				'videos.link'
+			)
+			.where('games.id', req.params.game_id)
+			.then(dbResults => res.send(dbResults));
 	}
 };
