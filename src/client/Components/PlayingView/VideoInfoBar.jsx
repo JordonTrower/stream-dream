@@ -1,18 +1,15 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
-import PropTypes from "prop-types";
-import commonCSS from '../../styled/common/commonCSS'
-import VideoMainDiv from '../../styled/Playing/VideoInfoMain'
-
-
+import PropTypes from 'prop-types';
+import commonCSS from '../../styled/common/commonCSS';
+import VideoMainDiv from '../../styled/Playing/VideoInfoMain';
 
 const NameDiv = styled.div`
 	> ::-webkit-scrollbar {
 		display: none;
 	}
-	${commonCSS.flex('')}
-	align-items: center;
+	${commonCSS.flex('')} align-items: center;
 `;
 
 const TitleDiv = styled.div`
@@ -21,8 +18,8 @@ const TitleDiv = styled.div`
 	}
 
 	> * {
-		padding: .5rem;
-		font-size: .6rem;
+		padding: 0.5rem;
+		font-size: 0.6rem;
 	}
 `;
 
@@ -38,8 +35,8 @@ const ChannelDataDiv = styled.div`
 	}
 
 	> * {
-		padding: .2rem;
-		font-size: .6rem;
+		padding: 0.2rem;
+		font-size: 0.6rem;
 	}
 `;
 
@@ -64,12 +61,11 @@ export default class VideoInfoBar extends Component {
 
 	componentDidMount() {
 		// will make a call to the backend to get the info need for state. State is Displaid bellow the video in an info bar.
-		console.log('we got here 2', this.props.video_id);
 		axios
-			.post("/api/get-info/", {
+			.post('/api/get-info/', {
 				video_id: this.state.videoId
 			})
-			.then(res => {
+			.then(videoRes => {
 				this.setState({
 					videoTitle: videoRes.data.title,
 					channelId: videoRes.data.created_by
@@ -77,10 +73,10 @@ export default class VideoInfoBar extends Component {
 			})
 			.then(() => {
 				axios
-					.post("/api/get-channel-info/", {
+					.post('/api/get-channel-info/', {
 						channel_id: this.state.channelId
 					})
-					.then(res2 => {
+					.then(channelRes => {
 						this.setState({
 							channelName: channelRes.data.display_name,
 							channelAvatar: channelRes.data.avatar,
@@ -138,7 +134,12 @@ export default class VideoInfoBar extends Component {
 			<VideoMainDiv>
 				<NameDiv>
 					<VideoDiv>
-						<img src={this.state.channelAvatar} width='45' heigth='45' alt="Channel Avatar" />
+						<img
+							src={this.state.channelAvatar}
+							width="45"
+							heigth="45"
+							alt="Channel Avatar"
+						/>
 					</VideoDiv>
 					<TitleDiv>
 						<h3>{this.state.videoTitle}</h3>
@@ -148,7 +149,8 @@ export default class VideoInfoBar extends Component {
 
 				<ChannelDataDiv>
 					<h3>
-						Total Channel Followers: {this.state.channelFollowersTotal}
+						Total Channel Followers:{' '}
+						{this.state.channelFollowersTotal}
 					</h3>
 					<this.followButtonDisplay />
 					<h3>Total Videos: {this.state.channelVideosTotal}</h3>

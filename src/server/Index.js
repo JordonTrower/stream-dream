@@ -67,8 +67,6 @@ if (app.get('env') === 'production') {
 app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes);
 app.use(`${process.env.NGINX_LOCATION}/api`, dbRoutes);
 
-console.log(process.env.SERVER_PORT);
-
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`);
 });

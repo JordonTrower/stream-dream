@@ -42,6 +42,16 @@ class Sidebar extends Component {
 	}
 
 	componentDidMount() {
+		this.getFollowedUsers();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.userId !== prevProps.userId) {
+			this.getFollowedUsers();
+		}
+	}
+
+	getFollowedUsers() {
 		axios
 			.get(
 				`${process.env.REACT_APP_API_LOCATION}/user/${

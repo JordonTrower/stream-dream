@@ -83,6 +83,19 @@ const selectOptions = [
 				/>
 			</CenterSpan>
 		)
+	},
+	{
+		value: '/Images/NoUserDark.jpg',
+		label: (
+			<CenterSpan>
+				<img
+					height="36"
+					width="36"
+					src="/Images/NoUserDark.jpg"
+					alt="profile"
+				/>
+			</CenterSpan>
+		)
 	}
 ];
 
@@ -148,7 +161,6 @@ class LoginForm extends Component {
 		return (
 			<FormBody onSubmit={this.submit}>
 				<LogoText>User Information</LogoText>
-				{console.log(this.state.avatar)}
 				<InputGroupBody>
 					<InputGroupAppend>
 						<p>Email</p>
@@ -196,7 +208,7 @@ class LoginForm extends Component {
 
 				<ButtonContainer>
 					<SubmitButton>Submit</SubmitButton>
-					<DangerButton onClick={this.props.logOut}>
+					<DangerButton id="logoutUser" onClick={this.props.logOut}>
 						Logout
 					</DangerButton>
 				</ButtonContainer>

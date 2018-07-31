@@ -34,7 +34,7 @@ const dropzoneStyle = {
 };
 
 const StyleSelect = styled(Select)`
-	width: 95%;
+	width: 100%;
 	height: 38px;
 	color: #000;
 	margin: 2rem;
@@ -62,6 +62,7 @@ export default class UploadFile extends Component {
 	componentDidMount() {
 		axios.get('/api/channels').then(response => {
 			const tempOptions = [];
+
 			response.data.forEach(option => {
 				tempOptions.push({ value: option.id, label: option.title });
 			});
