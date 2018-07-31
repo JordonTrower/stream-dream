@@ -69,7 +69,7 @@ export default class VideoInfoBar extends Component {
 			.post("/api/get-info/", {
 				video_id: this.state.videoId
 			})
-			.then(res => {
+			.then(videoRes => {
 				this.setState({
 					videoTitle: videoRes.data.title,
 					channelId: videoRes.data.created_by
@@ -80,7 +80,7 @@ export default class VideoInfoBar extends Component {
 					.post("/api/get-channel-info/", {
 						channel_id: this.state.channelId
 					})
-					.then(res2 => {
+					.then(channelRes => {
 						this.setState({
 							channelName: channelRes.data.display_name,
 							channelAvatar: channelRes.data.avatar,
