@@ -104,7 +104,6 @@ class VideoDisplay extends Component {
 				</UserInfoContainer>
 
 				<CardBody>
-					{console.log(this.state.userInfo)}
 					{this.state.userVideos.map(video => (
 						<Link
 							key={`video-${video.id}`}

@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -13,7 +14,7 @@ import InputGroupBody, {
 } from '../../../styled/Input/InputGroup';
 
 const LogoText = styled.h2`
-	padding-top: 35px;
+	padding-top: 10px;
 
 	width: 150px;
 
@@ -32,7 +33,7 @@ const LogoText = styled.h2`
 
 const FormBody = styled.form`
 	width: 100%;
-	height: 415px;
+	min-height: 415px;
 
 	display: flex;
 	flex-direction: column;
@@ -44,7 +45,7 @@ const SubmitButton = styled.button`
 	border: 1px #1a4fa5 solid;
 	color: #ecede8;
 
-	margin-top: 10px;
+	margin-top: 8px;
 
 	border-radius: 15px;
 
@@ -52,6 +53,34 @@ const SubmitButton = styled.button`
 	height: 35px;
 
 	cursor: pointer;
+`;
+
+const ErrorBox = styled.div`
+	width: 95%;
+	border-radius: 10px;
+
+	display: ${props => {
+		if (props.display === 'true') {
+			return 'flex';
+		}
+
+		return 'none';
+	}};
+
+	background: #ff636a;
+	height: 100px;
+
+	flex-direction: column;
+
+	justify-content: center;
+	align-items: flex-start;
+`;
+
+const ErrorListItem = styled.p`
+	padding-left: 5px;
+	display: list-item;
+	list-style-type: disc;
+	list-style-position: inside;
 `;
 
 class RegisterForm extends Component {
@@ -63,7 +92,8 @@ class RegisterForm extends Component {
 			displayName: '',
 			password: '',
 			confirmPassword: '',
-			user: {}
+			user: {},
+			errors: []
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -86,12 +116,17 @@ class RegisterForm extends Component {
 					this.state
 				)
 				.then(res => {
-					this.setState({
-						user: res.data
-					});
 					if (res.response) {
-						console.log(res);
+						this.setState({
+							user: res.data
+						});
+						this.props.setUserProps(res.data.userInfo);
+
 						this.props.closeModal();
+					} else {
+						this.setState({
+							errors: res.data.reasons
+						});
 					}
 				});
 		}
@@ -182,6 +217,12 @@ class RegisterForm extends Component {
 					</InputGroupInput>
 				</InputGroupBody>
 
+				<ErrorBox display={`${!_.isEmpty(this.state.errors)}`}>
+					{this.state.errors.map(error => (
+						<ErrorListItem key={error}>{error}</ErrorListItem>
+					))}
+				</ErrorBox>
+
 				<SubmitButton type="submit">Submit</SubmitButton>
 
 				<button
@@ -189,7 +230,7 @@ class RegisterForm extends Component {
 					style={{
 						background: 'transparent',
 						border: '0',
-						margin: '30px',
+						marginTop: '15px',
 						cursor: 'pointer'
 					}}
 				>
@@ -202,7 +243,8 @@ class RegisterForm extends Component {
 
 RegisterForm.propTypes = {
 	switchModal: propTypes.func.isRequired,
-	closeModal: propTypes.func.isRequired
+	closeModal: propTypes.func.isRequired,
+	setUserProps: propTypes.func.isRequired
 };
 
 function mapStateToProps(duckState) {
