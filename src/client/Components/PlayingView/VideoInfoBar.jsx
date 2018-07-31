@@ -1,8 +1,49 @@
 import React, { Component } from "react";
 import axios from "axios";
+import styled from 'styled-components';
 import PropTypes from "prop-types";
+import commonCSS from '../../styled/common/commonCSS'
+import VideoMainDiv from '../../styled/Playing/VideoInfoMain'
 
-export default withRouter(class VideoInfoBar extends Component {
+
+
+const NameDiv = styled.div`
+	> ::-webkit-scrollbar {
+		display: none;
+	}
+	${commonCSS.flex('')}
+	align-items: center;
+`;
+
+const TitleDiv = styled.div`
+	> ::-webkit-scrollbar {
+		display: none;
+	}
+
+	> * {
+		padding: .5rem;
+		font-size: .6rem;
+	}
+`;
+
+const VideoDiv = styled.div`
+	> ::-webkit-scrollbar {
+		display: none;
+	}
+`;
+
+const ChannelDataDiv = styled.div`
+	> ::-webkit-scrollbar {
+		display: none;
+	}
+
+	> * {
+		padding: .2rem;
+		font-size: .6rem;
+	}
+`;
+
+export default class VideoInfoBar extends Component {
 	// Under every video will be a a info style section bar. it will display the information on state as well a button for following.
 	constructor(props) {
 		super(props);
@@ -29,7 +70,6 @@ export default withRouter(class VideoInfoBar extends Component {
 				video_id: this.state.videoId
 			})
 			.then(res => {
-				console.log("then", res.data.title);
 				this.setState({
 					videoTitle: res.data.title,
 					channelId: res.data.created_by
@@ -41,7 +81,6 @@ export default withRouter(class VideoInfoBar extends Component {
 						channel_id: this.state.channelId
 					})
 					.then(res2 => {
-						console.log("agaiiiiiiiiiiiin", res2.data);
 						this.setState({
 							channelName: res2.data.display_name,
 							channelAvatar: res2.data.avatar,
@@ -94,22 +133,29 @@ export default withRouter(class VideoInfoBar extends Component {
 	}
 
 	render() {
-		console.log(this.state);
 		return (
-			<div className="InfoBar">
-				<h3>{this.state.videoTitle}</h3>
-				<h3>Channel Name: {this.state.channelName}</h3>
-				<img src={this.state.channelAvatar} alt="" />
-				<h3>
-					Total Channel Followers: {this.state.channelFollowersTotal}
-				</h3>
-				<this.followButtonDisplay />
-				<h3>Total Videos: {this.state.channelVideosTotal}</h3>
-				<hr />
-			</div>
+			<VideoMainDiv>
+				<NameDiv>
+					<VideoDiv>
+						<img src={this.state.channelAvatar} width='45' heigth='45' alt="Channel Avatar" />
+					</VideoDiv>
+					<TitleDiv>
+						<h3>{this.state.videoTitle}</h3>
+						<h3>Channel Name: {this.state.channelName}</h3>
+					</TitleDiv>
+				</NameDiv>
+
+				<ChannelDataDiv>
+					<h3>
+						Total Channel Followers: {this.state.channelFollowersTotal}
+					</h3>
+					<this.followButtonDisplay />
+					<h3>Total Videos: {this.state.channelVideosTotal}</h3>
+				</ChannelDataDiv>
+			</VideoMainDiv>
 		);
 	}
-})
+}
 
 VideoInfoBar.propTypes = {
 	video_id: PropTypes.string.isRequired
