@@ -1,20 +1,21 @@
 import React, { Component } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
-import TitleVideo from '../../styled/Playing/VideoPlayback'
-// import ReactPlayer from 'react-player';
+// import ReactPlayer from "react-player";
+import TitleVideo from "../../styled/Playing/VideoPlayback";
 
 export default class VideoPlayBack extends Component {
 	// this component is for getting and playing the video. Nothing more, nothing less.
 	constructor(props) {
 		super(props);
 		this.state = {
-			videoScource: ''
+			videoScource: ""
 		};
 	}
 
 	componentDidMount() {
 		axios.get(`/api/get-video/${this.props.video_id}`).then(res => {
+			console.log("video link res", res.data);
 			this.setState({
 				videoScource: res.data.link
 			});
@@ -34,8 +35,7 @@ export default class VideoPlayBack extends Component {
 					title="videoPlaying"
 					allowFullScreen
 					controls
-				>
-				</video>
+				/>
 			</TitleVideo>
 		);
 	}
