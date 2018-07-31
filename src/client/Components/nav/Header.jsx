@@ -106,7 +106,7 @@ class Header extends Component {
 		axios
 			.get(`${process.env.REACT_APP_API_LOCATION}auth/checkSession`)
 			.then(res => {
-				if (!res.data) {
+				if (!res.data && this.props.user.id !== -1) {
 					this.logOut();
 				}
 			});
@@ -119,6 +119,7 @@ class Header extends Component {
 			avatar: '',
 			id: -1
 		};
+
 		this.props.setUserProps(logout);
 
 		axios.delete(`${process.env.REACT_APP_API_LOCATION}auth/logout`);
