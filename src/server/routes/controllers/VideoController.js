@@ -78,6 +78,24 @@ export default {
 			});
 	},
 
+	getHomeCarouselVideos(req, res) {
+
+		const db = DB.connect(
+			res,
+			req
+		);
+
+		return db
+			.select('link', 'id')
+			.from('videos')
+			.orderBy('created_at', 'desc')
+			.limit(5)
+			.catch(error => console.log(error))
+			.then(dbresults => {
+				res.send(dbresults);
+			});
+	},
+
 	getVideos(req, res) {
 		let userid = null;
 

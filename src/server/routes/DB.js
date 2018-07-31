@@ -21,6 +21,7 @@ router.post("/upload", upload.single("media"), S3Controller.uploadMedia);
 
 // VIDEOS
 router.delete("/video/:id", VideoController.deleteVideo);
+router.get("/homeCarouselVideos", VideoController.getHomeCarouselVideos);
 router.get("/carouselVideos", VideoController.getCarouselVideos);
 router.get("/videos", VideoController.getVideos);
 router.post("/video", VideoController.addVideo);
