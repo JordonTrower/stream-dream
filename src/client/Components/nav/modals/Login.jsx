@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -11,7 +12,7 @@ import InputGroupBody, {
 } from '../../../styled/Input/InputGroup';
 
 const LogoText = styled.h2`
-	padding-top: 35px;
+	padding-top: 10px;
 
 	width: 150px;
 
@@ -42,7 +43,7 @@ const SubmitButton = styled.button`
 	border: 1px #1a4fa5 solid;
 	color: #ecede8;
 
-	margin-top: 114px;
+	margin-top: 14px;
 
 	border-radius: 15px;
 
@@ -52,6 +53,35 @@ const SubmitButton = styled.button`
 	cursor: pointer;
 `;
 
+const ErrorBox = styled.div`
+	width: 95%;
+	border-radius: 10px;
+
+	visibility: ${props => {
+		if (props.display === 'true') {
+			return 'visible';
+		}
+
+		return 'hidden';
+	}};
+
+	background: #ff636a;
+	height: 100px;
+
+	display: flex;
+	flex-direction: column;
+
+	justify-content: center;
+	align-items: flex-start;
+`;
+
+const ErrorListItem = styled.p`
+	padding-left: 5px;
+	display: list-item;
+	list-style-type: disc;
+	list-style-position: inside;
+`;
+
 class LoginForm extends Component {
 	constructor() {
 		super();
@@ -59,7 +89,8 @@ class LoginForm extends Component {
 		this.state = {
 			email: '',
 			password: '',
-			user: {}
+			user: {},
+			errors: []
 		};
 
 		this.handleChange = this.handleChange.bind(this);
@@ -81,9 +112,13 @@ class LoginForm extends Component {
 					this.setState({
 						user: res.data.userInfo
 					});
-					this.props.setUserProps(res.data.userInfo);
-
 					this.props.closeModal();
+
+					this.props.setUserProps(res.data.userInfo);
+				} else {
+					this.setState({
+						errors: res.data.reasons
+					});
 				}
 			});
 		e.preventDefault();
@@ -127,6 +162,12 @@ class LoginForm extends Component {
 					</InputGroupInput>
 				</InputGroupBody>
 
+				<ErrorBox display={`${!_.isEmpty(this.state.errors)}`}>
+					{this.state.errors.map(error => (
+						<ErrorListItem key={error}>{error}</ErrorListItem>
+					))}
+				</ErrorBox>
+
 				<SubmitButton type="submit">Submit</SubmitButton>
 
 				<button
@@ -134,7 +175,7 @@ class LoginForm extends Component {
 					style={{
 						background: 'transparent',
 						border: '0',
-						marginTop: '30px',
+						marginTop: '15px',
 						cursor: 'pointer'
 					}}
 				>
