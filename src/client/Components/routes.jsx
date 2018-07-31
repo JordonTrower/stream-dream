@@ -13,7 +13,9 @@ export default withRouter(props => (
 	>
 		<Switch>
 			<Route path="/" component={Home} exact />
+			<Route path="/games/:game_id" component={GamesView} />
 			<Route path="/video/:video_id" component={VideoViewMain} />
+			<Route path="/video/" component={Video} />
 			<Route path="/upload-video" component={Video} />
 			<Route path="/users/:user_id" component={UserVideoDisplay} />
 			<Route path="/games/:game_id" component={GameDisplay} />

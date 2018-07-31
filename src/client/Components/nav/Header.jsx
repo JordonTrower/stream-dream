@@ -58,16 +58,21 @@ class Header extends Component {
 		this.getSearch = this.getSearch.bind(this);
 		this.switchModals = this.switchModals.bind(this);
 		this.logOut = this.logOut.bind(this);
+		this.checkSession = this.checkSession.bind(this);
 	}
 
+	componentDidMount() {
+		this.checkSession();
+	}
+
+	
 	getSearch(e) {
 		const { value } = e.target;
-
+		
 		if (value !== '') {
-			axios
-				.post(`${process.env.REACT_APP_API_LOCATION}search`, {
-					search: value
-				})
+			axios.post(`${process.env.REACT_APP_API_LOCATION}search`, {
+				search: value
+			})
 				.then(res => {
 					this.setState({
 						searchData: res.data,
@@ -81,7 +86,7 @@ class Header extends Component {
 			});
 		}
 	}
-
+	
 	closeModal() {
 		this.setState({
 			login: false,
@@ -95,6 +100,19 @@ class Header extends Component {
 			login: !this.state.login,
 			register: !this.state.register
 		});
+	}
+		
+	checkSession(){
+		console.log(this.state);
+		axios.get(`${process.env.REACT_APP_API_LOCATION}auth/checkSession`)
+			.then(res => {
+				console.log("checkSession: ",res.data)
+				if(res.data) {
+					console.log('')
+				} else {
+					this.logOut()
+				}
+			})
 	}
 
 	logOut() {

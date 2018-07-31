@@ -15,4 +15,6 @@ router.post('/register', authControl.register)
 
 router.delete('/logout', authControl.logout)
 
+router.get('/checkSession', authControl.checkSession)
+
 export default router;

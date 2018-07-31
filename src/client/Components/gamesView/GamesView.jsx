@@ -18,22 +18,17 @@ export default class GamesView extends Component {
 		super(props);
 		this.state = {
 			gameVideos: []
-		};
-		this.getVideosByGameTitle = this.getVideosByGameTitle.bind(this);
+		}
+		this.getVideosByGameId = this.getVideosByGameId.bind(this);
 	}
 
 	componentDidMount() {
-		this.getVideosByGameTitle();
+		this.getVideosByGameId()
 	}
-
-	getVideosByGameTitle() {
-		const propsGameId = this.props.match.params.game_id;
-		axios
-			.get(
-				`${
-					process.env.REACT_APP_API_LOCATION
-				}game_videos/${propsGameId}`
-			)
+	
+	getVideosByGameId(){
+		const propsGameId = this.props.match.params.game_id; 
+		axios.get(`${process.env.REACT_APP_API_LOCATION}game_videos/${propsGameId}`)
 			.then(res => {
 				this.setState({
 					gameVideos: res.data

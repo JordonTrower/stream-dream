@@ -58,7 +58,7 @@ export default {
 		} else {
 			return res.send([]);
 		}
-
+		console.log(req.session);
 		const db = DB.connect(
 			res,
 			req

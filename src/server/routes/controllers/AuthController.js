@@ -239,6 +239,18 @@ export default {
 		req.session.destroy();
 		res.status(200).send(req.session);
 	},
+	
+	/**
+	 *  Checks the session for a user being logged in. 
+	 * 	If there is no user on session, it will delete the persistent redux store.
+	 */
+	checkSession(req, res){ 
+		if(req.session.userId) {
+			res.status(200).send(true)
+		} else {
+			res.status(200).send(false)
+		}
+	},
 
 	/**
 	 * Deletes the logged in users account Account
