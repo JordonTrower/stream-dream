@@ -65,14 +65,14 @@ class Header extends Component {
 		this.checkSession();
 	}
 
-	
 	getSearch(e) {
 		const { value } = e.target;
-		
+
 		if (value !== '') {
-			axios.post(`${process.env.REACT_APP_API_LOCATION}search`, {
-				search: value
-			})
+			axios
+				.post(`${process.env.REACT_APP_API_LOCATION}search`, {
+					search: value
+				})
 				.then(res => {
 					this.setState({
 						searchData: res.data,
@@ -86,7 +86,7 @@ class Header extends Component {
 			});
 		}
 	}
-	
+
 	closeModal() {
 		this.setState({
 			login: false,
@@ -101,18 +101,15 @@ class Header extends Component {
 			register: !this.state.register
 		});
 	}
-		
-	checkSession(){
-		console.log(this.state);
-		axios.get(`${process.env.REACT_APP_API_LOCATION}auth/checkSession`)
+
+	checkSession() {
+		axios
+			.get(`${process.env.REACT_APP_API_LOCATION}auth/checkSession`)
 			.then(res => {
-				console.log("checkSession: ",res.data)
-				if(res.data) {
-					console.log('')
-				} else {
-					this.logOut()
+				if (!res.data) {
+					this.logOut();
 				}
-			})
+			});
 	}
 
 	logOut() {
@@ -151,6 +148,7 @@ class Header extends Component {
 										border: 0,
 										background: 'transparent'
 									}}
+									id="openUserInfo"
 									onClick={() =>
 										this.setState({ userInfo: true })
 									}
@@ -159,7 +157,11 @@ class Header extends Component {
 										style={{ borderRadius: '20px' }}
 										height="40"
 										width="40"
-										src="/Images/NoUser.jpg"
+										src={
+											this.props.user.avatar !== ''
+												? this.props.user.avatar
+												: '/Images/NoUser.jpg'
+										}
 										alt="Default Profile"
 									/>
 								</button>
@@ -171,6 +173,7 @@ class Header extends Component {
 									onClick={() =>
 										this.setState({ login: true })
 									}
+									id="loginLarge"
 								>
 									Login
 								</LoginButton>
@@ -210,6 +213,7 @@ class Header extends Component {
 									onClick={() =>
 										this.setState({ login: true })
 									}
+									id="loginSmall"
 								>
 									Login
 								</LoginButton>

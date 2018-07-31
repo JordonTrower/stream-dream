@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import MainDiv from '../../styled/Playing/VideoMain';
 import VideoPlayBack from './VideoPlayback';
 import VideoInfoBar from './VideoInfoBar';
 import VideoComments from './VideoComments';
 import MainDiv from '../../styled/Playing/VideoMain';
-
 
 export default function VideoViewMain(props) {
 	return (

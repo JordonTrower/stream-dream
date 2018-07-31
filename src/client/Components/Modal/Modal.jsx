@@ -51,6 +51,7 @@ function Modal(WrappedComponent) {
 								color="white"
 								size="30px"
 								onClick={this.props.closeModal}
+								id="closeModal"
 							/>
 						</ModalHeader>
 						<WrappedComponent {...this.props} />

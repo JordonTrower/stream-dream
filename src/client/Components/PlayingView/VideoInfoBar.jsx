@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import axios from "axios";
-import styled from "styled-components";
-import PropTypes from "prop-types";
-import commonCSS from "../../styled/common/commonCSS";
-import VideoMainDiv from "../../styled/Playing/VideoInfoMain";
+import React, { Component } from 'react';
+import axios from 'axios';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import commonCSS from '../../styled/common/commonCSS';
+import VideoMainDiv from '../../styled/Playing/VideoInfoMain';
 
 const NameDiv = styled.div`
 	> ::-webkit-scrollbar {
 		display: none;
 	}
-	${commonCSS.flex("")} align-items: center;
+	${commonCSS.flex('')} align-items: center;
 `;
 
 const TitleDiv = styled.div`
@@ -61,14 +61,11 @@ export default class VideoInfoBar extends Component {
 
 	componentDidMount() {
 		// will make a call to the backend to get the info need for state. State is Displaid bellow the video in an info bar.
-		console.log("we got here 2", this.props.video_id);
 		axios
-			.get(
-				`/api/get-info/
-				${this.state.videoId}`
-			)
+			.post('/api/get-info/', {
+				video_id: this.state.videoId
+			})
 			.then(videoRes => {
-				console.log("res video info", videoRes);
 				this.setState({
 					videoTitle: videoRes.data.title,
 					channelId: videoRes.data.created_by
@@ -76,7 +73,9 @@ export default class VideoInfoBar extends Component {
 			})
 			.then(() => {
 				axios
-					.get(`/api/get-channel-info/${this.state.channelId}`)
+					.post('/api/get-channel-info/', {
+						channel_id: this.state.channelId
+					})
 					.then(channelRes => {
 						this.setState({
 							channelName: channelRes.data.display_name,
@@ -150,7 +149,6 @@ export default class VideoInfoBar extends Component {
 
 				<ChannelDataDiv>
 					<h3>
-						Total Channel Followers:{" "}
 						{this.state.channelFollowersTotal}
 					</h3>
 					<this.followButtonDisplay />

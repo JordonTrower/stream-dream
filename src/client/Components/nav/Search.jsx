@@ -68,6 +68,7 @@ const SearchBar = props => (
 													to={`/${entry[0]}/${
 														data.id
 													}`}
+													className="dropdownLink"
 												>
 													{data.display_name ||
 														data.title}

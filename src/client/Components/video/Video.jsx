@@ -1,19 +1,21 @@
-import React, { Component } from 'react';
 import axios from 'axios';
+import propTypes from 'prop-types';
+import { connect } from 'react-redux';
 import GoX from 'react-icons/lib/go/x';
 import styled from 'styled-components';
-import ButtonGroup from '../../styled/common/ButtonGroup';
+import React, { Component } from 'react';
 import Carousel from '../carousel/Carousel';
+import UploadFile from '../video/UploadFile';
 import Card from '../../styled/common/card/card';
 import CardBody from '../../styled/common/card/body';
+import ButtonGroup from '../../styled/common/ButtonGroup';
 import CancelButton from '../../styled/common/CancelButton';
+import SubmitButton from '../../styled/common/SubmitButton';
 import DeleteButton from '../../styled/common/DeleteButton';
 import InputGroupBody, {
 	InputGroupAppend,
 	InputGroupInput
 } from '../../styled/Input/InputGroup';
-import SubmitButton from '../../styled/common/SubmitButton';
-import UploadFile from '../video/UploadFile';
 
 const MainDiv = styled.div`
 	background-color: #191b21;
@@ -28,7 +30,7 @@ const TitleDiv = styled.div`
 	height: 100%;
 `;
 
-export default class Game extends Component {
+class Game extends Component {
 	constructor() {
 		super();
 
@@ -43,9 +45,18 @@ export default class Game extends Component {
 	}
 
 	componentDidMount() {
+		if (this.props.userId === -1) {
+			this.props.history.push('/');
+		}
+
 		this.loadVideos();
 	}
 
+	componentDidUpdate() {
+		if (this.props.userId === -1) {
+			this.props.history.push('/');
+		}
+	}
 	deleteVideo(id, link) {
 		const s3name = link.replace(
 			'https://stream-dream.s3.us-west-1.amazonaws.com/',
@@ -199,3 +210,19 @@ export default class Game extends Component {
 		);
 	}
 }
+
+Game.propTypes = {
+	userId: propTypes.number.isRequired,
+	history: propTypes.shape({
+		push: propTypes.func
+	}).isRequired
+};
+
+function mapStateToProps(duckState) {
+	const { id } = duckState.user;
+	return {
+		userId: id
+	};
+}
+
+export default connect(mapStateToProps)(Game);
