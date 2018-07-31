@@ -8,12 +8,13 @@ export default class VideoPlayBack extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			videoScource: ''
+			videoScource: ""
 		};
 	}
 
 	componentDidMount() {
 		axios.get(`/api/get-video/${this.props.video_id}`).then(res => {
+			console.log("video link res", res.data);
 			this.setState({
 				videoScource: res.data.link
 			});
