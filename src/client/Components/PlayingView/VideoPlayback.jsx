@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+import TitleVideo from '../../styled/Playing/VideoPlayback'
 // import ReactPlayer from 'react-player';
 
 export default class VideoPlayBack extends Component {
@@ -22,7 +23,7 @@ export default class VideoPlayBack extends Component {
 
 	render() {
 		return (
-			<div className="TitleVideo">
+			<TitleVideo>
 				{/* height and width are the correct values. the display method may change. ie video instead of ifram or something like that. */}
 				<video //eslint-disable-line
 					width="1280px"
@@ -34,10 +35,8 @@ export default class VideoPlayBack extends Component {
 					allowFullScreen
 					controls
 				>
-					Doesnt support iframe
 				</video>
-				<hr />
-			</div>
+			</TitleVideo>
 		);
 	}
 }
