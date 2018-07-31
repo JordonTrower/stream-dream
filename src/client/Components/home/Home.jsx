@@ -57,7 +57,7 @@ export default class Home extends Component {
 
 	getCarouselVideos() {
 		axios
-			.get(`${process.env.REACT_APP_API_LOCATION}carouselVideos`)
+			.get(`${process.env.REACT_APP_API_LOCATION}homeCarouselVideos`)
 			.then(res => {
 				this.setState({
 					carouselVideos: res.data

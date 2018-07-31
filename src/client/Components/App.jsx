@@ -11,7 +11,7 @@ import LoadingView from './loadingView/LoadingView';
 
 const App = () => (
 	<Provider store={store}>
-		<PersistGate loading={LoadingView} persistor={persistor}>
+		<PersistGate loading={<LoadingView/>} persistor={persistor}>
 			<div className="App">
 				<Header />
 				<Sidebar />
