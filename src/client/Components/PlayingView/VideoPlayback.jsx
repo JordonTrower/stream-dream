@@ -1,8 +1,7 @@
-import React, { Component } from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
-// import ReactPlayer from "react-player";
-import TitleVideo from "../../styled/Playing/VideoPlayback";
+import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import ReactPlayer from 'react-player';
 
 export default class VideoPlayBack extends Component {
 	// this component is for getting and playing the video. Nothing more, nothing less.
@@ -24,9 +23,22 @@ export default class VideoPlayBack extends Component {
 
 	render() {
 		return (
-			<TitleVideo>
-				{/* height and width are the correct values. the display method may change. ie video instead of ifram or something like that. */}
-				<video //eslint-disable-line
+			<div className="TitleVideo">
+				{/* height and width are the correct values. the display method may change. ie video instead of iframe or something like that. */}
+
+				<ReactPlayer
+					url={this.state.videoScource}
+					config={{
+						youtube: {
+							preload: true
+						}
+					}}
+					controls
+					height="100%"
+					width="100%"
+				/>
+
+				{/* <video //eslint-disable-line
 					width="1280px"
 					height="714px"
 					src={this.state.videoScource}
@@ -35,8 +47,11 @@ export default class VideoPlayBack extends Component {
 					title="videoPlaying"
 					allowFullScreen
 					controls
-				/>
-			</TitleVideo>
+				>
+					Doesnt support iframe
+				</video> */}
+				<hr />
+			</div>
 		);
 	}
 }

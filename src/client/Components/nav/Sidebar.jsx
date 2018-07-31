@@ -71,9 +71,11 @@ class Sidebar extends Component {
 							{user.display_name}
 						</StlyedInfo>
 					))}
-					<StlyedInfo to="/upload-video">
-						<PrimaryText>Upload a Video</PrimaryText>
-					</StlyedInfo>
+					{this.props.userId !== -1 && (
+						<StlyedInfo to="/upload-video">
+							<PrimaryText>Upload a Video</PrimaryText>
+						</StlyedInfo>
+					)}
 				</StyledLinkGroup>
 			</StyledSidebar>
 		);

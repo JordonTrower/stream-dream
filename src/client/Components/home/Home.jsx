@@ -56,12 +56,14 @@ export default class Home extends Component {
 	}
 
 	getCarouselVideos() {
-		axios.get('/api/carouselVideos').then(res => {
-			console.log(res);
-			this.setState({
-				carouselVideos: res.data
+		axios
+			.get(`${process.env.REACT_APP_API_LOCATION}carouselVideos`)
+			.then(res => {
+				console.log(res);
+				this.setState({
+					carouselVideos: res.data
+				});
 			});
-		});
 	}
 
 	getGames() {
