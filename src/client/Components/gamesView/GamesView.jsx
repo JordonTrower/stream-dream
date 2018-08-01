@@ -9,6 +9,10 @@ import CardBody from '../../styled/common/card/body';
 
 const GamesViewOneDiv = styled.div``;
 
+const StyledLink = styled(Link)`
+	text-decoration: none;
+`
+
 export default class GamesView extends Component {
 	constructor(props) {
 		super(props);
@@ -42,14 +46,14 @@ export default class GamesView extends Component {
 			<GamesViewOneDiv>
 				<CardBody>
 					{this.state.gameVideos.map(game => (
-						<Link to={{ pathname: `/video/${game.id}` }}>
+						<StyledLink to={{ pathname: `/video/${game.id}` }}>
 							<Card key={game.id}>
-								<video height="100%" width="100%" muted>
+								<video height="90%" width="100%" muted>
 									<source src={game.link} alt={game.title} />
 								</video>
 								<p>{game.title}</p>
 							</Card>
-						</Link>
+						</StyledLink>
 					))}
 				</CardBody>
 			</GamesViewOneDiv>

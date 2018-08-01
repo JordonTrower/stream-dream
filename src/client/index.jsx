@@ -7,8 +7,8 @@ import App from './Components/App';
 // import registerServiceWorker from './registerServiceWorker';
 
 ReactDOM.render(
-	<BrowserRouter>
-		<App />
+	<BrowserRouter >
+		<App/>
 	</BrowserRouter>
 	, document.getElementById('root'));
 // registerServiceWorker();

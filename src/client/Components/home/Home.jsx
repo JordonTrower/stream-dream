@@ -7,6 +7,10 @@ import Card from '../../styled/common/card/card';
 import CardBody from '../../styled/common/card/body';
 import Carousel from '../carousel/Carousel';
 
+const StyledLink = styled(Link)`
+	text-decoration: none;
+`
+
 const HomeOneDiv = styled.div`
 	background-color: #191b21;
 	width: 100%;
@@ -82,7 +86,7 @@ export default class Home extends Component {
 				<HomeGamesContainer>
 					<CardBody>
 						{this.state.games.map(game => (
-							<Link
+							<StyledLink
 								key={game.title}
 								to={{ pathname: `/games/${game.id}` }}
 							>
@@ -95,7 +99,7 @@ export default class Home extends Component {
 										/>
 									</GameImageContainer>
 								</Card>
-							</Link>
+							</StyledLink>
 						))}
 					</CardBody>
 				</HomeGamesContainer>
