@@ -72,6 +72,7 @@
 		"redux": "^4.0.0",
 		"redux-persist": "^5.10.0",
 		"resolve": "1.6.0",
+		"simplebar": "^3.0.0-beta.1",
 		"style-loader": "0.19.0",
 		"styled-components": "^3.3.3",
 		"sw-precache-webpack-plugin": "0.11.4",
@@ -100,6 +101,7 @@
 			"src/**/*.{js,jsx,mjs}"
 		],
 		"setupFiles": [
+			"<rootDir>/src/server/tests/test-tools/test-setup.js",
 			"<rootDir>/config/polyfills.js"
 		],
 		"testMatch": [

@@ -9,6 +9,8 @@ export default styled.div`
 	width: 19rem;
 	height: 19rem;
 
+	text-decoration: none;
+
 	margin: 0.5rem;
 
 	background: ${commonCSS.primaryColor};
