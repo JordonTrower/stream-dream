@@ -84,10 +84,13 @@
 	},
 	"scripts": {
 		"start": "node scripts/start.js",
-		"build": "node scripts/build.js",
+		"build-client": "node scripts/build.js",
+		"build-server": "babel -d ./build/Server ./src/Server",
+		"build": "yarn build-client && yarn build-server",
 		"test": "babel-node --presets=env scripts/test.js --env=jsdom --watchAll ",
 		"server": "babel-node --presets=env src/server/Index.js",
-		"dev": "cross-env NODE_ENV=development --debug-brk=4206 concurrently \"yarn start\" \"nodemon\" "
+		"dev": "cross-env NODE_ENV=development --debug-brk=4206 concurrently \"yarn start\" \"nodemon\" ",
+		"prod": "NODE_ENV=production pm2 start build/Server/Index.js"
 	},
 	"nodemonConfig": {
 		"exec": " yarn server",
