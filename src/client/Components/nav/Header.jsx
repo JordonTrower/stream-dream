@@ -131,7 +131,7 @@ class Header extends Component {
 		return (
 			<div>
 				<LargeHeader>
-					<LogoText to="/">Stream Dream</LogoText>
+					<LogoText id="logoText" to="/">Stream Dream</LogoText>
 
 					<SearchBar
 						searchData={this.state.searchData}

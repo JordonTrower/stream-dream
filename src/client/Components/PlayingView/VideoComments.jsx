@@ -14,6 +14,7 @@ import CancelButton from '../../styled/common/CancelButton';
 import SubmitButton from '../../styled/common/SubmitButton'
 
 const CommentInput = styled.div`
+	
 	> ::-webkit-scrollbar {
 		display: none;
 	}
@@ -153,7 +154,7 @@ export default class VideoComments extends Component {
 	render() {
 		return (
 			<CommentsMainDiv>
-				<CommentInput>
+				<CommentInput  >
 					<p>Write a Comment</p>
 					<img
 						src={this.state.userAvatar}
@@ -167,6 +168,7 @@ export default class VideoComments extends Component {
 						</InputGroupAppend>
 						<InputGroupInput>
 							<input
+								id="commentInput"
 								value={this.state.userInput}
 								onChange={e =>
 									this.setState({
@@ -189,7 +191,7 @@ export default class VideoComments extends Component {
 								}}
 							/>
 						</CancelButton>
-						<SubmitButton type='button' onClick={() => this.clickPost()}>
+						<SubmitButton id="submitButton" type='button' onClick={() => this.clickPost()}>
 							Post Comment
 						</SubmitButton>
 					</ThisButtonGroup>

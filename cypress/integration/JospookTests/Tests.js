@@ -50,7 +50,7 @@ describe('Run Jospook Tests', () => {
 		cy.get('button#logoutUser').click();
 	});
 
-	it('navigates through followed users', () => {
+	it('navigates through videos by user', () => {
 		cy.visit('http://localhost:3000/users/2');
 
 		const videoImages = cy.get('video');
