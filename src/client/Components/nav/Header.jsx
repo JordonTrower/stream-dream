@@ -131,7 +131,7 @@ class Header extends Component {
 		return (
 			<div>
 				<LargeHeader>
-					<LogoText to={`${process.env.REACT_APP_NGINX_LOCATION}/`}>
+					<LogoText id="logoText" to={`${process.env.REACT_APP_NGINX_LOCATION}/`}>
 						Stream Dream
 					</LogoText>
 
