@@ -65,9 +65,10 @@ const SearchBar = props => (
 													data.title}`}
 											>
 												<Link
-													to={`/${entry[0]}/${
-														data.id
-													}`}
+													to={`${
+														process.env
+															.REACT_APP_NGINX_LOCATION
+													}/${entry[0]}/${data.id}`}
 													className="dropdownLink"
 												>
 													{data.display_name ||

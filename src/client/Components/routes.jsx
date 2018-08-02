@@ -9,16 +9,38 @@ import GameDisplay from './gamesView/GamesView';
 
 export default withRouter(props => (
 	<Body
-		rightSidebar={props.location.pathname.toLowerCase() === '/upload-video'}
+		rightSidebar={
+			props.location.pathname.toLowerCase() ===
+			`${process.env.REACT_APP_NGINX_LOCATION}/upload-video`
+		}
 	>
 		<Switch>
-			<Route path="/" component={Home} exact />
-			{/* <Route path="/games/:game_id" component={GamesView} /> */}
-			<Route path="/video/:video_id" component={VideoViewMain} />
-			<Route path="/video/" component={Video} />
-			<Route path="/upload-video" component={Video} />
-			<Route path="/users/:user_id" component={UserVideoDisplay} />
-			<Route path="/games/:game_id" component={GameDisplay} />
+			<Route
+				path={`${process.env.REACT_APP_NGINX_LOCATION}/`}
+				component={Home}
+				exact
+			/>
+			{/* <Route path=`/games/:game_id` component={GamesView} /> */}
+			<Route
+				path={`${process.env.REACT_APP_NGINX_LOCATION}/video/:video_id`}
+				component={VideoViewMain}
+			/>
+			<Route
+				path={`${process.env.REACT_APP_NGINX_LOCATION}/video/`}
+				component={Video}
+			/>
+			<Route
+				path={`${process.env.REACT_APP_NGINX_LOCATION}/upload-video`}
+				component={Video}
+			/>
+			<Route
+				path={`${process.env.REACT_APP_NGINX_LOCATION}/users/:user_id`}
+				component={UserVideoDisplay}
+			/>
+			<Route
+				path={`${process.env.REACT_APP_NGINX_LOCATION}/games/:game_id`}
+				component={GameDisplay}
+			/>
 		</Switch>
 	</Body>
 ));

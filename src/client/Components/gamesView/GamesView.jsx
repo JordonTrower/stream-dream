@@ -11,7 +11,7 @@ const GamesViewOneDiv = styled.div``;
 
 const StyledLink = styled(Link)`
 	text-decoration: none;
-`
+`;
 
 export default class GamesView extends Component {
 	constructor(props) {
@@ -46,7 +46,13 @@ export default class GamesView extends Component {
 			<GamesViewOneDiv>
 				<CardBody>
 					{this.state.gameVideos.map(game => (
-						<StyledLink to={{ pathname: `/video/${game.id}` }}>
+						<StyledLink
+							to={{
+								pathname: `${
+									process.env.REACT_APP_NGINX_LOCATION
+								}/video/${game.id}`
+							}}
+						>
 							<Card key={game.id}>
 								<video height="90%" width="100%" muted>
 									<source src={game.link} alt={game.title} />

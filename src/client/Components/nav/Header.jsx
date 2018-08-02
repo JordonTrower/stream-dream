@@ -131,7 +131,9 @@ class Header extends Component {
 		return (
 			<div>
 				<LargeHeader>
-					<LogoText to="/">Stream Dream</LogoText>
+					<LogoText to={`${process.env.REACT_APP_NGINX_LOCATION}/`}>
+						Stream Dream
+					</LogoText>
 
 					<SearchBar
 						searchData={this.state.searchData}
@@ -183,7 +185,9 @@ class Header extends Component {
 				</LargeHeader>
 
 				<SmallHeader>
-					<LogoText to="/">Stream Dream</LogoText>
+					<LogoText to={`${process.env.REACT_APP_NGINX_LOCATION}/`}>
+						Stream Dream
+					</LogoText>
 					<div style={{ paddingRight: '15px' }}>
 						{!_.isNil(this.props.user) &&
 							this.props.user.id !== -1 && (

@@ -76,7 +76,9 @@ class Sidebar extends Component {
 					{this.state.follows.map(user => (
 						<StlyedInfo
 							key={`user-${user.id}`}
-							to={`/users/${user.id}`}
+							to={`${
+								process.env.REACT_APP_NGINX_LOCATION
+							}/users/${user.id}`}
 						>
 							{user.display_name}
 						</StlyedInfo>

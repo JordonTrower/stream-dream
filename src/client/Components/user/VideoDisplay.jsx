@@ -107,7 +107,9 @@ class VideoDisplay extends Component {
 					{this.state.userVideos.map(video => (
 						<Link
 							key={`video-${video.id}`}
-							to={`/video/${video.id}`}
+							to={`${
+								process.env.REACT_APP_NGINX_LOCATION
+							}/video/${video.id}`}
 						>
 							<PolaroidContainer key={video.id}>
 								<video height="173.5px" width="95%" muted>

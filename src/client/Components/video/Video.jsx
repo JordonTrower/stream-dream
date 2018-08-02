@@ -59,7 +59,7 @@ class Game extends Component {
 	}
 	deleteVideo(id, link) {
 		const s3name = link.replace(
-			'https://stream-dream.s3.us-west-1.amazonaws.com/',
+			'https://stream-dream.s3.us-east-1.amazonaws.com/',
 			''
 		);
 		axios

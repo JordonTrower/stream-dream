@@ -9,7 +9,7 @@ import Carousel from '../carousel/Carousel';
 
 const StyledLink = styled(Link)`
 	text-decoration: none;
-`
+`;
 
 const HomeOneDiv = styled.div`
 	background-color: #191b21;
@@ -88,7 +88,11 @@ export default class Home extends Component {
 						{this.state.games.map(game => (
 							<StyledLink
 								key={game.title}
-								to={{ pathname: `/games/${game.id}` }}
+								to={{
+									pathname: `${
+										process.env.REACT_APP_NGINX_LOCATION
+									}/games/${game.id}`
+								}}
 							>
 								<Card>
 									<GameTitle>{game.title}</GameTitle>

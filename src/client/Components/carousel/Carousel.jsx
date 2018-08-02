@@ -62,20 +62,28 @@ export default function Carousel(props) {
 	return (
 		<CarouselContainer>
 			<CarouselActual {...settings}>
-				{
-					props.carouselItems.map((item) => (
-						<CarouselSlot key={item.id}>
-							<CarouselSlotItem style={{backgroundImage: `url(${item.link})`}}>
-								<Link to={{pathname: `/video/${item.id}`}} >
-									<video height='100%' width='100%' muted>
-										<source src={item.link} alt="Game Preview"/>
-									</video>
-								</Link>
-							
-							</CarouselSlotItem>
-						</CarouselSlot>
-					))
-				}
+				{props.carouselItems.map(item => (
+					<CarouselSlot key={item.id}>
+						<CarouselSlotItem
+							style={{ backgroundImage: `url(${item.link})` }}
+						>
+							<Link
+								to={{
+									pathname: `${
+										process.env.REACT_APP_NGINX_LOCATION
+									}/video/${item.id}`
+								}}
+							>
+								<video height="100%" width="100%" muted>
+									<source
+										src={item.link}
+										alt="Game Preview"
+									/>
+								</video>
+							</Link>
+						</CarouselSlotItem>
+					</CarouselSlot>
+				))}
 			</CarouselActual>
 		</CarouselContainer>
 	);
