@@ -1,21 +1,21 @@
-import axios from 'axios';
-import propTypes from 'prop-types';
-import { connect } from 'react-redux';
-import GoX from 'react-icons/lib/go/x';
-import styled from 'styled-components';
-import React, { Component } from 'react';
-import Carousel from '../carousel/Carousel';
-import UploadFile from '../video/UploadFile';
-import Card from '../../styled/common/card/card';
-import CardBody from '../../styled/common/card/body';
-import ButtonGroup from '../../styled/common/ButtonGroup';
-import CancelButton from '../../styled/common/CancelButton';
-import SubmitButton from '../../styled/common/SubmitButton';
-import DeleteButton from '../../styled/common/DeleteButton';
+import axios from "axios";
+import propTypes from "prop-types";
+import { connect } from "react-redux";
+import GoX from "react-icons/lib/go/x";
+import styled from "styled-components";
+import React, { Component } from "react";
+import Carousel from "../carousel/Carousel";
+import UploadFile from "../video/UploadFile";
+import Card from "../../styled/common/card/card";
+import CardBody from "../../styled/common/card/body";
+import ButtonGroup from "../../styled/common/ButtonGroup";
+import CancelButton from "../../styled/common/CancelButton";
+import SubmitButton from "../../styled/common/SubmitButton";
+import DeleteButton from "../../styled/common/DeleteButton";
 import InputGroupBody, {
 	InputGroupAppend,
 	InputGroupInput
-} from '../../styled/Input/InputGroup';
+} from "../../styled/Input/InputGroup";
 
 const MainDiv = styled.div`
 	background-color: #191b21;
@@ -38,7 +38,7 @@ class Game extends Component {
 			videos: [],
 			carouselItems: [],
 			editingCardId: 0,
-			title: ''
+			title: ""
 		};
 
 		this.loadVideos = this.loadVideos.bind(this);
@@ -46,7 +46,7 @@ class Game extends Component {
 
 	componentDidMount() {
 		if (this.props.userId === -1) {
-			this.props.history.push('/');
+			this.props.history.push("/");
 		}
 
 		this.loadVideos();
@@ -54,13 +54,13 @@ class Game extends Component {
 
 	componentDidUpdate() {
 		if (this.props.userId === -1) {
-			this.props.history.push('/');
+			this.props.history.push("/");
 		}
 	}
 	deleteVideo(id, link) {
 		const s3name = link.replace(
-			'https://stream-dream.s3.us-east-1.amazonaws.com/',
-			''
+			"https://stream-dream.s3.us-east-1.amazonaws.com/",
+			""
 		);
 		axios
 			.delete(`${process.env.REACT_APP_API_LOCATION}s3video`, {
@@ -96,7 +96,7 @@ class Game extends Component {
 	cancelEdit() {
 		this.setState({
 			editingCardId: 0,
-			title: ''
+			title: ""
 		});
 	}
 
@@ -194,6 +194,7 @@ class Game extends Component {
 										</DeleteButton>
 										<SubmitButton
 											type="button"
+											className="EditButton"
 											onClick={() =>
 												this.editTitle(
 													video.id,
