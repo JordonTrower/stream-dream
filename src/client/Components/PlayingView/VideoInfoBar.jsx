@@ -1,18 +1,18 @@
-import React, { Component } from "react";
-import _ from "lodash";
-import axios from "axios";
-import { connect } from "react-redux";
-import styled from "styled-components";
-import PropTypes from "prop-types";
-import commonCSS from "../../styled/common/commonCSS";
-import VideoMainDiv from "../../styled/Playing/VideoInfoMain";
-import { forceFollowedUsersRefresh } from "../../middlwares/redux/reducers/sessionReducer";
+import React, { Component } from 'react';
+import _ from 'lodash';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import commonCSS from '../../styled/common/commonCSS';
+import VideoMainDiv from '../../styled/Playing/VideoInfoMain';
+import { forceFollowedUsersRefresh } from '../../middlwares/redux/reducers/sessionReducer';
 
 const NameDiv = styled.div`
 	> ::-webkit-scrollbar {
 		display: none;
 	}
-	${commonCSS.flex("")} align-items: center;
+	${commonCSS.flex('')} align-items: center;
 `;
 
 const TitleDiv = styled.div`
@@ -49,13 +49,13 @@ class VideoInfoBar extends Component {
 		super(props);
 		this.state = {
 			videoId: this.props.video_id,
-			videoTitle: "",
-			channelId: "",
-			channelName: "",
-			channelAvatar: "",
-			channelVideosTotal: "",
-			channelFollowersTotal: "",
-			followed: ""
+			videoTitle: '',
+			channelId: '',
+			channelName: '',
+			channelAvatar: '',
+			channelVideosTotal: '',
+			channelFollowersTotal: '',
+			followed: ''
 		};
 		this.handleFollowButtonClick = this.handleFollowButtonClick.bind(this);
 		this.handleUnFollow = this.handleUnFollow.bind(this);
@@ -65,15 +65,7 @@ class VideoInfoBar extends Component {
 	componentDidMount() {
 		// will make a call to the backend to get the info need for state. State is Displaid bellow the video in an info bar.
 		this.getInfo();
-	}
 
-	componentDidUpdate(prevProps) {
-		if (this.props.userId !== prevProps.userId) {
-			this.getInfo();
-		}
-	}
-
-	getInfo() {
 		axios
 			.get(
 				`${process.env.REACT_APP_API_LOCATION}get-info/${
@@ -104,16 +96,27 @@ class VideoInfoBar extends Component {
 						});
 					});
 			})
+
 			.then(() => {
-				axios
-					.post(`${process.env.REACT_APP_API_LOCATION}if-followed/`, {
-						channel_id: this.state.channelId
-					})
-					.then(res => {
-						this.setState({
-							followed: res.data
-						});
-					});
+				this.getInfo();
+			});
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.userId !== prevProps.userId) {
+			this.getInfo();
+		}
+	}
+
+	getInfo() {
+		axios
+			.post(`${process.env.REACT_APP_API_LOCATION}if-followed/`, {
+				channel_id: this.state.channelId
+			})
+			.then(res => {
+				this.setState({
+					followed: res.data
+				});
 			});
 	}
 
@@ -121,7 +124,7 @@ class VideoInfoBar extends Component {
 		// if false, the follow button will appear. if true, an Un-Follow button appears.
 		// if an error code recieved from the server, a
 		// p tag apears with the message form the server. the default value is false.
-		if (this.state.followed === "Please Log In") {
+		if (this.state.followed === 'Please Log In') {
 			return <p id="followLogin">Please Log In</p>;
 		} else if (
 			!_.isEmpty(this.state.followed) ||
@@ -132,7 +135,10 @@ class VideoInfoBar extends Component {
 					Un-Follow
 				</button>
 			);
-		} else if (this.state.followed === false) {
+		} else if (
+			this.state.followed === false ||
+			this.state.followed === ''
+		) {
 			return (
 				<button
 					id="followButton"

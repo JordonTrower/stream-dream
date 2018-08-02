@@ -43,7 +43,7 @@ app.use(bodyParser.json());
  * Redis is a NoSQL like database, stored in RAM for increased speed
  */
 if (app.get('env') === 'production') {
-	console.log(app.get('env'))
+	console.log(app.get('env'));
 
 	const RedisStore = redisSession(session);
 
@@ -70,14 +70,17 @@ if (app.get('env') === 'production') {
 app.use(`${process.env.REACT_APP_NGINX_LOCATION}/api/auth`, authRoutes);
 app.use(`${process.env.REACT_APP_NGINX_LOCATION}/api`, dbRoutes);
 
-app.use(`${process.env.CLIENT_LOCATION}`, express.static(path.join(__dirname, '../../build/client')));
+if (app.get('env') === 'production') {
+	app.use(
+		`${process.env.CLIENT_LOCATION}`,
+		express.static(path.join(__dirname, '../../build/client'))
+	);
 
-
-
-app.get(`${process.env.CLIENT_LOCATION}*`, (req, res) => {
-	res.sendFile(path.join(__dirname, '../../build/client/index.html'));
-});
-
+	app.get(`${process.env.CLIENT_LOCATION}*`, (req, res) => {
+		res.sendFile(path.join(__dirname, '../../build/client/index.html'));
+	});
+}
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`);
+	console.log(`${process.env.REACT_APP_NGINX_LOCATION}/api/auth`);
 });
