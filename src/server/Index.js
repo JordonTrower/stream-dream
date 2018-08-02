@@ -67,15 +67,15 @@ if (app.get('env') === 'production') {
 	);
 }
 
-app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes);
-app.use(`${process.env.NGINX_LOCATION}/api`, dbRoutes);
+app.use(`${process.env.REACT_APP_NGINX_LOCATION}/api/auth`, authRoutes);
+app.use(`${process.env.REACT_APP_NGINX_LOCATION}/api`, dbRoutes);
 
-console.log(process.env.CLIENT_LOCATION)
+app.use(`${process.env.CLIENT_LOCATION}`, express.static(path.join(__dirname, '../../build/client')));
 
-app.use(`${process.env.CLIENT_LOCATION}`, express.static(path.join(__dirname, '../../build/Client')));
+
 
 app.get(`${process.env.CLIENT_LOCATION}*`, (req, res) => {
-	res.sendFile(path.join(__dirname, '../../build/Client/index.html'));
+	res.sendFile(path.join(__dirname, '../../build/client/index.html'));
 });
 
 app.listen(process.env.SERVER_PORT, () => {
