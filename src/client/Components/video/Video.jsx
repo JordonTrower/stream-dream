@@ -63,28 +63,32 @@ class Game extends Component {
 			''
 		);
 		axios
-			.delete(`/api/s3video`, {
+			.delete(`${process.env.REACT_APP_API_LOCATION}s3video`, {
 				params: { s3name }
 			})
 			.then(() =>
-				axios.delete(`/api/video/${id}`).then(() => this.loadVideos())
+				axios
+					.delete(`${process.env.REACT_APP_API_LOCATION}video/${id}`)
+					.then(() => this.loadVideos())
 			);
 	}
 
 	loadVideos() {
 		axios
-			.get('/api/videos')
+			.get(`${process.env.REACT_APP_API_LOCATION}videos`)
 			.then(results => {
 				this.setState({
 					videos: results.data
 				});
 			})
 			.then(
-				axios.get('/api/carouselVideos').then(carResults => {
-					this.setState({
-						carouselItems: carResults.data
-					});
-				})
+				axios
+					.get(`${process.env.REACT_APP_API_LOCATION}carouselVideos`)
+					.then(carResults => {
+						this.setState({
+							carouselItems: carResults.data
+						});
+					})
 			)
 			.catch(err => console.log(err));
 	}
@@ -105,7 +109,7 @@ class Game extends Component {
 
 	saveEdit() {
 		axios
-			.put(`/api/video/`, {
+			.put(`${process.env.REACT_APP_API_LOCATION}video/`, {
 				id: this.state.editingCardId,
 				title: this.state.title
 			})

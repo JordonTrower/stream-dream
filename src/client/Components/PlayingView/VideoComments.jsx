@@ -1,24 +1,24 @@
-import React, { Component } from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import GoX from 'react-icons/lib/go/x';
-import commonCSS from "../../styled/common/commonCSS";
-import CommentsMainDiv from "../../styled/Playing/VideoCommentsMain";
+import commonCSS from '../../styled/common/commonCSS';
+import CommentsMainDiv from '../../styled/Playing/VideoCommentsMain';
 import InputGroupBody, {
 	InputGroupAppend,
 	InputGroupInput
 } from '../../styled/Input/InputGroup';
 import ButtonGroup from '../../styled/common/ButtonGroup';
 import CancelButton from '../../styled/common/CancelButton';
-import SubmitButton from '../../styled/common/SubmitButton'
+import SubmitButton from '../../styled/common/SubmitButton';
 
 const CommentInput = styled.div`
 	> ::-webkit-scrollbar {
 		display: none;
 	}
 
-	${commonCSS.flex("")};
+	${commonCSS.flex('')};
 
 	align-items: center;
 
@@ -33,7 +33,7 @@ const Comments = styled.div`
 		display: none;
 	}
 
-	${commonCSS.flex("")};
+	${commonCSS.flex('')};
 
 	align-items: center;
 
@@ -49,7 +49,7 @@ const Comment = styled.div`
 		display: none;
 	}
 
-	${commonCSS.flex("column")} align-items: flex-start;
+	${commonCSS.flex('column')} align-items: flex-start;
 	margin: 2em;
 	> * {
 		padding: 0.5rem;
@@ -60,35 +60,43 @@ const Comment = styled.div`
 const ThisButtonGroup = styled(ButtonGroup)`
 	justify-content: flex-end;
 	margin-right: 3em;
-`
+`;
 
 export default class VideoComments extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			commentsList: [],
-			userDisplayName: "",
-			userAvatar: "",
-			userInput: ""
+			userDisplayName: '',
+			userAvatar: '',
+			userInput: ''
 		};
 		this.commentsMapped = this.commentsMapped.bind(this);
 	}
 
 	componentDidMount() {
-		axios.get(`/api/get-comments/${this.props.video_id}`).then(res => {
-			// making a call to the backend for the comments and setting state with res
+		axios
+			.get(
+				`${process.env.REACT_APP_API_LOCATION}get-comments/${
+					this.props.video_id
+				}`
+			)
+			.then(res => {
+				// making a call to the backend for the comments and setting state with res
 
-			this.setState({
-				commentsList: res.data
+				this.setState({
+					commentsList: res.data
+				});
 			});
-		});
-		axios.get("/api/get-user-info").then(res => {
-			console.log("hahahah", res.data);
-			this.setState({
-				userDisplayName: res.data.display_name,
-				userAvatar: res.data.avatar
+		axios
+			.get(`${process.env.REACT_APP_API_LOCATION}get-user-info`)
+			.then(res => {
+				console.log('hahahah', res.data);
+				this.setState({
+					userDisplayName: res.data.display_name,
+					userAvatar: res.data.avatar
+				});
 			});
-		});
 	}
 
 	commentsMapped() {
@@ -124,15 +132,19 @@ export default class VideoComments extends Component {
 	}
 
 	clickPost() {
-		console.log("click post", this.props.video_id);
+		console.log('click post', this.props.video_id);
 		axios
-			.post("/api/comment-new", {
+			.post(`${process.env.REACT_APP_API_LOCATION}comment-new`, {
 				video_id: this.props.video_id,
 				comment: this.state.userInput
 			})
 			.then(() => {
 				axios
-					.get(`/api/get-comments/${this.props.video_id}`)
+					.get(
+						`${process.env.REACT_APP_API_LOCATION}get-comments/${
+							this.props.video_id
+						}`
+					)
 					.then(res => {
 						this.setState({
 							commentsList: res.data
@@ -140,14 +152,14 @@ export default class VideoComments extends Component {
 					});
 			});
 		this.setState({
-			userInput: ""
+			userInput: ''
 		});
 	}
 
-	cancel(){
+	cancel() {
 		this.setState({
 			userInput: ''
-		})
+		});
 	}
 
 	render() {
@@ -163,7 +175,7 @@ export default class VideoComments extends Component {
 					/>
 					<InputGroupBody>
 						<InputGroupAppend>
-							<p>{this.state.userDisplayName} Says:</p>{" "}
+							<p>{this.state.userDisplayName} Says:</p>{' '}
 						</InputGroupAppend>
 						<InputGroupInput>
 							<input
@@ -177,7 +189,6 @@ export default class VideoComments extends Component {
 						</InputGroupInput>
 					</InputGroupBody>
 
-
 					<ThisButtonGroup>
 						<CancelButton>
 							<GoX
@@ -189,7 +200,10 @@ export default class VideoComments extends Component {
 								}}
 							/>
 						</CancelButton>
-						<SubmitButton type='button' onClick={() => this.clickPost()}>
+						<SubmitButton
+							type="button"
+							onClick={() => this.clickPost()}
+						>
 							Post Comment
 						</SubmitButton>
 					</ThisButtonGroup>

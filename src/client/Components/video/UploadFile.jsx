@@ -60,14 +60,16 @@ export default class UploadFile extends Component {
 	}
 
 	componentDidMount() {
-		axios.get('/api/channels').then(response => {
-			const tempOptions = [];
+		axios
+			.get(`${process.env.REACT_APP_API_LOCATION}channels`)
+			.then(response => {
+				const tempOptions = [];
 
-			response.data.forEach(option => {
-				tempOptions.push({ value: option.id, label: option.title });
+				response.data.forEach(option => {
+					tempOptions.push({ value: option.id, label: option.title });
+				});
+				this.setState({ selectOptions: tempOptions });
 			});
-			this.setState({ selectOptions: tempOptions });
-		});
 	}
 
 	onDrop(media) {
@@ -106,16 +108,18 @@ export default class UploadFile extends Component {
 			data.append('media', this.state.media);
 			data.append('name', this.state.medianame);
 
-			axios.post('/api/upload', data).then(res =>
-				axios
-					.post('/api/video', {
-						title: this.state.title,
-						game_id: this.state.gameid,
-						link: res.data.Location
-					})
-					.then(() => this.props.loadVideos())
-					.then(() => this.clearState())
-			);
+			axios
+				.post(`${process.env.REACT_APP_API_LOCATION}upload`, data)
+				.then(res =>
+					axios
+						.post(`${process.env.REACT_APP_API_LOCATION}video`, {
+							title: this.state.title,
+							game_id: this.state.gameid,
+							link: res.data.Location
+						})
+						.then(() => this.props.loadVideos())
+						.then(() => this.clearState())
+				);
 		} else {
 			this.setState({
 				errorMsg: 'Please select a file and/or enter a title.'

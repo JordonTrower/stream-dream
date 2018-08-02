@@ -46,12 +46,12 @@ export default class VideoInfoBar extends Component {
 		super(props);
 		this.state = {
 			videoId: this.props.video_id,
-			videoTitle: "",
-			channelId: "",
-			channelName: "",
-			channelAvatar: "",
-			channelVideosTotal: "",
-			channelFollowersTotal: "",
+			videoTitle: '',
+			channelId: '',
+			channelName: '',
+			channelAvatar: '',
+			channelVideosTotal: '',
+			channelFollowersTotal: '',
 			followed: false
 		};
 		this.handleFollowButtonClick = this.handleFollowButtonClick.bind(this);
@@ -62,7 +62,7 @@ export default class VideoInfoBar extends Component {
 	componentDidMount() {
 		// will make a call to the backend to get the info need for state. State is Displaid bellow the video in an info bar.
 		axios
-			.post('/api/get-info/', {
+			.post(`${process.env.REACT_APP_API_LOCATION}get-info/`, {
 				video_id: this.state.videoId
 			})
 			.then(videoRes => {
@@ -73,9 +73,14 @@ export default class VideoInfoBar extends Component {
 			})
 			.then(() => {
 				axios
-					.post('/api/get-channel-info/', {
-						channel_id: this.state.channelId
-					})
+					.post(
+						`${
+							process.env.REACT_APP_API_LOCATION
+						}get-channel-info/`,
+						{
+							channel_id: this.state.channelId
+						}
+					)
 					.then(channelRes => {
 						this.setState({
 							channelName: channelRes.data.display_name,
@@ -89,7 +94,9 @@ export default class VideoInfoBar extends Component {
 			});
 
 		axios
-			.post("/api/if-followed/", { channel_id: this.state.channelId })
+			.post(`${process.env.REACT_APP_API_LOCATION}if-followed/`, {
+				channel_id: this.state.channelId
+			})
 			.then(res => {
 				this.setState({
 					followed: res.data
@@ -109,14 +116,14 @@ export default class VideoInfoBar extends Component {
 					Follow
 				</button>
 			);
-		} else if (this.state.followed === "Please Log In") {
+		} else if (this.state.followed === 'Please Log In') {
 			return <p>Please Log In</p>;
 		}
 		return <p>{this.state.followed}</p>;
 	}
 
 	handleFollowButtonClick() {
-		axios.post("/follow/", { following: this.state.channelId });
+		axios.post('/follow/', { following: this.state.channelId });
 		this.setState({
 			followed: true
 		});
@@ -148,9 +155,7 @@ export default class VideoInfoBar extends Component {
 				</NameDiv>
 
 				<ChannelDataDiv>
-					<h3>
-						{this.state.channelFollowersTotal}
-					</h3>
+					<h3>{this.state.channelFollowersTotal}</h3>
 					<this.followButtonDisplay />
 					<h3>Total Videos: {this.state.channelVideosTotal}</h3>
 				</ChannelDataDiv>
