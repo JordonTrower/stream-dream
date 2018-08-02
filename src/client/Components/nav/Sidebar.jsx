@@ -54,7 +54,7 @@ class Sidebar extends Component {
 	getFollowedUsers() {
 		axios
 			.get(
-				`${process.env.REACT_APP_API_LOCATION}/user/${
+				`${process.env.REACT_APP_API_LOCATION}user/${
 					this.props.userId
 				}/follows`
 			)
