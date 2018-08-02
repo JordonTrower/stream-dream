@@ -15,6 +15,7 @@ import CancelButton from '../../styled/common/CancelButton';
 import SubmitButton from '../../styled/common/SubmitButton';
 
 const CommentInput = styled.div`
+	
 	> ::-webkit-scrollbar {
 		display: none;
 	}
@@ -184,12 +185,16 @@ class VideoComments extends Component {
 							</CancelButton>
 							<SubmitButton
 								type="button"
-								onClick={() => this.clickPost()}
-							>
-								Post Comment
-							</SubmitButton>
-						</ThisButtonGroup>
-					</CommentInput>
+								onClick={() => {
+									this.cancel();
+								}}
+							/>
+						</CancelButton>
+						<SubmitButton id="submitButton" type='button' onClick={() => this.clickPost()}>
+							Post Comment
+						</SubmitButton>
+					</ThisButtonGroup>
+				</CommentInput>
 				)}
 				{this.commentsMapped()}
 			</CommentsMainDiv>

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Should render the VideoComments component. 1`] = `
+<styled.div>
+  <styled.div>
+    <p>
+      Write a Comment
+    </p>
+    <img
+      alt="commentator avatar"
+      heigth="45"
+      src=""
+      width="45"
+    />
+    <styled.div>
+      <styled.div>
+        <p>
+           Says:
+        </p>
+         
+      </styled.div>
+      <styled.div>
+        <input
+          onChange={[Function]}
+          value=""
+        />
+      </styled.div>
+    </styled.div>
+    <Styled(styled.div)>
+      <styled.button>
+        <GoX
+          color="#C40F62"
+          onClick={[Function]}
+          size="35"
+          type="button"
+        />
+      </styled.button>
+      <styled.button
+        onClick={[Function]}
+        type="button"
+      >
+        Post Comment
+      </styled.button>
+    </Styled(styled.div)>
+  </styled.div>
+</styled.div>
+`;
