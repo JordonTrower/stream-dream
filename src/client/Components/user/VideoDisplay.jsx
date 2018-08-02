@@ -7,6 +7,7 @@ import { withRouter, Link } from 'react-router-dom';
 import CardBody from '../../styled/common/card/body';
 import Card from '../../styled/common/card/card';
 import PrimaryText from '../../styled/common/PrimaryText';
+import { forceFollowedUsersRefresh } from '../../middlwares/redux/reducers/sessionReducer';
 
 const PolaroidContainer = styled(Card)`
 	display: flex;
@@ -134,6 +135,8 @@ class VideoDisplay extends Component {
 							following: false
 						});
 					}
+
+					this.props.forceFollowedUsersRefresh(true);
 				});
 		} else {
 			axios
@@ -145,6 +148,8 @@ class VideoDisplay extends Component {
 						this.setState({
 							following: true
 						});
+
+						this.props.forceFollowedUsersRefresh(true);
 					}
 				});
 		}
@@ -205,7 +210,10 @@ function mapStateToProps(duckState) {
 	};
 }
 
-export default connect(mapStateToProps)(withRouter(VideoDisplay));
+export default connect(
+	mapStateToProps,
+	{ forceFollowedUsersRefresh }
+)(withRouter(VideoDisplay));
 
 VideoDisplay.propTypes = {
 	match: propTypes.shape({
@@ -218,5 +226,6 @@ VideoDisplay.propTypes = {
 		push: propTypes.func
 	}).isRequired,
 
-	userId: propTypes.number.isRequired
+	userId: propTypes.number.isRequired,
+	forceFollowedUsersRefresh: propTypes.func.isRequired
 };
