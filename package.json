@@ -85,7 +85,7 @@
 	"scripts": {
 		"start": "node scripts/start.js",
 		"build-client": "node scripts/build.js",
-		"build-server": "babel -d ./build/Server ./src/Server",
+		"build-server": "babel -d ./build/Server ./src/server",
 		"build": "yarn build-client && yarn build-server",
 		"test": "babel-node --presets=env scripts/test.js --env=jsdom --watchAll ",
 		"server": "babel-node --presets=env src/server/Index.js",

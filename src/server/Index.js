@@ -4,6 +4,7 @@ import dotenvExpand from 'dotenv-expand';
 import redisSession from 'connect-redis';
 import session from 'express-session';
 import knex from 'knex';
+import path from 'path';
 import bodyParser from 'body-parser';
 import authRoutes from './routes/Auth';
 import dbRoutes from './routes/DB';
@@ -42,6 +43,8 @@ app.use(bodyParser.json());
  * Redis is a NoSQL like database, stored in RAM for increased speed
  */
 if (app.get('env') === 'production') {
+	console.log(app.get('env'))
+
 	const RedisStore = redisSession(session);
 
 	app.use(
@@ -66,6 +69,14 @@ if (app.get('env') === 'production') {
 
 app.use(`${process.env.NGINX_LOCATION}/api/auth`, authRoutes);
 app.use(`${process.env.NGINX_LOCATION}/api`, dbRoutes);
+
+console.log(process.env.CLIENT_LOCATION)
+
+app.use(`${process.env.CLIENT_LOCATION}`, express.static(path.join(__dirname, '../../build/Client')));
+
+app.get(`${process.env.CLIENT_LOCATION}*`, (req, res) => {
+	res.sendFile(path.join(__dirname, '../../build/Client/index.html'));
+});
 
 app.listen(process.env.SERVER_PORT, () => {
 	console.log(`listening on port ${SERVER_PORT}`);
