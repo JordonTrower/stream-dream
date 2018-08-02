@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import GoX from 'react-icons/lib/go/x';
+import React, { Component } from 'react';
 import commonCSS from '../../styled/common/commonCSS';
 import CommentsMainDiv from '../../styled/Playing/VideoCommentsMain';
 import InputGroupBody, {
@@ -62,13 +63,11 @@ const ThisButtonGroup = styled(ButtonGroup)`
 	margin-right: 3em;
 `;
 
-export default class VideoComments extends Component {
+class VideoComments extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			commentsList: [],
-			userDisplayName: '',
-			userAvatar: '',
 			userInput: ''
 		};
 		this.commentsMapped = this.commentsMapped.bind(this);
@@ -86,15 +85,6 @@ export default class VideoComments extends Component {
 
 				this.setState({
 					commentsList: res.data
-				});
-			});
-		axios
-			.get(`${process.env.REACT_APP_API_LOCATION}get-user-info`)
-			.then(res => {
-				console.log('hahahah', res.data);
-				this.setState({
-					userDisplayName: res.data.display_name,
-					userAvatar: res.data.avatar
 				});
 			});
 	}
@@ -132,24 +122,15 @@ export default class VideoComments extends Component {
 	}
 
 	clickPost() {
-		console.log('click post', this.props.video_id);
 		axios
 			.post(`${process.env.REACT_APP_API_LOCATION}comment-new`, {
 				video_id: this.props.video_id,
 				comment: this.state.userInput
 			})
-			.then(() => {
-				axios
-					.get(
-						`${process.env.REACT_APP_API_LOCATION}get-comments/${
-							this.props.video_id
-						}`
-					)
-					.then(res => {
-						this.setState({
-							commentsList: res.data
-						});
-					});
+			.then(res => {
+				this.setState({
+					commentsList: res.data
+				});
 			});
 		this.setState({
 			userInput: ''
@@ -165,49 +146,51 @@ export default class VideoComments extends Component {
 	render() {
 		return (
 			<CommentsMainDiv>
-				<CommentInput>
-					<p>Write a Comment</p>
-					<img
-						src={this.state.userAvatar}
-						width="45"
-						heigth="45"
-						alt="commentator avatar"
-					/>
-					<InputGroupBody>
-						<InputGroupAppend>
-							<p>{this.state.userDisplayName} Says:</p>{' '}
-						</InputGroupAppend>
-						<InputGroupInput>
-							<input
-								value={this.state.userInput}
-								onChange={e =>
-									this.setState({
-										userInput: e.target.value
-									})
-								}
-							/>
-						</InputGroupInput>
-					</InputGroupBody>
+				{this.props.user.id !== -1 && (
+					<CommentInput>
+						<p>Write a Comment</p>
+						<img
+							src={this.props.user.avatar}
+							width="45"
+							heigth="45"
+							alt="commentator avatar"
+						/>
+						<InputGroupBody>
+							<InputGroupAppend>
+								<p>{this.props.user.display_name} Says:</p>
+							</InputGroupAppend>
+							<InputGroupInput>
+								<input
+									value={this.state.userInput}
+									onChange={e =>
+										this.setState({
+											userInput: e.target.value
+										})
+									}
+								/>
+							</InputGroupInput>
+						</InputGroupBody>
 
-					<ThisButtonGroup>
-						<CancelButton>
-							<GoX
-								color="#C40F62"
-								size="35"
+						<ThisButtonGroup>
+							<CancelButton>
+								<GoX
+									color="#C40F62"
+									size="35"
+									type="button"
+									onClick={() => {
+										this.cancel();
+									}}
+								/>
+							</CancelButton>
+							<SubmitButton
 								type="button"
-								onClick={() => {
-									this.cancel();
-								}}
-							/>
-						</CancelButton>
-						<SubmitButton
-							type="button"
-							onClick={() => this.clickPost()}
-						>
-							Post Comment
-						</SubmitButton>
-					</ThisButtonGroup>
-				</CommentInput>
+								onClick={() => this.clickPost()}
+							>
+								Post Comment
+							</SubmitButton>
+						</ThisButtonGroup>
+					</CommentInput>
+				)}
 				{this.commentsMapped()}
 			</CommentsMainDiv>
 		);
@@ -215,5 +198,20 @@ export default class VideoComments extends Component {
 }
 
 VideoComments.propTypes = {
-	video_id: PropTypes.string.isRequired
+	video_id: PropTypes.string.isRequired,
+	user: PropTypes.shape({
+		email: PropTypes.string,
+		display_name: PropTypes.string,
+		avatar: PropTypes.string,
+		id: PropTypes.number
+	}).isRequired
 };
+
+function mapStateToProps(duckState) {
+	const { user } = duckState;
+	return {
+		user
+	};
+}
+
+export default connect(mapStateToProps)(VideoComments);

@@ -206,8 +206,12 @@ class Header extends Component {
 										style={{ borderRadius: '20px' }}
 										height="40"
 										width="40"
-										src="/Images/NoUser.jpg"
-										alt="Default Profile"
+										src={
+											this.props.user.avatar !== ''
+												? this.props.user.avatar
+												: '/Images/NoUser.jpg'
+										}
+										alt="Profile"
 									/>
 								</button>
 							)}
