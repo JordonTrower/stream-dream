@@ -7,6 +7,7 @@ import React, { Component } from 'react';
 import StyledSidebar from '../../styled/nav/Sidebar';
 import PrimaryText from '../../styled/common/PrimaryText';
 import commonCSS from '../../styled/common/commonCSS';
+import { forceFollowedUsersRefresh } from '../../middlwares/redux/reducers/sessionReducer';
 
 const StyledLinkGroup = styled.div`
 	width: 90%;
@@ -46,8 +47,13 @@ class Sidebar extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.userId !== prevProps.userId) {
+		if (
+			this.props.userId !== prevProps.userId ||
+			(this.props.refreshFollowed &&
+				this.props.refreshFollowed !== prevProps.refreshFollowed)
+		) {
 			this.getFollowedUsers();
+			this.props.forceFollowedUsersRefresh(false);
 		}
 	}
 
@@ -99,14 +105,20 @@ class Sidebar extends Component {
 }
 
 Sidebar.propTypes = {
-	userId: propTypes.number.isRequired
+	userId: propTypes.number.isRequired,
+	refreshFollowed: propTypes.bool.isRequired,
+	forceFollowedUsersRefresh: propTypes.func.isRequired
 };
 
 function mapStateToProps(duckState) {
 	const { id } = duckState.user;
 	return {
-		userId: id
+		userId: id,
+		refreshFollowed: duckState.refreshFollowed
 	};
 }
 
-export default connect(mapStateToProps)(Sidebar);
+export default connect(
+	mapStateToProps,
+	{ forceFollowedUsersRefresh }
+)(Sidebar);

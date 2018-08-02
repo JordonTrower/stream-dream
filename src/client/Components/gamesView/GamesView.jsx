@@ -52,8 +52,9 @@ export default class GamesView extends Component {
 									process.env.REACT_APP_NGINX_LOCATION
 								}/video/${game.id}`
 							}}
+							key={game.id}
 						>
-							<Card key={game.id}>
+							<Card>
 								<video height="90%" width="100%" muted>
 									<source src={game.link} alt={game.title} />
 								</video>

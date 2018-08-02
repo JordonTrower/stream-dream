@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import commonCSS from '../../styled/common/commonCSS';
 import VideoMainDiv from '../../styled/Playing/VideoInfoMain';
+import { forceFollowedUsersRefresh } from '../../middlwares/redux/reducers/sessionReducer';
 
 const NameDiv = styled.div`
 	> ::-webkit-scrollbar {
@@ -40,7 +42,7 @@ const ChannelDataDiv = styled.div`
 	}
 `;
 
-export default class VideoInfoBar extends Component {
+class VideoInfoBar extends Component {
 	// Under every video will be a a info style section bar. it will display the information on state as well a button for following.
 	constructor(props) {
 		super(props);
@@ -123,23 +125,31 @@ export default class VideoInfoBar extends Component {
 	}
 
 	handleFollowButtonClick() {
-		axios.post(`${process.env.REACT_APP_API_LOCATION}follow/`, {
-			following: this.state.channelId
-		});
-		this.setState({
-			followed: true
-		});
+		axios
+			.post(`${process.env.REACT_APP_API_LOCATION}follow/`, {
+				following: this.state.channelId
+			})
+			.then(() => {
+				this.setState({
+					followed: true
+				});
+				this.props.forceFollowedUsersRefresh(true);
+			});
 	}
 
 	handleUnFollow() {
-		axios.delete(
-			`${process.env.REACT_APP_API_LOCATION}unfollow/${
-				this.state.channelId
-			}`
-		);
-		this.setState({
-			followed: false
-		});
+		axios
+			.delete(
+				`${process.env.REACT_APP_API_LOCATION}unfollow/${
+					this.state.channelId
+				}`
+			)
+			.then(() => {
+				this.setState({
+					followed: false
+				});
+				this.props.forceFollowedUsersRefresh(true);
+			});
 	}
 
 	render() {
@@ -171,5 +181,15 @@ export default class VideoInfoBar extends Component {
 }
 
 VideoInfoBar.propTypes = {
-	video_id: PropTypes.string.isRequired
+	video_id: PropTypes.string.isRequired,
+	forceFollowedUsersRefresh: PropTypes.func.isRequired
 };
+
+function mapStateToProps() {
+	return {};
+}
+
+export default connect(
+	mapStateToProps,
+	{ forceFollowedUsersRefresh }
+)(VideoInfoBar);
