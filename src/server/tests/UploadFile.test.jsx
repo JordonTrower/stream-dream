@@ -35,7 +35,6 @@ test('clearState clears the state', () => {
 	expect (uploadFileComponent.state('medianame')).toEqual('');
 	expect (uploadFileComponent.state('filename')).toEqual('');
 	expect (uploadFileComponent.state('errorMsg')).toEqual('');
-	expect (uploadFileComponent.state('selectOptions')).toEqual([]);
 	expect (uploadFileComponent.state('gameid')).toEqual('');
 })
 

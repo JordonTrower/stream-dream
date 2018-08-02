@@ -134,7 +134,6 @@ export default class UploadFile extends Component {
 			medianame: '',
 			filename: '',
 			errorMsg: '',
-			selectOptions: [],
 			gameid: ''
 		});
 	}
