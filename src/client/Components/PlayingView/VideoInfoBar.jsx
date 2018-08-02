@@ -62,9 +62,11 @@ export default class VideoInfoBar extends Component {
 	componentDidMount() {
 		// will make a call to the backend to get the info need for state. State is Displaid bellow the video in an info bar.
 		axios
-			.post(`${process.env.REACT_APP_API_LOCATION}get-info/`, {
-				video_id: this.state.videoId
-			})
+			.get(
+				`${process.env.REACT_APP_API_LOCATION}get-info/${
+					this.state.videoId
+				}`
+			)
 			.then(videoRes => {
 				this.setState({
 					videoTitle: videoRes.data.title,
@@ -73,13 +75,10 @@ export default class VideoInfoBar extends Component {
 			})
 			.then(() => {
 				axios
-					.post(
+					.get(
 						`${
 							process.env.REACT_APP_API_LOCATION
-						}get-channel-info/`,
-						{
-							channel_id: this.state.channelId
-						}
+						}get-channel-info/${this.state.channelId}`
 					)
 					.then(channelRes => {
 						this.setState({
@@ -91,46 +90,53 @@ export default class VideoInfoBar extends Component {
 								channelRes.data.channelFollowersTotal
 						});
 					});
-			});
-
-		axios
-			.post(`${process.env.REACT_APP_API_LOCATION}if-followed/`, {
-				channel_id: this.state.channelId
 			})
-			.then(res => {
-				this.setState({
-					followed: res.data
-				});
+			.then(() => {
+				axios
+					.post(`${process.env.REACT_APP_API_LOCATION}if-followed/`, {
+						channel_id: this.state.channelId
+					})
+					.then(res => {
+						this.setState({
+							followed: res.data
+						});
+					});
 			});
 	}
 
 	followButtonDisplay() {
-		// if false, the follow button will appear. if true, an Un-Follow button appears. if an error code recieved from the server, a p tag apears with the message form the server. the default value is false.
-		if (this.state.followed === true) {
-			return (
-				<button onClick={() => this.handleUnFollow()}>Un-Follow</button>
-			);
+		// if false, the follow button will appear. if true, an Un-Follow button appears.
+		// if an error code recieved from the server, a
+		// p tag apears with the message form the server. the default value is false.
+
+		if (this.state.followed) {
+			return <button onClick={this.handleUnFollow}>Un-Follow</button>;
 		} else if (!this.state.followed) {
 			return (
-				<button onClick={() => this.handleFollowButtonClick()}>
-					Follow
-				</button>
+				<button onClick={this.handleFollowButtonClick}>Follow</button>
 			);
 		} else if (this.state.followed === 'Please Log In') {
 			return <p>Please Log In</p>;
 		}
+
 		return <p>{this.state.followed}</p>;
 	}
 
 	handleFollowButtonClick() {
-		axios.post('/follow/', { following: this.state.channelId });
+		axios.post(`${process.env.REACT_APP_API_LOCATION}follow/`, {
+			following: this.state.channelId
+		});
 		this.setState({
 			followed: true
 		});
 	}
 
 	handleUnFollow() {
-		axios.delete(`/unfollow?channel_id=${this.state.channelId}`);
+		axios.delete(
+			`${process.env.REACT_APP_API_LOCATION}unfollow/${
+				this.state.channelId
+			}`
+		);
 		this.setState({
 			followed: false
 		});

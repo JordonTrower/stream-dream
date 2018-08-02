@@ -1,4 +1,4 @@
-import _ from "lodash";
+//import _ from "lodash";
 import DB from "./DBConnect";
 
 export default {
@@ -7,7 +7,6 @@ export default {
 			res,
 			req
 		);
-		console.log("we got hit");
 
 		return db("videos")
 			.where("id", req.params.video_id)
@@ -24,13 +23,10 @@ export default {
 			res,
 			req
 		);
-		console.log("we got hit 2");
 
 		return db("videos")
 			.select("title", "created_by")
-			.where({
-				id: +req.params.video_id
-			})
+			.where('id', req.params.video_id)
 			.first()
 			.catch(error => console.log(error))
 			.then(videoInfo => {
@@ -48,7 +44,7 @@ export default {
 
 		db("users")
 			.select("display_name", "avatar")
-			.where({ id: req.params.channel_id })
+			.where('id', req.params.channel_id)
 			.catch(error => console.log(error))
 			.then(userInfo => {
 				fullRes = userInfo;
@@ -118,7 +114,7 @@ export default {
 				res.send("there was an error");
 			})
 			.then(() => {
-				res.send("we did it");
+				res.send(true);
 			});
 	},
 
@@ -127,10 +123,10 @@ export default {
 			res,
 			req
 		);
-
+		console.log(req.params)
 		return db("followings")
-			.where("user", 1)
-			.andWhere("following", req.body.channel_id)
+			.where("user", req.session.userId)
+			.andWhere("following", req.params.channel_id)
 			.delete()
 			.catch(error => {
 				console.log(error);
@@ -167,18 +163,25 @@ export default {
 	},
 
 	getUserInfo(req, res) {
+
 		const db = DB.connect(
 			res,
 			req
 		);
 
-		return db("users")
-			.select("users.display_name", "users.avatar")
-			.where({ id: +req.session.userId })
-			.catch(error => console.log(error))
-			.then(info => {
-				res.send(info[0]);
-			});
+		if (req.session.userId) {
+			return db("users")
+				.select("display_name", "avatar")
+				.where({
+					id: req.session.userId
+				})
+				.first()
+				.catch(error => console.log(error))
+				.then(info =>
+					res.send(info)
+				);
+		}
+		return res.send({})
 	},
 
 	newComment(req, res) {
@@ -186,6 +189,7 @@ export default {
 			res,
 			req
 		);
+
 		return db("comments")
 			.insert({
 				created_by: req.session.userId,
@@ -193,8 +197,16 @@ export default {
 				comment: req.body.comment
 			})
 			.catch(error => console.log(error))
-			.then(() => {
-				res.send("400");
-			});
+			.then(() => db('comments')
+				.where('video_id', req.body.video_id)
+				.join("users", "users.id", "=", "comments.created_by")
+				.orderBy("updated_at", "desc")
+				.select("users.display_name",
+					"users.avatar",
+					"comments.comment",
+					"comments.created_at",
+					"comments.updated_at")
+				.then(commentRes => res.send(commentRes))
+			);
 	}
 };

@@ -8,7 +8,9 @@ import UserController from "./controllers/UserController";
 import PlayingController from "./controllers/PlayingController";
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/" });
+const upload = multer({
+	dest: "uploads/"
+});
 
 // GAMES
 router.get("/channels", GameController.getGames);
@@ -42,7 +44,7 @@ router.get("/get-info/:video_id", PlayingController.getInfo); // for the video i
 router.get("/get-channel-info/:channel_id", PlayingController.getChannelInfo); // gets channel name, total videos
 router.post("/if-followed", PlayingController.ifFollowed); // ascertains if the user is logged in and if they follow the channel of the video they are watching
 router.post("/follow", PlayingController.newFollow); // for a user to follow a channel that is not currently followed
-router.delete("/unfollow", PlayingController.unFollow); // for a user to unfollow a channel
+router.delete("/unfollow/:channel_id", PlayingController.unFollow); // for a user to unfollow a channel
 router.get("/get-comments/:video_id", PlayingController.getComments); // for the comments
 router.get("/get-user-info", PlayingController.getUserInfo); // will display just before the input box
 router.post("/comment-new", PlayingController.newComment); // to post new comment

@@ -1,6 +1,7 @@
 import axios from 'axios';
 import propTypes from 'prop-types';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import CardBody from '../../styled/common/card/body';
@@ -38,14 +39,35 @@ const UserInfoContainer = styled.div`
 	}
 `;
 
+const SubmitButton = styled.button`
+	background: #1a4fa5;
+	border: 1px #1a4fa5 solid;
+
+	color: #ecede8;
+
+	margin-top: 8px;
+
+	border-radius: 15px;
+	padding: 0;
+	width: 100px;
+	height: 35px;
+
+	text-align: center;
+
+	cursor: pointer;
+`;
+
 class VideoDisplay extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			userVideos: [],
-			userInfo: {}
+			userInfo: {},
+			following: false
 		};
+
+		this.handleFollows = this.handleFollows.bind(this);
 	}
 
 	componentDidMount() {
@@ -86,6 +108,46 @@ class VideoDisplay extends Component {
 					}
 				}
 			});
+
+		axios
+			.post(`${process.env.REACT_APP_API_LOCATION}if-followed`, {
+				channel_id: this.props.match.params.user_id
+			})
+			.then(res =>
+				this.setState({
+					following: res.data !== ''
+				})
+			);
+	}
+
+	handleFollows() {
+		if (this.state.following) {
+			axios
+				.delete(
+					`${process.env.REACT_APP_API_LOCATION}unfollow/${
+						this.props.match.params.user_id
+					}`
+				)
+				.then(res => {
+					if (res.data === 'deleted') {
+						this.setState({
+							following: false
+						});
+					}
+				});
+		} else {
+			axios
+				.post(`${process.env.REACT_APP_API_LOCATION}follow`, {
+					following: this.props.match.params.user_id
+				})
+				.then(res => {
+					if (res.data) {
+						this.setState({
+							following: true
+						});
+					}
+				});
+		}
 	}
 
 	render() {
@@ -98,9 +160,16 @@ class VideoDisplay extends Component {
 						src={this.state.userInfo.avatar}
 						alt={`${this.state.userInfo.display_name} Profile`}
 					/>
+
 					<PrimaryText>
 						{this.state.userInfo.display_name}
 					</PrimaryText>
+
+					{this.props.userId !== -1 && (
+						<SubmitButton onClick={this.handleFollows}>
+							{this.state.following ? 'Unfollow' : 'Follow'}
+						</SubmitButton>
+					)}
 				</UserInfoContainer>
 
 				<CardBody>
@@ -129,7 +198,14 @@ class VideoDisplay extends Component {
 	}
 }
 
-export default withRouter(VideoDisplay);
+function mapStateToProps(duckState) {
+	const { user } = duckState;
+	return {
+		userId: user.id
+	};
+}
+
+export default connect(mapStateToProps)(withRouter(VideoDisplay));
 
 VideoDisplay.propTypes = {
 	match: propTypes.shape({
@@ -140,5 +216,7 @@ VideoDisplay.propTypes = {
 
 	history: propTypes.shape({
 		push: propTypes.func
-	}).isRequired
+	}).isRequired,
+
+	userId: propTypes.number.isRequired
 };
