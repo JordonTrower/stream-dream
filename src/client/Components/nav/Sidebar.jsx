@@ -84,7 +84,11 @@ class Sidebar extends Component {
 						</StlyedInfo>
 					))}
 					{this.props.userId !== -1 && (
-						<StlyedInfo to="/upload-video">
+						<StlyedInfo
+							to={`${
+								process.env.REACT_APP_NGINX_LOCATION
+							}/upload-video`}
+						>
 							<PrimaryText>Upload a Video</PrimaryText>
 						</StlyedInfo>
 					)}
